@@ -1,0 +1,34 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./frontend/index.html",
+    "./frontend/src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        primary: "#ff4b86",
+        "primary-dark": "#e63d75",
+        "background-light": "#FFFFFF",
+        "background-dark": "#0A0A0A",
+        "surface-light": "#F8F8F8",
+        "surface-dark": "#121212",
+        "surface-darker": "#0f0f12",
+        "text-light": "#171717",
+        "text-dark": "#EDEDED",
+        "subtext-light": "#525252",
+        "subtext-dark": "#A3A3A3",
+        "accent-purple": "#8b5cf6",
+      },
+      fontFamily: {
+        display: ["'Cardo'", "serif"],
+        serif: ["'Cardo'", "serif"],
+        sans: ["'Nunito Sans'", "sans-serif"],
+      },
+      letterSpacing: {
+        widest: '0.15em',
+      },
+    },
+  },
+  plugins: [],
+}

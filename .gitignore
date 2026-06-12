@@ -1,0 +1,62 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+*.tsbuildinfo
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.imagekit-migration
+.env.r2-migration
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# React best practices reference (not part of project source)
+react-best-practices/
+.vercel
+.env*.local
+
+# AI assistant documentation (local only)
+.trae/
+.kiro/
+.kilocode/
+
+# Database backups (local only)
+backup_*.sql
+*.backup.sql
+backups/
+
+# Supabase deployment artifacts (local only)
+supabase/.temp/
+fullcode.txt
+.aicodeprep-gui
+.aicodeprep-gui
+.npm-cache/
+NUL
+docs/TECHNICAL_AUDIT_REPORT.md
+
+# Supabase local development only
+supabase/.temp/
+supabase/.branches/
+plans/
+CODEX_AUDIT_TASKS.md

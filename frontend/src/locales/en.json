@@ -1,0 +1,345 @@
+{
+  "nav": {
+    "home": "Home",
+    "onStage": "ON STAGE",
+    "events": "EVENT",
+    "shop": "Shop",
+    "sparkClub": "SPARK CLUB",
+    "news": "NEWS",
+    "fashion": "DRESSING ROOM",
+    "beauty": "GLAM",
+    "dashboard": "Dashboard",
+    "myTickets": "My Tickets",
+    "myOrders": "My Orders",
+    "cart": "Cart",
+    "search": "Search"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "signOutConfirm": "Are you sure you want to sign out?",
+    "cancel": "Cancel",
+    "confirm": "Sign Out",
+    "fields": {
+      "name": {
+        "label": "Full Name",
+        "placeholder": "John Doe"
+      },
+      "email": {
+        "label": "Email Address",
+        "placeholder": "your@email.com"
+      },
+      "password": {
+        "label": "Password"
+      },
+      "confirmPassword": {
+        "label": "Confirm Password",
+        "placeholder": "Confirm your password"
+      }
+    },
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to continue to Spark Stage",
+      "passwordPlaceholder": "Enter your password",
+      "aria": {
+        "showPassword": "Show password",
+        "hidePassword": "Hide password"
+      },
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot Password?",
+      "loading": "Signing in...",
+      "orContinueWith": "Or continue with",
+      "providers": {
+        "google": "Google",
+        "github": "GitHub"
+      },
+      "noAccount": "Don't have an account?",
+      "signUpLink": "Sign up",
+      "branding": {
+        "joinThe": "Join the",
+        "description": "Experience exclusive events, shop curated collections, and be part of our creative community.",
+        "stats": {
+          "events": "Events",
+          "members": "Members",
+          "artists": "Artists"
+        }
+      }
+    },
+    "signup": {
+      "title": "Create Account",
+      "subtitle": "Join Spark Stage community",
+      "successLoggingIn": "Account created successfully! Logging you in...",
+      "passwordPlaceholder": "At least 6 characters",
+      "loading": "Creating Account...",
+      "submit": "Sign Up",
+      "haveAccount": "Already have an account?",
+      "signInLink": "Sign in",
+      "errors": {
+        "passwordsDoNotMatch": "Passwords do not match",
+        "passwordMinLength": "Password must be at least {{min}} characters"
+      },
+      "branding": {
+        "welcomeTo": "Welcome to",
+        "description": "Create your account and unlock exclusive access to events, shop collections, and join our creative community."
+      }
+    }
+  },
+  "language": {
+    "switch": "Switch language",
+    "en": "English",
+    "id": "Indonesian"
+  },
+  "myTickets": {
+    "title": "My Tickets",
+    "subtitle": "Manage and access your ticket orders and sessions",
+    "tabs": {
+      "pending": "Pending",
+      "active": "Active",
+      "history": "History"
+    },
+    "breadcrumb": {
+      "home": "Home",
+      "dashboard": "Dashboard",
+      "myTickets": "My Tickets"
+    },
+    "updating": "Updating",
+    "entryPass": "Entry Pass",
+    "stagePass": "Stage Pass",
+    "viewQR": "View QR",
+    "ticketInactive": "Ticket Inactive",
+    "status": {
+      "pendingPayment": "Pending Payment",
+      "paid": "Paid",
+      "used": "Ticket already used/scanned",
+      "cancelled": "Ticket cancelled",
+      "expired": "Ticket expired",
+      "failed": "Payment failed",
+      "refunded": "Refunded"
+    },
+    "empty": {
+      "pending": {
+        "title": "No pending payments",
+        "subtitle": "You don't have any pending ticket orders"
+      },
+      "active": {
+        "title": "No active tickets",
+        "subtitle": "Book a ticket to see it here"
+      },
+      "history": {
+        "title": "No ticket history yet",
+        "subtitle": "Your past tickets will appear here"
+      }
+    },
+    "actions": {
+      "viewItems": "View Items",
+      "hideItems": "Hide Items",
+      "viewDetails": "View Full Details",
+      "refreshStatus": "Refresh Status",
+      "refreshing": "Refreshing...",
+      "payNow": "Pay Now",
+      "cancelOrder": "Cancel",
+      "browseEvents": "Browse Events"
+    },
+    "errors": {
+      "notAuthenticated": "Not authenticated",
+      "syncFailed": "Failed to sync status"
+    },
+    "toast": {
+      "syncSuccess": "Order status updated",
+      "cancelSuccess": "Order cancelled"
+    },
+    "expiryWarning": {
+      "title": "⚠️ Important Notice",
+      "message": "Tickets are valid only on the scheduled date. Unused tickets will automatically expire at midnight and cannot be used the next day.",
+      "sessionEnded": "Session Ended - Cannot Be Used"
+    },
+    "disclaimer": "All ticket sales are final. No refunds, exchanges, or cancellations permitted. Tickets are non-transferable and valid only for the scheduled date and time slot."
+  },
+  "myOrders": {
+    "title": "My Orders",
+    "subtitle": "Track your product orders and pickup codes",
+    "tabs": {
+      "active": "Active",
+      "history": "History"
+    },
+    "breadcrumb": {
+      "home": "Home",
+      "dashboard": "Dashboard",
+      "myOrders": "My Orders"
+    },
+    "updating": "Updating",
+    "status": {
+      "pendingPayment": "Pending Payment",
+      "pickedUp": "Picked Up",
+      "expired": "Expired",
+      "cancelled": "Cancelled",
+      "readyForPickup": "Ready for Pickup",
+      "pendingReview": "Under Review"
+    },
+    "pickup": {
+      "label": "Pickup Code",
+      "expires": "Expires",
+      "instructions": {
+        "ready": "Show this QR code to admin when picking up your items",
+        "pickedUp": "This order has been picked up",
+        "expired": "Pickup code expired",
+        "cancelled": "This order was cancelled",
+        "pendingReview": "Payment confirmed. Pickup is under review",
+        "cashier": "Show this QR to the cashier. Pay in cash after admin scans it."
+      },
+      "cashierNote": "Cashier orders cannot be cancelled in the app. Contact staff for changes."
+    },
+    "voucher": {
+      "badge": "Voucher {{code}}",
+      "discount": "Voucher Discount ({{code}})"
+    },
+    "actions": {
+      "viewItems": "View Items",
+      "hideItems": "Hide Items",
+      "viewDetails": "View Full Details",
+      "refreshStatus": "Refresh Status",
+      "refreshing": "Refreshing...",
+      "browseShop": "Browse Shop"
+    },
+    "empty": {
+      "active": {
+        "title": "No active orders",
+        "subtitle": "Your paid orders ready for pickup will appear here"
+      },
+      "history": {
+        "title": "No order history yet",
+        "subtitle": "Your completed and past orders will appear here"
+      }
+    },
+    "errors": {
+      "notAuthenticated": "Not authenticated",
+      "syncFailed": "Failed to sync status"
+    },
+    "toast": {
+      "syncSuccess": "Order status updated"
+    }
+  },
+  "voucher": {
+    "label": "Voucher Code",
+    "placeholder": "Enter voucher code",
+    "apply": "Apply",
+    "applying": "Applying...",
+    "remove": "Remove",
+    "applied": "Applied",
+    "success": "Voucher {{code}} applied (-{{amount}})",
+    "errors": {
+      "empty": "Enter a voucher code.",
+      "invalid": "Voucher code is invalid.",
+      "inactive": "Voucher is inactive.",
+      "notYetValid": "Voucher is not yet valid.",
+      "expired": "Voucher has expired.",
+      "quotaExceeded": "Voucher quota has been used up.",
+      "minPurchase": "Minimum purchase {{amount}}.",
+      "categoryMismatch": "Voucher is not valid for these items.",
+      "categoryMismatchWithCategories": "This voucher only applies to: {{categories}} (including sub-categories).",
+      "applyFailed": "Failed to apply voucher.",
+      "validation": "Voucher validation failed.",
+      "timeout": "Request timeout. Please try again.",
+      "generic": "Voucher cannot be applied."
+    },
+    "summary": {
+      "subtotal": "Subtotal",
+      "discount": "Discount ({{code}})",
+      "total": "Total Amount",
+      "taxes": "Inclusive of all taxes"
+    }
+  },
+  "admin": {
+    "vouchers": {
+      "title": "Voucher Manager",
+      "subtitle": "Create, manage, and monitor discount vouchers",
+      "loading": "Loading vouchers...",
+      "empty": "No vouchers found.",
+      "filters": {
+        "status": "Status",
+        "all": "All",
+        "active": "Active",
+        "inactive": "Inactive",
+        "expired": "Expired"
+      },
+      "table": {
+        "code": "Code",
+        "type": "Type",
+        "value": "Value",
+        "validity": "Validity",
+        "quota": "Quota",
+        "used": "Used",
+        "remaining": "Remaining",
+        "redemptions": "Redemptions",
+        "discountTotal": "Discount Given",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "types": {
+        "percentage": "Percentage",
+        "fixed": "Fixed Amount"
+      },
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "expired": "Expired"
+      },
+      "pagination": {
+        "rows": "Rows",
+        "summary": "Page {{page}} of {{total}} ({{count}} vouchers)",
+        "prev": "Previous",
+        "next": "Next"
+      },
+      "actions": {
+        "create": "Create Voucher",
+        "edit": "Edit",
+        "delete": "Delete",
+        "activate": "Activate",
+        "deactivate": "Deactivate",
+        "save": "Save",
+        "saving": "Saving...",
+        "cancel": "Cancel"
+      },
+      "form": {
+        "createTitle": "Create Voucher",
+        "editTitle": "Edit Voucher",
+        "code": "Voucher Code",
+        "codePlaceholder": "PROMO2026",
+        "type": "Discount Type",
+        "value": "Discount Value",
+        "quota": "Quota",
+        "validFrom": "Valid From",
+        "validUntil": "Valid Until",
+        "minPurchase": "Minimum Purchase",
+        "maxDiscount": "Maximum Discount",
+        "optional": "Optional",
+        "categories": "Applicable Categories",
+        "categoriesHint": "Leave empty to apply to all categories.",
+        "noCategories": "No categories found.",
+        "active": "Active Status",
+        "activeOn": "Active",
+        "activeOff": "Inactive",
+        "errors": {
+          "code": "Voucher code is required.",
+          "discountValue": "Discount value must be greater than zero.",
+          "validity": "Validity dates are required.",
+          "dateRange": "Valid until must be after valid from.",
+          "quota": "Quota must be greater than zero.",
+          "minPurchase": "Minimum purchase must be zero or positive.",
+          "maxDiscount": "Maximum discount must be zero or positive."
+        }
+      },
+      "toast": {
+        "createSuccess": "Voucher created successfully.",
+        "updateSuccess": "Voucher updated successfully.",
+        "deleteSuccess": "Voucher deleted successfully.",
+        "toggleSuccess": "Voucher status updated."
+      },
+      "errors": {
+        "loadFailed": "Failed to load vouchers.",
+        "saveFailed": "Failed to save voucher."
+      },
+      "confirmDelete": "Delete this voucher? This will also remove related usage records."
+    }
+  }
+}

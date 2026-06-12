@@ -1,0 +1,492 @@
+@import url('https://fonts.googleapis.com/css2?family=Cardo:wght@400;700&family=Nunito+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Nunito Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-serif: 'Cardo', serif;
+
+  --color-main-50: #fff1f6;
+  --color-main-100: #ffe1ec;
+  --color-main-200: #ffc3d9;
+  --color-main-300: #ff94b8;
+  --color-main-400: #ff6a9a;
+  --color-main-500: #ff4b86;
+  --color-main-600: #e63d75;
+  --color-main-700: #cc2f64;
+  --color-main-800: #a32550;
+  --color-main-900: #7a1c3c;
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+}
+
+
+/* Global Text Selection */
+::selection {
+  background-color: #ff4b86;
+  color: white;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.text-stroke {
+  -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+}
+
+.text-stroke-dark {
+  -webkit-text-stroke: 1px rgba(0,0,0,0.1);
+}
+
+/* Custom Scrollbar for Admin */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f3f4f6;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+@layer components {
+  .font-serif {
+    font-family: 'Cardo', serif;
+  }
+
+  .font-script {
+    font-family: 'Great Vibes', cursive;
+  }
+
+  .nav-scrolled {
+    @apply fixed top-0 left-0 right-0 z-50 shadow-lg max-h-44;
+    animation: slideDown 0.3s ease-out;
+  }
+}
+
+
+@layer utilities {
+  .ux-transition-color {
+    transition-property: color, background-color, border-color;
+    transition-duration: 180ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .ux-transition-transform {
+    transition-property: transform;
+    transition-duration: 220ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .ux-transition-opacity {
+    transition-property: opacity;
+    transition-duration: 220ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .ux-motion-safe {
+    will-change: transform, opacity;
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
+  .animate-fade-in-scale {
+    animation: fadeInScale 0.18s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out forwards;
+  }
+  
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+  
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+  
+  .delay-300 {
+    animation-delay: 300ms;
+  }
+
+  /* Gradient Animation for "Ready to Be a Star?" */
+  .animate-gradient {
+    animation: gradient 3s ease infinite;
+  }
+
+  /* Slow Pulse for Star Icon */
+  .animate-pulse-slow {
+    animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* Sparkle Animations */
+  .animate-sparkle-1 {
+    animation: sparkle 2s ease-in-out infinite;
+    animation-delay: 0s;
+  }
+
+  .animate-sparkle-2 {
+    animation: sparkle 2s ease-in-out infinite;
+    animation-delay: 0.7s;
+  }
+
+  .animate-sparkle-3 {
+    animation: sparkle 2s ease-in-out infinite;
+    animation-delay: 1.4s;
+  }
+
+  .animate-nav-star-breathe {
+    animation: nav-star-breathe 2.8s ease-in-out infinite;
+  }
+
+  /* Login button pulsing pink border */
+  .animate-pulse-ring {
+    animation: pulse-ring 2s infinite;
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    border-color: rgba(255, 75, 134, 1);
+    box-shadow: 0 0 0 0 rgba(255, 75, 134, 0.4);
+  }
+  70% {
+    border-color: rgba(255, 75, 134, 0.3);
+    box-shadow: 0 0 0 6px rgba(255, 75, 134, 0);
+  }
+  100% {
+    border-color: rgba(255, 75, 134, 1);
+    box-shadow: 0 0 0 0 rgba(255, 75, 134, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ux-transition-color,
+  .ux-transition-transform,
+  .ux-transition-opacity {
+    transition-duration: 1ms !important;
+  }
+
+  .ux-motion-safe {
+    will-change: auto;
+  }
+
+  .animate-nav-star-breathe {
+    animation: none !important;
+  }
+}
+
+@keyframes gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes nav-star-breathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.94;
+  }
+  50% {
+    transform: scale(1.035);
+    opacity: 1;
+  }
+}
+
+/* Confetti Animation for Order Success */
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.animate-confetti {
+  animation: confetti-fall 4s ease-out forwards;
+}
+
+/* Fade In Animation */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out forwards;
+}
+
+/* Love Logo Animations */
+.animate-heartbeat {
+  animation: heartbeat 2s ease-in-out infinite;
+}
+
+.animate-sparkle {
+  animation: sparkle 1.5s ease-in-out infinite;
+}
+
+.animate-sparkle-delay-1 {
+  animation: sparkle 1.5s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+.animate-float-heart-1 {
+  animation: floatHeart 3s ease-in-out infinite;
+}
+
+.animate-float-heart-2 {
+  animation: floatHeart 3s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+@keyframes heartbeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  10% {
+    transform: scale(1.05);
+  }
+  20% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.08);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes floatHeart {
+  0% {
+    opacity: 0;
+    transform: translateY(0) scale(0.5);
+  }
+  20% {
+    opacity: 0.6;
+    transform: translateY(-10px) scale(1);
+  }
+  80% {
+    opacity: 0.6;
+    transform: translateY(-20px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.5);
+  }
+}
+
+/* Falling Spark Animation */
+.animate-falling-spark {
+  animation: fallingSpark 7s linear infinite;
+}
+
+/* Falling Love Logo Animation */
+.animate-falling-love {
+  animation: fallingLove 8s linear infinite;
+}
+
+@keyframes fallingLove {
+  0% {
+    transform: translateY(-100px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  90% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes rotating {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .animate-falling-love {
+    animation: fallingLoveMobile 7s linear infinite;
+  }
+  
+  @keyframes fallingLoveMobile {
+    0% {
+      transform: translateY(-50px) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.5;
+    }
+    90% {
+      opacity: 0.5;
+    }
+    100% {
+      transform: translateY(100vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+}
+
+@keyframes fallingSpark {
+  0% {
+    transform: translateY(-100px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .animate-falling-spark {
+    animation: fallingSparkMobile 6s linear infinite;
+  }
+  
+  @keyframes fallingSparkMobile {
+    0% {
+      transform: translateY(-50px) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.4;
+    }
+    90% {
+      opacity: 0.4;
+    }
+    100% {
+      transform: translateY(100vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+}

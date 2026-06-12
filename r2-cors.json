@@ -1,0 +1,23 @@
+{
+  "rules": [
+    {
+      "AllowedOrigins": [
+        "https://www.sparkstage55.com",
+        "https://sparkstage55.com",
+        "http://localhost:5173"
+      ],
+      "AllowedMethods": [
+        "GET",
+        "PUT",
+        "POST"
+      ],
+      "AllowedHeaders": [
+        "*"
+      ],
+      "ExposeHeaders": [
+        "ETag"
+      ],
+      "MaxAgeSeconds": 3600
+    }
+  ]
+}

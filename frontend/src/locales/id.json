@@ -1,0 +1,345 @@
+{
+  "nav": {
+    "home": "Beranda",
+    "onStage": "ON STAGE",
+    "events": "EVENT",
+    "shop": "Toko",
+    "sparkClub": "SPARK CLUB",
+    "news": "NEWS",
+    "fashion": "DRESSING ROOM",
+    "beauty": "GLAM",
+    "dashboard": "Dashboard",
+    "myTickets": "Tiket Saya",
+    "myOrders": "Pesanan Saya",
+    "cart": "Keranjang",
+    "search": "Cari"
+  },
+  "auth": {
+    "signIn": "Masuk",
+    "signOut": "Keluar",
+    "signOutConfirm": "Yakin ingin keluar?",
+    "cancel": "Batal",
+    "confirm": "Keluar",
+    "fields": {
+      "name": {
+        "label": "Nama Lengkap",
+        "placeholder": "John Doe"
+      },
+      "email": {
+        "label": "Alamat Email",
+        "placeholder": "nama@contoh.com"
+      },
+      "password": {
+        "label": "Kata Sandi"
+      },
+      "confirmPassword": {
+        "label": "Konfirmasi Kata Sandi",
+        "placeholder": "Ulangi kata sandi Anda"
+      }
+    },
+    "login": {
+      "title": "Selamat datang kembali",
+      "subtitle": "Masuk untuk melanjutkan ke Spark Stage",
+      "passwordPlaceholder": "Masukkan kata sandi Anda",
+      "aria": {
+        "showPassword": "Tampilkan kata sandi",
+        "hidePassword": "Sembunyikan kata sandi"
+      },
+      "rememberMe": "Ingat saya",
+      "forgotPassword": "Lupa kata sandi?",
+      "loading": "Sedang masuk...",
+      "orContinueWith": "Atau lanjutkan dengan",
+      "providers": {
+        "google": "Google",
+        "github": "GitHub"
+      },
+      "noAccount": "Belum punya akun?",
+      "signUpLink": "Daftar",
+      "branding": {
+        "joinThe": "Bergabung dengan",
+        "description": "Nikmati event eksklusif, belanja koleksi terkurasi, dan jadi bagian dari komunitas kreatif kami.",
+        "stats": {
+          "events": "Event",
+          "members": "Anggota",
+          "artists": "Seniman"
+        }
+      }
+    },
+    "signup": {
+      "title": "Buat akun",
+      "subtitle": "Bergabung dengan komunitas Spark Stage",
+      "successLoggingIn": "Akun berhasil dibuat! Sedang masuk...",
+      "passwordPlaceholder": "Minimal 6 karakter",
+      "loading": "Sedang membuat akun...",
+      "submit": "Daftar",
+      "haveAccount": "Sudah punya akun?",
+      "signInLink": "Masuk",
+      "errors": {
+        "passwordsDoNotMatch": "Kata sandi tidak cocok",
+        "passwordMinLength": "Kata sandi minimal {{min}} karakter"
+      },
+      "branding": {
+        "welcomeTo": "Selamat datang di",
+        "description": "Buat akun Anda untuk mendapatkan akses eksklusif ke event, koleksi terkurasi, dan komunitas kreatif kami."
+      }
+    }
+  },
+  "language": {
+    "switch": "Ganti bahasa",
+    "en": "Inggris",
+    "id": "Bahasa Indonesia"
+  },
+  "myTickets": {
+    "title": "Tiket Saya",
+    "subtitle": "Kelola dan akses pesanan tiket dan sesi foto Anda",
+    "tabs": {
+      "pending": "Menunggu",
+      "active": "Aktif",
+      "history": "Riwayat"
+    },
+    "breadcrumb": {
+      "home": "Beranda",
+      "dashboard": "Dashboard",
+      "myTickets": "Tiket Saya"
+    },
+    "updating": "Memperbarui",
+    "entryPass": "Tiket Masuk",
+    "stagePass": "Tiket Stage",
+    "viewQR": "Lihat QR",
+    "ticketInactive": "Tiket Tidak Aktif",
+    "status": {
+      "pendingPayment": "Menunggu Pembayaran",
+      "paid": "Lunas",
+      "used": "Tiket sudah terpakai/terscan",
+      "cancelled": "Tiket dibatalkan",
+      "expired": "Tiket kadaluarsa",
+      "failed": "Pembayaran gagal",
+      "refunded": "Dana dikembalikan"
+    },
+    "empty": {
+      "pending": {
+        "title": "Tidak ada tagihan tertunda",
+        "subtitle": "Anda tidak memiliki pesanan tiket yang belum dibayar"
+      },
+      "active": {
+        "title": "Tidak ada tiket aktif",
+        "subtitle": "Pesan tiket untuk melihatnya di sini"
+      },
+      "history": {
+        "title": "Belum ada riwayat tiket",
+        "subtitle": "Tiket yang sudah lewat akan muncul di sini"
+      }
+    },
+    "actions": {
+      "viewItems": "Lihat Item",
+      "hideItems": "Sembunyikan Item",
+      "viewDetails": "Lihat Detail Lengkap",
+      "refreshStatus": "Perbarui Status",
+      "refreshing": "Memeriksa...",
+      "payNow": "Bayar Sekarang",
+      "cancelOrder": "Batalkan",
+      "browseEvents": "Lihat Event"
+    },
+    "errors": {
+      "notAuthenticated": "Belum masuk",
+      "syncFailed": "Gagal memperbarui status"
+    },
+    "toast": {
+      "syncSuccess": "Status pesanan berhasil diperbarui",
+      "cancelSuccess": "Pesanan dibatalkan"
+    },
+    "expiryWarning": {
+      "title": "⚠️ Perhatian Penting",
+      "message": "Tiket hanya berlaku pada tanggal yang dijadwalkan. Tiket yang tidak digunakan akan otomatis kadaluarsa pada tengah malam dan tidak dapat digunakan keesokan harinya.",
+      "sessionEnded": "Sesi Berakhir - Tidak Dapat Digunakan"
+    },
+    "disclaimer": "Semua penjualan tiket bersifat final. Tidak ada pengembalian dana, penukaran, atau pembatalan. Tiket tidak dapat dipindahtangankan dan hanya berlaku untuk tanggal dan sesi yang dijadwalkan."
+  },
+  "myOrders": {
+    "title": "Pesanan Saya",
+    "subtitle": "Lacak pesanan produk dan kode pengambilan",
+    "tabs": {
+      "active": "Aktif",
+      "history": "Riwayat"
+    },
+    "breadcrumb": {
+      "home": "Beranda",
+      "dashboard": "Dashboard",
+      "myOrders": "Pesanan Saya"
+    },
+    "updating": "Memperbarui",
+    "status": {
+      "pendingPayment": "Menunggu Pembayaran",
+      "pickedUp": "Sudah Diambil",
+      "expired": "Kadaluarsa",
+      "cancelled": "Dibatalkan",
+      "readyForPickup": "Siap Diambil",
+      "pendingReview": "Sedang Ditinjau"
+    },
+    "pickup": {
+      "label": "Kode Pengambilan",
+      "expires": "Kadaluarsa",
+      "instructions": {
+        "ready": "Tunjukkan QR ini ke admin saat mengambil barang",
+        "pickedUp": "Pesanan ini sudah diambil",
+        "expired": "Kode pengambilan sudah kadaluarsa",
+        "cancelled": "Pesanan ini dibatalkan",
+        "pendingReview": "Pembayaran terkonfirmasi. Pengambilan sedang ditinjau",
+        "cashier": "Tunjukkan QR ini ke kasir. Pembayaran cash dilakukan setelah QR discan admin."
+      },
+      "cashierNote": "Pesanan kasir tidak bisa dibatalkan via aplikasi. Jika perlu perubahan, hubungi staff."
+    },
+    "voucher": {
+      "badge": "Voucher {{code}}",
+      "discount": "Diskon Voucher ({{code}})"
+    },
+    "actions": {
+      "viewItems": "Lihat Item",
+      "hideItems": "Sembunyikan Item",
+      "viewDetails": "Lihat Detail Lengkap",
+      "refreshStatus": "Perbarui Status",
+      "refreshing": "Memeriksa...",
+      "browseShop": "Lihat Toko"
+    },
+    "empty": {
+      "active": {
+        "title": "Tidak ada pesanan aktif",
+        "subtitle": "Pesanan yang sudah dibayar dan siap diambil akan muncul di sini"
+      },
+      "history": {
+        "title": "Belum ada riwayat pesanan",
+        "subtitle": "Pesanan yang sudah selesai akan muncul di sini"
+      }
+    },
+    "errors": {
+      "notAuthenticated": "Belum masuk",
+      "syncFailed": "Gagal memperbarui status"
+    },
+    "toast": {
+      "syncSuccess": "Status pesanan berhasil diperbarui"
+    }
+  },
+  "voucher": {
+    "label": "Kode Voucher",
+    "placeholder": "Masukkan kode voucher",
+    "apply": "Gunakan",
+    "applying": "Menerapkan...",
+    "remove": "Hapus",
+    "applied": "Digunakan",
+    "success": "Voucher {{code}} digunakan (-{{amount}})",
+    "errors": {
+      "empty": "Masukkan kode voucher.",
+      "invalid": "Kode voucher tidak valid.",
+      "inactive": "Voucher tidak aktif.",
+      "notYetValid": "Voucher belum berlaku.",
+      "expired": "Voucher sudah kadaluarsa.",
+      "quotaExceeded": "Kuota voucher habis.",
+      "minPurchase": "Minimum pembelian {{amount}}.",
+      "categoryMismatch": "Voucher tidak berlaku untuk produk ini.",
+      "categoryMismatchWithCategories": "Voucher ini hanya berlaku untuk kategori: {{categories}} (termasuk sub-kategori).",
+      "applyFailed": "Gagal menggunakan voucher.",
+      "validation": "Validasi voucher gagal.",
+      "timeout": "Permintaan timeout. Coba lagi.",
+      "generic": "Voucher tidak dapat digunakan."
+    },
+    "summary": {
+      "subtotal": "Subtotal",
+      "discount": "Diskon ({{code}})",
+      "total": "Total Pembayaran",
+      "taxes": "Termasuk semua pajak"
+    }
+  },
+  "admin": {
+    "vouchers": {
+      "title": "Manajer Voucher",
+      "subtitle": "Buat, kelola, dan pantau voucher diskon",
+      "loading": "Memuat voucher...",
+      "empty": "Belum ada voucher.",
+      "filters": {
+        "status": "Status",
+        "all": "Semua",
+        "active": "Aktif",
+        "inactive": "Nonaktif",
+        "expired": "Kadaluarsa"
+      },
+      "table": {
+        "code": "Kode",
+        "type": "Tipe",
+        "value": "Nilai",
+        "validity": "Periode",
+        "quota": "Kuota",
+        "used": "Terpakai",
+        "remaining": "Sisa",
+        "redemptions": "Penukaran",
+        "discountTotal": "Total Diskon",
+        "status": "Status",
+        "actions": "Aksi"
+      },
+      "types": {
+        "percentage": "Persentase",
+        "fixed": "Nominal"
+      },
+      "status": {
+        "active": "Aktif",
+        "inactive": "Nonaktif",
+        "expired": "Kadaluarsa"
+      },
+      "pagination": {
+        "rows": "Baris",
+        "summary": "Halaman {{page}} dari {{total}} ({{count}} voucher)",
+        "prev": "Sebelumnya",
+        "next": "Berikutnya"
+      },
+      "actions": {
+        "create": "Buat Voucher",
+        "edit": "Ubah",
+        "delete": "Hapus",
+        "activate": "Aktifkan",
+        "deactivate": "Nonaktifkan",
+        "save": "Simpan",
+        "saving": "Menyimpan...",
+        "cancel": "Batal"
+      },
+      "form": {
+        "createTitle": "Buat Voucher",
+        "editTitle": "Ubah Voucher",
+        "code": "Kode Voucher",
+        "codePlaceholder": "PROMO2026",
+        "type": "Tipe Diskon",
+        "value": "Nilai Diskon",
+        "quota": "Kuota",
+        "validFrom": "Berlaku Mulai",
+        "validUntil": "Berlaku Sampai",
+        "minPurchase": "Minimum Pembelian",
+        "maxDiscount": "Maksimum Diskon",
+        "optional": "Opsional",
+        "categories": "Kategori Berlaku",
+        "categoriesHint": "Kosongkan untuk berlaku di semua kategori.",
+        "noCategories": "Tidak ada kategori.",
+        "active": "Status Aktif",
+        "activeOn": "Aktif",
+        "activeOff": "Nonaktif",
+        "errors": {
+          "code": "Kode voucher wajib diisi.",
+          "discountValue": "Nilai diskon harus lebih besar dari nol.",
+          "validity": "Tanggal berlaku wajib diisi.",
+          "dateRange": "Tanggal akhir harus setelah tanggal mulai.",
+          "quota": "Kuota harus lebih besar dari nol.",
+          "minPurchase": "Minimum pembelian harus nol atau lebih.",
+          "maxDiscount": "Maksimum diskon harus nol atau lebih."
+        }
+      },
+      "toast": {
+        "createSuccess": "Voucher berhasil dibuat.",
+        "updateSuccess": "Voucher berhasil diperbarui.",
+        "deleteSuccess": "Voucher berhasil dihapus.",
+        "toggleSuccess": "Status voucher diperbarui."
+      },
+      "errors": {
+        "loadFailed": "Gagal memuat voucher.",
+        "saveFailed": "Gagal menyimpan voucher."
+      },
+      "confirmDelete": "Hapus voucher ini? Data penggunaan terkait juga akan dihapus."
+    }
+  }
+}

@@ -1,0 +1,282 @@
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import BookingPage from './BookingPage';
+import { useTickets } from '../hooks/useTickets';
+import { useEffectiveTicketAvailability } from '../hooks/useEffectiveTicketAvailability';
+import { useTicketBookingSettings } from '../hooks/useTicketBookingSettings';
+
+const mockNavigate = vi.fn();
+const mockShowToast = vi.fn();
+
+vi.mock('../hooks/useTickets', () => ({
+  useTickets: vi.fn(),
+}));
+
+vi.mock('../hooks/useEffectiveTicketAvailability', () => ({
+  useEffectiveTicketAvailability: vi.fn(),
+}));
+
+vi.mock('../hooks/useTicketBookingSettings', () => ({
+  useTicketBookingSettings: vi.fn(),
+}));
+
+vi.mock('../hooks/useBookingPageSettings', () => ({
+  DEFAULT_BOOKING_PAGE_SETTINGS: {
+    reserve_title: 'Reserve Your Session',
+    reserve_description: 'Secure your spot. Select your preferred date and time to begin your experience.',
+    calendar_title: 'Select Date',
+    time_slots_title: 'Available Time Slots',
+    access_type_title: 'Access Type',
+    all_day_access_label: 'All Day Access',
+    all_day_access_helper: '(Valid entire day)',
+    choose_specific_time_label: 'Or choose specific time',
+    empty_slots_message: 'No available time slots for this date',
+    booking_summary_title: 'Booking Summary',
+    ticket_type_label: 'Ticket Type',
+    date_label: 'Date',
+    time_label: 'Time',
+    not_selected_label: 'Not selected',
+    all_day_access_value_label: 'All Day Access',
+    quantity_label: 'How Many?',
+    max_tickets_label_template: 'Max {count} per booking',
+    total_label: 'Total',
+    proceed_button_label: 'Proceed to Payment',
+    secure_checkout_label: 'Secure Encrypted Checkout',
+    important_info_title: 'Ketentuan & Keterangan Booking',
+    important_info_items: [
+      'Harap tiba 15 menit sebelum sesi Anda dimulai.',
+      'Booking hanya berlaku untuk tanggal dan waktu yang dipilih.',
+      'Setiap tiket berlaku untuk satu orang.',
+      'Ini adalah pengalaman sesi bersama dengan peserta lain.',
+      'Durasi pengalaman adalah 2,5 jam termasuk 15 tahap.',
+      'Tidak diizinkan membawa makanan atau minuman dari luar.',
+      'Semua pembayaran tidak dapat dikembalikan.',
+    ],
+  },
+  useBookingPageSettings: () => ({
+    settings: null,
+  }),
+}));
+
+vi.mock('../components/Toast', () => ({
+  useToast: () => ({
+    showToast: mockShowToast,
+  }),
+}));
+
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+    useParams: () => ({ slug: 'spark-ticket' }),
+  };
+});
+
+const baseTicket = {
+  id: 1,
+  type: 'entrance',
+  name: 'Spark Pass',
+  slug: 'spark-ticket',
+  description: 'Premium pass',
+  price: '50000',
+  available_from: '2026-02-01',
+  available_until: '2026-02-28',
+  time_slots: ['09:00'],
+  is_active: true,
+};
+
+describe('BookingPage', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-02-01T00:10:00Z'));
+    vi.clearAllMocks();
+    vi.mocked(useTicketBookingSettings).mockReturnValue({
+      data: {
+        ticket_id: 1,
+        max_tickets_per_booking: 5,
+        booking_window_days: 30,
+        auto_generate_days_ahead: 60,
+        default_slot_capacity: 100,
+      },
+      error: null,
+      isLoading: false,
+    } as never);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it('proceeds with all-day access when available', () => {
+    vi.mocked(useTickets).mockReturnValue({
+      data: baseTicket,
+      error: null,
+      isLoading: false,
+    } as never);
+    vi.mocked(useEffectiveTicketAvailability).mockReturnValue({
+      data: [
+        {
+          id: 1,
+          ticket_id: 1,
+          date: '2026-02-01',
+          time_slot: null,
+          total_capacity: 10,
+          base_total_capacity: 10,
+          effective_total_capacity: 10,
+          reserved_capacity: 0,
+          sold_capacity: 0,
+          available_capacity: 10,
+          is_closed: false,
+          reason: null,
+        },
+      ],
+      error: null,
+      isLoading: false,
+    } as never);
+
+    render(
+      <MemoryRouter>
+        <BookingPage />
+      </MemoryRouter>
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /Proceed to Payment/i }));
+
+    expect(mockNavigate).toHaveBeenCalledWith(
+      '/payment',
+      expect.objectContaining({
+        state: expect.objectContaining({
+          ticketId: 1,
+          quantity: 1,
+          time: 'all-day',
+        }),
+      })
+    );
+  });
+
+  it('shows urgency confirmation before navigating for high-urgency slots', () => {
+    vi.setSystemTime(new Date('2026-02-01T04:10:00Z'));
+    vi.mocked(useTickets).mockReturnValue({
+      data: baseTicket,
+      error: null,
+      isLoading: false,
+    } as never);
+    vi.mocked(useEffectiveTicketAvailability).mockReturnValue({
+      data: [
+        {
+          id: 2,
+          ticket_id: 1,
+          date: '2026-02-01',
+          time_slot: '09:00:00',
+          total_capacity: 10,
+          base_total_capacity: 10,
+          effective_total_capacity: 10,
+          reserved_capacity: 0,
+          sold_capacity: 0,
+          available_capacity: 3,
+          is_closed: false,
+          reason: null,
+        },
+      ],
+      error: null,
+      isLoading: false,
+    } as never);
+
+    render(
+      <MemoryRouter>
+        <BookingPage />
+      </MemoryRouter>
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /09:00/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Proceed to Payment/i }));
+
+    expect(screen.getByText('Session Ending Soon!')).toBeInTheDocument();
+    expect(mockNavigate).not.toHaveBeenCalled();
+
+    fireEvent.click(screen.getByRole('button', { name: /I Understand, Continue/i }));
+
+    expect(mockNavigate).toHaveBeenCalledWith(
+      '/payment',
+      expect.objectContaining({
+        state: expect.objectContaining({
+          time: '09:00:00',
+        }),
+      })
+    );
+  });
+
+  it('defaults to the first available future booking date', () => {
+    vi.mocked(useTickets).mockReturnValue({
+      data: {
+        ...baseTicket,
+        available_until: '2026-02-28',
+      },
+      error: null,
+      isLoading: false,
+    } as never);
+    vi.mocked(useEffectiveTicketAvailability).mockReturnValue({
+      data: [
+        {
+          id: 3,
+          ticket_id: 1,
+          date: '2026-02-02',
+          time_slot: '09:00:00',
+          total_capacity: 10,
+          base_total_capacity: 10,
+          effective_total_capacity: 10,
+          reserved_capacity: 0,
+          sold_capacity: 0,
+          available_capacity: 10,
+          is_closed: false,
+          reason: null,
+        },
+      ],
+      error: null,
+      isLoading: false,
+    } as never);
+
+    render(
+      <MemoryRouter>
+        <BookingPage />
+      </MemoryRouter>
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: /09:00/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Proceed to Payment/i }));
+
+    expect(mockNavigate).toHaveBeenCalledWith(
+      '/payment',
+      expect.objectContaining({
+        state: expect.objectContaining({
+          date: '2026-02-02',
+          time: '09:00:00',
+        }),
+      })
+    );
+  });
+
+  it('shows an unavailable message when no booking dates are published', () => {
+    vi.mocked(useTickets).mockReturnValue({
+      data: baseTicket,
+      error: null,
+      isLoading: false,
+    } as never);
+    vi.mocked(useEffectiveTicketAvailability).mockReturnValue({
+      data: [],
+      error: null,
+      isLoading: false,
+    } as never);
+
+    render(
+      <MemoryRouter>
+        <BookingPage />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText('Booking is not available right now. New dates have not been published yet.')).toBeInTheDocument();
+    expect(mockNavigate).not.toHaveBeenCalled();
+  });
+});

@@ -1,0 +1,93 @@
+{
+  "name": "sparkstage-us-builder",
+  "displayName": "SparkStage US Builder",
+  "version": "1.0.0",
+  "description": "Expert agent for building a US market version of SparkStage with Stripe/PayPal/Square payments replacing DOKU",
+  "keywords": [
+    "sparkstage",
+    "us-market",
+    "stripe",
+    "paypal",
+    "square",
+    "payment-gateway",
+    "e-commerce",
+    "booking",
+    "ticketing",
+    "supabase",
+    "react",
+    "vite",
+    "typescript",
+    "shipping",
+    "usps",
+    "fedex",
+    "ups",
+    "easypost"
+  ],
+  "author": "SparkStage Team",
+  "skillType": "domain-expert",
+  "primaryLanguage": "typescript",
+  "supportedLanguages": ["typescript", "javascript", "sql", "json"],
+  "platforms": ["supabase", "cloudflare", "vercel", "stripe"],
+  "expertise": [
+    "Payment gateway migration",
+    "Stripe integration",
+    "E-commerce platform development",
+    "Supabase Edge Functions",
+    "React payment forms",
+    "Webhook security",
+    "Shipping API integration",
+    "Currency conversion",
+    "Internationalization"
+  ],
+  "useCases": [
+    "Migrate DOKU payments to Stripe",
+    "Set up US payment gateways",
+    "Integrate US shipping providers",
+    "Convert IDR to USD",
+    "Adapt Indonesian e-commerce to US market",
+    "Create Stripe webhook handlers",
+    "Build payment forms with Stripe Elements",
+    "Configure EasyPost shipping",
+    "Update i18n for English market"
+  ],
+  "dependencies": {
+    "frontend": {
+      "@stripe/stripe-js": "^2.4.0",
+      "@stripe/react-stripe-js": "^2.4.0"
+    },
+    "backend": {
+      "stripe": "https://esm.sh/stripe@14.14.0",
+      "@easypost/api": "https://esm.sh/@easypost/api@7.0.0"
+    }
+  },
+  "environmentVariables": {
+    "frontend": [
+      "VITE_STRIPE_PUBLISHABLE_KEY",
+      "VITE_CURRENCY",
+      "VITE_LOCALE"
+    ],
+    "backend": [
+      "STRIPE_SECRET_KEY",
+      "STRIPE_WEBHOOK_SECRET",
+      "EASYPOST_API_KEY"
+    ]
+  },
+  "activation": {
+    "automatic": true,
+    "triggerPhrases": [
+      "build US version",
+      "migrate to Stripe",
+      "US payment gateway",
+      "replace DOKU",
+      "US market adaptation",
+      "Stripe integration",
+      "US shipping providers",
+      "convert to USD"
+    ]
+  },
+  "files": {
+    "main": "SKILL.md",
+    "quickstart": "QUICKSTART_ID.md",
+    "dependencies": "us-dependencies.json"
+  }
+}
