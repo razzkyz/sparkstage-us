@@ -102,6 +102,7 @@ Required:
 ```
 Dev: http://localhost:5174
 Production: [TBD after deployment]
+GitHub Repo: https://github.com/razzkyz/sparkstage-us
 ```
 
 ---
