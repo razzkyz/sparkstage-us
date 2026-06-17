@@ -106,7 +106,7 @@ function ShopResults({
                   : "none",
               }}
             >
-              <div className="flex flex-col h-full rounded-xl border-2 border-gray-100 bg-white overflow-hidden duration-300 ux-transition-color hover:border-[#ff4b86] hover:shadow-lg hover:shadow-pink-100">
+              <div className="flex flex-col h-full bg-white rounded-2xl shadow-sm hover:shadow-md border border-pink-100 hover:border-pink-300 overflow-hidden duration-200 ux-transition-all p-4">
                 <div className="relative overflow-hidden aspect-square bg-gray-50 shrink-0">
                   {product.image ? (
                     <img
@@ -139,27 +139,27 @@ function ShopResults({
                       onAddToCart(product);
                     }}
                     disabled={!product.defaultVariantId}
-                    className="absolute bottom-3 right-3 bg-[#ff4b86] text-white p-2.5 rounded-full opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 shadow-lg hover:bg-[#e63d75] ux-transition-color ux-transition-opacity ux-transition-transform ux-motion-safe disabled:opacity-0 disabled:cursor-not-allowed"
+                    className="absolute bottom-3 right-3 px-6 py-3 bg-gradient-to-r from-pink-400 to-rose-400 text-white font-semibold rounded-xl shadow-md opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 hover:shadow-lg hover:from-pink-500 hover:to-rose-500 ux-transition-all duration-200 disabled:opacity-0 disabled:cursor-not-allowed"
                   >
                     <span className="material-symbols-outlined text-lg">
                       add_shopping_cart
                     </span>
                   </button>
                   {product.badge && (
-                    <span className="absolute top-3 left-3 bg-[#ff4b86] text-white px-2.5 py-1 text-[10px] uppercase tracking-wider font-bold rounded-full shadow-sm">
+                    <span className="absolute top-3 left-3 bg-gradient-to-r from-pink-400 to-rose-400 text-white px-2.5 py-1 text-[10px] uppercase tracking-wider font-bold rounded-full shadow-md">
                       {product.badge}
                     </span>
                   )}
                 </div>
-                <div className="p-3 flex flex-col flex-grow">
-                  <h3 className="font-semibold text-sm text-gray-900 mb-1 line-clamp-1 ux-transition-color group-hover:text-[#ff4b86]">
+                <div className="flex flex-col flex-grow">
+                  <h3 className="font-semibold text-sm text-gray-800 mb-1 line-clamp-1 ux-transition-color group-hover:text-pink-500">
                     {product.name}
                   </h3>
                   <p className="text-[11px] text-gray-400 mb-2 line-clamp-1 font-light min-h-[16px]">
                     {product.description || "\u00A0"}
                   </p>
                   <div className="flex items-center gap-2 mt-auto">
-                    <span className="text-base font-black text-[#ff4b86]">
+                    <span className="text-base font-black text-pink-500">
                       {formatCurrency(product.price)}
                     </span>
                     {product.originalPrice ? (
@@ -189,7 +189,7 @@ function ShopResults({
                 )
               }
               disabled={page <= 1}
-              className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 duration-200 ux-transition-color hover:border-[#ff4b86] hover:text-[#ff4b86] disabled:cursor-not-allowed disabled:opacity-40"
+              className="inline-flex items-center gap-2 rounded-full border border-pink-200 px-4 py-2 text-sm font-semibold text-gray-700 duration-200 ux-transition-color hover:border-pink-400 hover:text-pink-500 hover:bg-pink-50 disabled:cursor-not-allowed disabled:opacity-40"
             >
               <ChevronLeft className="h-4 w-4" />
               Prev
@@ -200,7 +200,7 @@ function ShopResults({
                 setCurrentPage((prev) => Math.min(totalPages, prev + 1))
               }
               disabled={page >= totalPages}
-              className="inline-flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 duration-200 ux-transition-color hover:border-[#ff4b86] hover:text-[#ff4b86] disabled:cursor-not-allowed disabled:opacity-40"
+              className="inline-flex items-center gap-2 rounded-full border border-pink-200 px-4 py-2 text-sm font-semibold text-gray-700 duration-200 ux-transition-color hover:border-pink-400 hover:text-pink-500 hover:bg-pink-50 disabled:cursor-not-allowed disabled:opacity-40"
             >
               Next
               <ChevronRight className="h-4 w-4" />
@@ -416,7 +416,7 @@ const Shop = () => {
 
   return (
     <PageTransition>
-      <div className="bg-white min-h-screen">
+      <div className="min-h-screen bg-gradient-to-b from-white via-pink-50/20 to-white">
         {/* menonaktidakn sementara banner */}
         {/* <header className="relative w-full overflow-hidden">
           {shopBanners.length > 0 ? (

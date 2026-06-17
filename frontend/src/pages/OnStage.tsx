@@ -31,7 +31,7 @@ function ProductCard({
   return (
     <Link
       to={`/shop/product/${product.id}`}
-      className="group cursor-pointer flex flex-col h-full rounded-xl border-2 border-gray-100 bg-white overflow-hidden duration-300 ux-transition-color hover:border-[#ff4b86] hover:shadow-lg hover:shadow-pink-100"
+      className="group cursor-pointer flex flex-col h-full bg-white/80 backdrop-blur-sm border-2 border-pink-200 rounded-2xl overflow-hidden duration-300 ux-transition-color hover:border-pink-400 hover:shadow-xl hover:shadow-pink-100"
     >
       <div className="relative overflow-hidden aspect-square bg-gray-50 shrink-0">
         {product.image ? (
@@ -66,27 +66,27 @@ function ProductCard({
             onAddToCart(product);
           }}
           disabled={!product.defaultVariantId}
-          className="absolute bottom-3 right-3 bg-[#ff4b86] text-white p-2.5 rounded-full opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 shadow-lg hover:bg-[#e63d75] ux-transition-color ux-transition-opacity ux-transition-transform ux-motion-safe disabled:opacity-0 disabled:cursor-not-allowed"
+          className="absolute bottom-3 right-3 bg-gradient-to-r from-pink-500 to-pink-400 text-white p-2.5 rounded-full opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 shadow-lg shadow-pink-200 hover:shadow-xl hover:shadow-pink-300 ux-transition-color ux-transition-opacity ux-transition-transform ux-motion-safe disabled:opacity-0 disabled:cursor-not-allowed"
         >
           <span className="material-symbols-outlined text-lg">
             add_shopping_cart
           </span>
         </button>
         {product.badge && (
-          <span className="absolute top-3 left-3 bg-[#ff4b86] text-white px-2.5 py-1 text-[10px] uppercase tracking-wider font-bold rounded-full shadow-sm">
+          <span className="absolute top-3 left-3 bg-gradient-to-r from-pink-500 to-rose-500 text-white px-2.5 py-1 text-[10px] uppercase tracking-wider font-bold rounded-full shadow-md">
             {product.badge}
           </span>
         )}
       </div>
       <div className="p-3 flex flex-col flex-grow">
-        <h3 className="font-semibold text-sm text-gray-900 mb-1 line-clamp-1 ux-transition-color group-hover:text-[#ff4b86]">
+        <h3 className="font-semibold text-sm text-gray-900 mb-1 line-clamp-1 ux-transition-color group-hover:text-pink-600">
           {product.name}
         </h3>
         <p className="text-[11px] text-gray-400 mb-2 line-clamp-1 font-light min-h-[16px]">
           {product.description || "\u00A0"}
         </p>
         <div className="flex items-center gap-2 mt-auto">
-          <span className="text-base font-black text-[#ff4b86]">
+          <span className="text-base font-black text-pink-600">
             {formatCurrency(product.price)}
           </span>
           {product.originalPrice ? (
@@ -268,7 +268,7 @@ function InfiniteProductSlider({
   if (!loading && rawProducts.length === 0) return null;
 
   return (
-    <section className="w-full bg-white pb-12 md:pb-16 mt-8">
+    <section className="w-full bg-gradient-to-b from-white via-pink-50/30 to-white pb-12 md:pb-16 mt-8">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 md:px-8">
         {/* Header */}
         <div className="flex items-end justify-between mb-6 md:mb-8">
@@ -288,7 +288,7 @@ function InfiniteProductSlider({
           )}
           <Link
             to={viewAllLink}
-            className="text-black font-bold uppercase tracking-widest border-b-2 border-black pb-0.5 hover:text-pink-400 transition-color whitespace-nowrap text-xs md:text-sm mb-1"
+            className="text-gray-900 font-bold uppercase tracking-widest border-b-2 border-pink-500 pb-0.5 hover:text-pink-600 hover:border-pink-600 transition-all whitespace-nowrap text-xs md:text-sm mb-1"
           >
             View More
           </Link>
@@ -300,7 +300,7 @@ function InfiniteProductSlider({
           <button
             type="button"
             onClick={() => step(-1)}
-            className="absolute left-0 md:-left-5 top-1/2 -translate-y-1/2 z-20 bg-white/95 hover:bg-white text-black p-2.5 md:p-3 rounded-full shadow-md opacity-0 group-hover/slider:opacity-100 transition-opacity duration-200"
+            className="absolute left-0 md:-left-5 top-1/2 -translate-y-1/2 z-20 bg-white hover:bg-pink-50 text-pink-600 p-2.5 md:p-3 rounded-full shadow-lg border-2 border-pink-200 opacity-0 group-hover/slider:opacity-100 transition-all duration-200 hover:border-pink-400 hover:scale-110"
           >
             <ChevronLeft className="w-5 h-5 md:w-6 md:h-6" />
           </button>
@@ -308,7 +308,7 @@ function InfiniteProductSlider({
           <button
             type="button"
             onClick={() => step(1)}
-            className="absolute right-0 md:-right-5 top-1/2 -translate-y-1/2 z-20 bg-white/95 hover:bg-white text-black p-2.5 md:p-3 rounded-full shadow-md opacity-0 group-hover/slider:opacity-100 transition-opacity duration-200"
+            className="absolute right-0 md:-right-5 top-1/2 -translate-y-1/2 z-20 bg-white hover:bg-pink-50 text-pink-600 p-2.5 md:p-3 rounded-full shadow-lg border-2 border-pink-200 opacity-0 group-hover/slider:opacity-100 transition-all duration-200 hover:border-pink-400 hover:scale-110"
           >
             <ChevronRight className="w-5 h-5 md:w-6 md:h-6" />
           </button>

@@ -13,53 +13,7 @@ export const ADMIN_MENU_ITEMS: AdminMenuItem[] = [
   },
 ];
 
-export const STARGUIDE_MENU_SECTIONS: AdminMenuSection[] = [
-  {
-    id: "tickets",
-    label: "Tiket",
-    items: [
-      {
-        id: "event-bookings",
-        label: "Event Bookings",
-        icon: "event_note",
-        path: "/admin/event-bookings",
-      },
-      {
-        id: "order-ticket",
-        label: "Scan Tiket Masuk",
-        icon: "qr_code_scanner",
-        path: "/admin/order-ticket",
-        highlight: true,
-      },
-      {
-        id: "tablet-qr-scanner",
-        label: "Scan QR Tablet",
-        icon: "tablet_android",
-        path: "/admin/tablet-qr-scanner",
-        highlight: true,
-      },
-      {
-        id: "entrance-log",
-        label: "Log Tiket Masuk",
-        icon: "fact_check",
-        path: "/admin/tickets",
-      },
-    ],
-  },
-  {
-    id: "laporan",
-    label: "Laporan",
-    items: [
-      {
-        id: "sock-report",
-        label: "Laporan Kaos Kaki",
-        icon: "inventory_2",
-        path: "/admin/sock-report",
-        highlight: true,
-      },
-    ],
-  },
-];
+// STARGUIDE_MENU_SECTIONS removed - US version is e-commerce only (no ticket booking)
 
 export const CASHIER_MENU_SECTIONS: AdminMenuSection[] = [
   {
@@ -226,50 +180,7 @@ export const DRESSING_ROOM_ADMIN_MENU_SECTIONS: AdminMenuSection[] = [
       },
     ],
   },
-  {
-    id: "dressing-room",
-    label: "Dressing Room",
-    items: [
-      {
-        id: "dressing-room-dashboard",
-        label: "Dashboard Dressing",
-        icon: "dashboard",
-        path: "/admin/dressing-room-dashboard",
-      },
-      {
-        id: "dressing-room-inventory",
-        label: "Inventory & Stok",
-        icon: "inventory_2",
-        path: "/admin/dressing-room-inventory",
-      },
-      {
-        id: "dressing-room-products",
-        label: "Produk Dressing Room",
-        icon: "shopping_bag",
-        path: "/admin/dressing-room-products",
-      },
-      {
-        id: "dressing-room",
-        label: "Dressing Room Manager",
-        icon: "styler",
-        path: "/admin/dressing-room",
-      },
-      {
-        id: "rental-orders",
-        label: "Sewa Dressing Room",
-        icon: "checkroom",
-        path: "/admin/rental-orders",
-        highlight: true,
-      },
-      {
-        id: "rental-scanner",
-        label: "Scan QR Rental Pickup",
-        icon: "qr_code_scanner",
-        path: "/admin/rental-scanner",
-        highlight: true,
-      },
-    ],
-  },
+  // Dressing Room section removed - US version is e-commerce only (no costume rental)
 ];
 
 export const ADMIN_MENU_SECTIONS: AdminMenuSection[] = [
@@ -277,24 +188,7 @@ export const ADMIN_MENU_SECTIONS: AdminMenuSection[] = [
     id: "management",
     label: "Manajemen",
     items: [
-      {
-        id: "stages",
-        label: "Kelola Stage",
-        icon: "grid_view",
-        path: "/admin/stages",
-      },
-      {
-        id: "qr-bulk",
-        label: "Kelola QR Massal",
-        icon: "qr_code_2",
-        path: "/admin/qr-bulk",
-      },
-      {
-        id: "stage-analytics",
-        label: "Analitik Stage",
-        icon: "analytics",
-        path: "/admin/stage-analytics",
-      },
+      // Stage management removed - US version is e-commerce only (no photo booth stages)
       {
         id: "sales-report",
         label: "Laporan Penjualan",
@@ -307,12 +201,7 @@ export const ADMIN_MENU_SECTIONS: AdminMenuSection[] = [
         icon: "image",
         path: "/admin/banner-manager",
       },
-      {
-        id: "event-page",
-        label: "Event Page Config",
-        icon: "edit_document",
-        path: "/admin/event-page",
-      },
+      // Event Page Config removed - US version is e-commerce only
       {
         id: "news-page",
         label: "News Page Config",
@@ -352,50 +241,7 @@ export const ADMIN_MENU_SECTIONS: AdminMenuSection[] = [
       },
     ],
   },
-  {
-    id: "tickets",
-    label: "Tiket",
-    items: [
-      {
-        id: "booking-page",
-        label: "Booking Page Config",
-        icon: "calendar_month",
-        path: "/admin/booking-page",
-      },
-      {
-        id: "entrance-booking",
-        label: "Entrance Booking Manager",
-        icon: "event_available",
-        path: "/admin/entrance-booking",
-      },
-      {
-        id: "event-bookings",
-        label: "Event Bookings",
-        icon: "event_note",
-        path: "/admin/event-bookings",
-      },
-      {
-        id: "order-ticket",
-        label: "Scan Tiket Masuk",
-        icon: "qr_code_scanner",
-        path: "/admin/order-ticket",
-        highlight: true,
-      },
-      {
-        id: "tablet-qr-scanner",
-        label: "Scan QR Tablet",
-        icon: "tablet_android",
-        path: "/admin/tablet-qr-scanner",
-        highlight: true,
-      },
-      {
-        id: "entrance-log",
-        label: "Log Tiket Masuk",
-        icon: "fact_check",
-        path: "/admin/tickets",
-      },
-    ],
-  },
+  // Tickets section removed - US version is e-commerce only (no ticket booking)
   {
     id: "store",
     label: "Toko",
@@ -455,50 +301,7 @@ export const ADMIN_MENU_SECTIONS: AdminMenuSection[] = [
       },
     ],
   },
-  {
-    id: "dressing-room",
-    label: "Dressing Room",
-    items: [
-      {
-        id: "dressing-room-dashboard",
-        label: "Dashboard Dressing",
-        icon: "dashboard",
-        path: "/admin/dressing-room-dashboard",
-      },
-      {
-        id: "dressing-room-inventory",
-        label: "Inventory & Stok",
-        icon: "inventory_2",
-        path: "/admin/dressing-room-inventory",
-      },
-      {
-        id: "dressing-room-products",
-        label: "Produk Dressing Room",
-        icon: "shopping_bag",
-        path: "/admin/dressing-room-products",
-      },
-      {
-        id: "dressing-room",
-        label: "Dressing Room Manager",
-        icon: "styler",
-        path: "/admin/dressing-room",
-      },
-      {
-        id: "rental-orders",
-        label: "Sewa Dressing Room",
-        icon: "checkroom",
-        path: "/admin/rental-orders",
-        highlight: true,
-      },
-      {
-        id: "rental-scanner",
-        label: "Scan QR Rental Pickup",
-        icon: "qr_code_scanner",
-        path: "/admin/rental-scanner",
-        highlight: true,
-      },
-    ],
-  },
+  // Dressing Room section removed - US version is e-commerce only (no costume rental)
   {
     id: "glam",
     label: "GLAM",

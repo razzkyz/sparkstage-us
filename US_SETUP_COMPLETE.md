@@ -1,378 +1,257 @@
-# ✅ SparkStage US - Setup Complete Summary
+# ✅ SparkStage US Setup Complete
 
-**Date:** 2026-06-13  
-**Status:** ✅ Phase 1 Complete - Ready for Stripe Integration  
-**Folder:** `C:\SparkDoku\sparkstageus`
-
----
-
-## 🎯 Setup Status
-
-### ✅ Completed Steps
-
-1. **Git Repository**
-   - ✅ Cleaned old git history
-   - ✅ Initialized fresh git repository
-   - Status: Ready for first commit
-
-2. **Package Configuration**
-   - ✅ Updated `package.json` name → `sparkstage-us`
-   - ✅ Installed Stripe packages:
-     - `@stripe/stripe-js@^2.4.0`
-     - `@stripe/react-stripe-js@^2.4.0`
-   - Status: All dependencies installed
-
-3. **Environment Configuration**
-   - ✅ Created `.env.local` from template
-   - ✅ Configured Supabase US project credentials
-   - ✅ Set dev server port → `5174` (in `vite.config.ts`)
-   - Status: Ready for development
-
-4. **Supabase US Project**
-   - ✅ Linked to US Supabase project
-   - Project Name: `sparkstage-us`
-   - Project Ref: `advzkhuulbaztolnttfl`
-   - Region: US West (Oregon)
-   - Project URL: https://advzkhuulbaztolnttfl.supabase.co
-   - Status: Linked successfully
-
-5. **Database Analysis**
-   - ✅ Analyzed migration files
-   - ✅ Confirmed database schema is already generic (no DOKU-specific columns)
-   - ✅ No database migration needed for Stripe integration
-   - Status: Schema ready for Stripe
-   - Document: `US_MIGRATION_ANALYSIS.md`
+**Date:** June 13, 2026  
+**Status:** Ready for Development ✅
 
 ---
 
-## 📁 Project Structure
+## 🎯 What's Complete
 
-```
-c:\SparkDoku\sparkstageus\
-├── .env.local                    # ✅ Configured with US Supabase credentials
-├── .git/                         # ✅ Fresh git repository
-├── package.json                  # ✅ Updated to "sparkstage-us"
-├── vite.config.ts                # ✅ Port set to 5174
-├── node_modules/                 # ✅ All dependencies installed (including Stripe)
-├── supabase/
-│   ├── config.toml               # ✅ Linked to US project
-│   ├── migrations/               # 📊 Analyzed (generic schema)
-│   └── functions/                # ⏳ Next: Create Stripe functions
-├── frontend/
-│   └── src/
-│       ├── pages/                # ⏳ Next: Update to use Stripe
-│       └── utils/                # ⏳ Next: Update currency helpers
-├── .agents/
-│   └── skills/
-│       └── sparkstage-us-builder/  # 📚 US migration documentation
-├── US_MIGRATION_ANALYSIS.md     # ✅ Database migration analysis
-├── US_SETUP_COMPLETE.md          # 📄 This file
-└── PROMPT_SETUP_US_VERSION.md    # 📋 Setup guide prompts
-```
+### ✅ TASK 1: Repository Setup
+- Copied `sparkstage` → `sparkstageus` at `C:\SparkDoku\sparkstageus`
+- Cleaned git history and initialized fresh repository
+- Updated `package.json` name to `sparkstage-us`
+- Installed Stripe packages: `@stripe/stripe-js@^2.4.0`, `@stripe/react-stripe-js@^2.4.0`
+- Created `.env.local` with US Supabase credentials
+- Updated `vite.config.ts` to use port 5174 (avoid conflict with Indonesia version)
+- Linked to US Supabase project: `advzkhuulbaztolnttfl` (US West Oregon)
+- GitHub repo: https://github.com/razzkyz/sparkstage-us
 
----
+### ✅ TASK 2: Code Cleanup
+- Deleted 47 Indonesia-specific files (18,033 lines removed)
+- Removed DOKU payment functions (7 functions)
+- Removed RajaOngkir shipping integration
+- Removed WhatsApp/Fonnte integration
+- Cleaned up documentation (34 files)
 
-## 🔑 Credentials Summary
+### ✅ TASK 3: Database Setup
+- Created fresh base schema: `20260613000000_us_base_schema.sql`
+- Baseline migration skipped (200+ old migrations renamed to `.sql.old`)
+- Schema includes 40+ tables with extensions
+- Enabled RLS with comprehensive policies for all tables
+- Created helper function: `is_admin()` for role checks
+- Successfully pushed to US database
 
-### Supabase US Project
-```
-Project Name: sparkstage-us
-Project Ref: advzkhuulbaztolnttfl
-Region: US West (Oregon)
-Project URL: https://advzkhuulbaztolnttfl.supabase.co
+### ✅ TASK 4: R2 Bucket Setup
+- Created US R2 bucket: `sparkstage-us-assets` (WNAM region)
+- Copied **2,230 files** from Indonesia bucket to US bucket
+- Duration: 43.8 minutes
+- All product images available in US bucket
 
-Anon Key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFkdnpraHV1bGJhenRvbG50dGZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEyOTU2NDMsImV4cCI6MjA5Njg3MTY0M30.icrfPMf0MYZnhwddKMz12GZU_DQV_OpjoV_5iW7esi8
+### ✅ TASK 5: Custom Domain Configuration
+- Domain: `cdn-us.sparkstage55.com` configured
+- Subdomain of existing `sparkstage55.com` (already on Cloudflare nameservers)
+- DNS auto-configured by Cloudflare
+- SSL certificate provisioned and enabled
+- Zero-cost egress enabled
+- Test image verified working
 
-Service Role Key: [CONFIGURED - DO NOT COMMIT]
-Database Password: [CONFIGURED - DO NOT COMMIT]
-```
-
-### Stripe Credentials
-```
-Status: ⏳ Pending - Need to create Stripe account
-Get from: https://dashboard.stripe.com/test/apikeys
-
-Required:
-- Publishable Key: pk_test_xxxxx
-- Secret Key: sk_test_xxxxx
-- Webhook Secret: whsec_xxxxx
-```
-
-### App URLs
-```
-Dev: http://localhost:5174
-Production: [TBD after deployment]
-GitHub Repo: https://github.com/razzkyz/sparkstage-us
-```
+### ✅ TASK 6: Product Data Migration
+- **Migration:** `20260613000004_add_product_slug.sql` added slug column to products
+- **Script:** `scripts/copy-products-indo-to-us.js` (read-only from Indonesia DB)
+- **Migrated:**
+  * 58 categories ✅
+  * 922 products ✅
+  * 1,000 product variants ✅
+  * 1,000 product images ✅
+- **Column Mappings:**
+  * `product_variants.name` (Indo) → `variant_name` (US)
+  * `products.slug` (Indo) → `products.slug` (US - added via migration)
+  * Skipped `weight` and `updated_at` (not in US schema)
+- **Image URLs:** All updated to `cdn-us.sparkstage55.com`
+- **Duration:** ~2 minutes
+- **Safety:** Read-only access to Indonesia DB (no data deleted)
 
 ---
 
-## 📊 Database Schema Analysis Result
+## 📊 Current State
 
-### ✅ Good News!
+### Database
+- **US Supabase Project:** `advzkhuulbaztolnttfl`
+- **Region:** US West Oregon
+- **URL:** `https://advzkhuulbaztolnttfl.supabase.co`
+- **Schema:** Fresh base schema with 40+ tables
+- **Data:** 922 products with full variants and images
+- **RLS:** Enabled with comprehensive policies
 
-The SparkStage database schema is **already generic** and does NOT require migration for Stripe integration.
+### R2 Storage
+- **Bucket:** `sparkstage-us-assets`
+- **Region:** WNAM (Western North America)
+- **Files:** 2,230 product images
+- **Domain:** `cdn-us.sparkstage55.com`
+- **SSL:** Enabled
+- **Egress:** Zero-cost with custom domain
 
-**Current Schema:**
-- ✅ `payment_gateway` (text) - Generic field for "DOKU" | "Stripe" | "PayPal"
-- ✅ `payment_id` (text) - Transaction ID from any gateway
-- ✅ `payment_url` (text) - Checkout URL
-- ✅ `payment_data` (jsonb) - Full payment metadata (flexible JSON)
+### Frontend
+- **Port:** 5174 (http://localhost:5174)
+- **Status:** Running with `npm run dev`
+- **Currency:** Ready to switch from IDR to USD
+- **Locale:** Ready to switch from id-ID to en-US
 
-**NO DOKU-specific columns found:**
-- ❌ No `doku_order_id`
-- ❌ No `doku_invoice_number`
-- ❌ No `doku_customer_id`
-
-**Migration Strategy:** Keep generic schema, store Stripe metadata in `payment_data` JSON column.
-
-See `US_MIGRATION_ANALYSIS.md` for detailed analysis.
-
----
-
-## 🚀 What's Next? (Phase 2)
-
-### Step 1: Get Stripe Credentials
-
-1. Create Stripe account (or login): https://dashboard.stripe.com
-2. Switch to **Test Mode** (toggle in top-right)
-3. Go to: **Developers → API keys**
-4. Copy:
-   - Publishable key (starts with `pk_test_`)
-   - Secret key (starts with `sk_test_`)
-
-### Step 2: Update .env.local
-
-```bash
-# Edit this file
-notepad c:\SparkDoku\sparkstageus\.env.local
-
-# Update this line:
-VITE_STRIPE_PUBLISHABLE_KEY=pk_test_xxxxx
-```
-
-### Step 3: Set Stripe Secrets in Supabase
-
-```bash
-cd c:\SparkDoku\sparkstageus
-
-# Set Stripe secret key (for Edge Functions)
-supabase secrets set STRIPE_SECRET_KEY=sk_test_xxxxx
-
-# Set webhook secret (get after creating webhook endpoint)
-supabase secrets set STRIPE_WEBHOOK_SECRET=whsec_xxxxx
-
-# Set app URL
-supabase secrets set PUBLIC_APP_URL=http://localhost:5174
-```
-
-### Step 4: Create Stripe Edge Functions
-
-Use code examples from `.agents/skills/sparkstage-us-builder/STRIPE_EXAMPLES.md`:
-
-```bash
-# Create functions
-supabase functions new create-stripe-ticket-checkout
-supabase functions new create-stripe-product-checkout
-supabase functions new stripe-webhook
-supabase functions new sync-stripe-payment-status
-```
-
-### Step 5: Update Frontend Code
-
-Files to update:
-- `frontend/src/pages/PaymentPage.tsx` (DOKU → Stripe Elements)
-- `frontend/src/pages/ProductCheckoutPage.tsx`
-- `frontend/src/utils/currency.ts` (IDR → USD)
-
-### Step 6: Test
-
-```bash
-# Start dev server
-npm run dev
-
-# Visit: http://localhost:5174
-# Test payment with Stripe test card: 4242 4242 4242 4242
-```
+### GitHub
+- **Repository:** https://github.com/razzkyz/sparkstage-us
+- **Branch:** main
+- **Status:** Initialized and pushed
 
 ---
 
-## 📋 Next Steps Checklist
+## 🚀 Next Steps
 
-### Immediate (Can Do Now)
-- [ ] Create Stripe account (or login)
-- [ ] Get Stripe test API keys
-- [ ] Update `.env.local` with `VITE_STRIPE_PUBLISHABLE_KEY`
-- [ ] Set Supabase secrets (`STRIPE_SECRET_KEY`)
+### Immediate (Right Now)
+1. **Verify Migration:**
+   - Refresh browser (F5)
+   - Check shop page shows products with images
+   - Verify images load from `cdn-us.sparkstage55.com`
 
-### Backend (Day 1-2)
-- [ ] Create `create-stripe-ticket-checkout` function
-- [ ] Create `create-stripe-product-checkout` function
-- [ ] Create `stripe-webhook` function
-- [ ] Create `sync-stripe-payment-status` function
-- [ ] Test functions locally with `supabase functions serve`
-- [ ] Deploy functions with `supabase functions deploy`
+### Development Phase (Next Hours)
+2. **Stripe Integration:**
+   - Replace DOKU ticket checkout
+   - Replace DOKU product checkout
+   - Setup Stripe webhook handler
+   - Update checkout UI
 
-### Frontend (Day 3-4)
-- [ ] Update `PaymentPage.tsx` (remove DOKU, add Stripe Elements)
-- [ ] Update `ProductCheckoutPage.tsx`
-- [ ] Update `currency.ts` (formatRupiah → formatCurrency USD)
-- [ ] Test payment flow with Stripe test cards
+3. **Shipping Integration:**
+   - Setup EasyPost API (USPS/FedEx/UPS)
+   - Replace RajaOngkir logic
+   - Update checkout shipping flow
 
-### Testing (Day 5)
-- [ ] Test ticket purchase end-to-end
-- [ ] Test product purchase end-to-end
-- [ ] Test webhook delivery with Stripe CLI
-- [ ] Test payment success/failure flows
-- [ ] Test refund flow
+4. **Currency & Localization:**
+   - Convert all prices to USD
+   - Update currency formatter
+   - Switch locale to en-US
 
-### Cleanup (Day 6)
-- [ ] Delete DOKU Edge Functions (from `supabase/functions/`)
-- [ ] Remove DOKU cron jobs
-- [ ] Remove RajaOngkir shipping functions (Indonesia-specific)
-- [ ] Update documentation
+### Testing Phase (Next Days)
+5. **End-to-End Testing:**
+   - Browse products
+   - Add to cart
+   - Checkout with Stripe
+   - Order confirmation
+   - Admin order management
 
----
+### Production Prep (Next Week)
+6. **Environment Setup:**
+   - Get production Stripe keys
+   - Configure webhook endpoints
+   - Setup production domain
+   - Configure CORS origins
 
-## 🔧 Quick Commands Reference
-
-### Development
-```bash
-# Start dev server (port 5174)
-npm run dev
-
-# Build for production
-npm run build
-
-# Run linter
-npm run lint
-```
-
-### Supabase
-```bash
-# Check project status
-supabase status
-
-# List migrations
-npm run supabase:db:list
-
-# Push migrations (when ready)
-npm run supabase:db:push
-
-# Serve functions locally
-npm run supabase:functions:serve
-
-# Deploy a function
-supabase functions deploy [function-name]
-
-# Check secrets
-supabase secrets list
-
-# Set a secret
-supabase secrets set KEY=VALUE
-```
-
-### Stripe CLI (for testing webhooks)
-```bash
-# Install Stripe CLI: https://stripe.com/docs/stripe-cli
-
-# Listen for webhooks
-stripe listen --forward-to http://localhost:54321/functions/v1/stripe-webhook
-
-# Trigger test events
-stripe trigger payment_intent.succeeded
-```
+7. **Deployment:**
+   - Deploy frontend to hosting
+   - Deploy Supabase functions
+   - Configure production secrets
 
 ---
 
-## 📚 Documentation References
+## 📁 Key Files
 
-### In This Repo
-- `US_MIGRATION_ANALYSIS.md` - Database schema analysis
-- `PROMPT_SETUP_US_VERSION.md` - Step-by-step setup prompts
-- `.agents/skills/sparkstage-us-builder/` - Complete US migration guide
-  - `STRIPE_EXAMPLES.md` - Code examples for Stripe integration
-  - `SEPARATE_FOLDER_SETUP.md` - Detailed setup guide
-  - `QUICKSTART_ID.md` - Bahasa Indonesia quick start
-  - `DATABASE_STRATEGY.md` - Database migration strategy
-  - `us-dependencies.json` - Dependencies reference
+### Configuration
+- `.env.local` - US environment variables
+- `vite.config.ts` - Port 5174 configuration
+- `supabase/config.toml` - US Supabase project
 
-### External Resources
-- Stripe Dashboard: https://dashboard.stripe.com
-- Stripe Docs: https://stripe.com/docs
-- Stripe Elements React: https://stripe.com/docs/stripe-js/react
-- Supabase Docs: https://supabase.com/docs
-- EasyPost Shipping API: https://www.easypost.com/docs
+### Documentation
+- `PRODUCT_MIGRATION_COMPLETE.md` - Migration details
+- `R2_MIGRATION_COMPLETE_SUMMARY.md` - R2 setup details
+- `NEXT_STEPS.md` - Development roadmap
+- `.agents/skills/sparkstage-us-builder/SKILL.md` - Complete migration guide
 
----
+### Scripts
+- `scripts/copy-products-indo-to-us.js` - Product migration script
+- `scripts/copy-r2-bucket-all.js` - R2 file copy script
 
-## ⚠️ Important Notes
-
-1. **Never commit secrets:**
-   - `.env.local` is git-ignored
-   - Stripe keys should never be in git
-   - Use Supabase secrets for backend keys
-
-2. **Port 5174:**
-   - US version runs on port 5174
-   - Indonesia version stays on port 5173
-   - No port conflicts
-
-3. **Test Mode First:**
-   - Always use Stripe test keys (`pk_test_`, `sk_test_`)
-   - Test cards: https://stripe.com/docs/testing
-   - Switch to live mode only when ready for production
-
-4. **Database is Separate:**
-   - US project: `advzkhuulbaztolnttfl.supabase.co`
-   - Indonesia project: Different project (separate database)
-   - No data shared between projects
-
-5. **Migration Files:**
-   - Do NOT push existing Indonesia migrations to US database
-   - Create fresh migrations for US-specific features
-   - Keep migration history clean
+### Migrations
+- `supabase/migrations/20260613000000_us_base_schema.sql` - Base schema
+- `supabase/migrations/20260613000001_enable_rls_and_basic_policies.sql` - RLS policies
+- `supabase/migrations/20260613000002_add_sample_data.sql` - Sample data (superseded)
+- `supabase/migrations/20260613000003_update_to_r2_urls.sql` - R2 URL updates
+- `supabase/migrations/20260613000004_add_product_slug.sql` - Slug column
 
 ---
 
-## 🎉 Summary
+## 🔑 Credentials
 
-### What's Done ✅
-- ✅ Git repository initialized
-- ✅ Package configured for US (`sparkstage-us`)
+### Supabase US
+- **Project ID:** `advzkhuulbaztolnttfl`
+- **URL:** `https://advzkhuulbaztolnttfl.supabase.co`
+- **Anon Key:** In `.env.local`
+- **Service Role:** In migration scripts (for admin operations)
+
+### Supabase Indonesia (Read-Only)
+- **Project ID:** `hogzjapnkvsihvvbgcdb`
+- **URL:** `https://hogzjapnkvsihvvbgcdb.supabase.co`
+- **Service Role:** In `copy-products-indo-to-us.js` (read-only access)
+
+### Cloudflare R2
+- **Account ID:** `58103a6169fd3011a58d558c15adb7c6`
+- **US Bucket:** `sparkstage-us-assets`
+- **Indonesia Bucket:** `sparkstage-public-assets`
+- **Custom Domain:** `cdn-us.sparkstage55.com`
+
+---
+
+## ✨ Features Ready
+
+### Database
+- ✅ Users & profiles
+- ✅ Role-based access (admin, super_admin, starguide, kasir, dressing-room-admin)
+- ✅ Products & categories
+- ✅ Product variants & stock
+- ✅ Product images
+- ✅ Orders (structure ready)
+- ✅ Tickets (structure ready)
+- ✅ RLS policies enabled
+
+### Storage
+- ✅ Product images on R2
+- ✅ Custom CDN domain
+- ✅ Zero-cost egress
+- ✅ SSL enabled
+
+### Frontend
+- ✅ React + TypeScript + Vite
+- ✅ TanStack Query (data fetching)
 - ✅ Stripe packages installed
-- ✅ Environment configured (`.env.local` with Supabase credentials)
-- ✅ Dev server port set to 5174
-- ✅ Supabase US project linked
-- ✅ Database schema analyzed (no migration needed)
-
-### What's Next ⏳
-1. Get Stripe test API keys
-2. Create Stripe Edge Functions
-3. Update frontend to use Stripe Elements
-4. Test payment flow end-to-end
-5. Delete DOKU-related code
-6. Deploy to production
-
-### Estimated Timeline
-- **Setup (Done):** ✅ Complete
-- **Stripe Backend:** 1-2 days
-- **Frontend Update:** 2-3 days
-- **Testing:** 1 day
-- **Cleanup:** 1 day
-
-**Total:** ~5-7 days for full Stripe integration
+- ✅ Admin UI scaffolding
+- ✅ Product browsing ready
 
 ---
 
-**Status:** Ready for Phase 2 (Stripe Integration)  
-**Next Prompt:** Get Stripe API keys and create Edge Functions  
-**Documentation:** See `PROMPT_SETUP_US_VERSION.md` for next prompts
+## 🛠 Development Commands
+
+```bash
+# Frontend
+npm run dev              # Start dev server (port 5174)
+npm run build            # Production build
+npm run lint             # Lint code
+
+# Database
+npm run supabase:db:push     # Push migrations
+npm run supabase:db:status   # Check status
+
+# Supabase Functions (when ready)
+npm run supabase:functions:serve    # Local dev
+npm run supabase:functions:deploy   # Deploy to production
+```
 
 ---
 
-**Questions?** Check:
-- `US_MIGRATION_ANALYSIS.md` - Database details
-- `.agents/skills/sparkstage-us-builder/STRIPE_EXAMPLES.md` - Code examples
-- `PROMPT_SETUP_US_VERSION.md` - Step-by-step prompts
+## 📚 Resources
 
+### Skills
+- **sparkstage-us-builder** - Expert agent for US migration
+  - Stripe integration guide
+  - Shipping provider setup
+  - Testing strategies
+  - Deployment steps
+
+### Documentation
+- Stripe: https://stripe.com/docs
+- EasyPost: https://www.easypost.com/docs/api
+- Supabase: https://supabase.com/docs
+- Cloudflare R2: https://developers.cloudflare.com/r2/
+
+---
+
+**Setup Complete! Ready to build the US version! 🎉**
+
+Your foundation is solid: database populated, images ready, and a clean codebase to work with.

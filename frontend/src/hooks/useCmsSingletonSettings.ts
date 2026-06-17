@@ -24,7 +24,13 @@ export function useCmsSingletonSettings<T extends { id: string }>(params: {
           .single();
 
         if (fetchError) {
+          // PGRST116 = no rows found
           if (fetchError.code === 'PGRST116') {
+            return null;
+          }
+          // PGRST205 = table not found (e.g., removed for US version)
+          if (fetchError.code === 'PGRST205') {
+            console.warn(`Table '${table}' not found - using default settings for ${errorLabel}`);
             return null;
           }
           throw fetchError;

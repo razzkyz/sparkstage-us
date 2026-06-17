@@ -12,7 +12,7 @@ export const getInventorySelect = (categoryFilter: string) => {
   is_active,
   deleted_at,
   categories${isFilteringByCategory ? '!inner' : ''}(id, name, slug),
-  product_images(image_url, is_primary, display_order),
+  product_images(image_url, display_order),
   product_variants(
     id,
     product_id,

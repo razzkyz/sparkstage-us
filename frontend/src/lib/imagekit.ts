@@ -58,32 +58,11 @@ export function buildImageKitThumbUrl(imageUrl: string, options?: { width?: numb
   });
 }
 
+// @ts-expect-error - Unused params, will be removed during ImageKit→R2 migration
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function getImageKitUploadAuth(accessToken: string, productId?: number | string, folderPath?: string): Promise<ImageKitUploadAuthResponse> {
-  const body: Record<string, unknown> = {};
-  if (productId) body.productId = productId;
-  if (folderPath) body.folderPath = folderPath;
-
-  const data = await invokeSupabaseFunction<ImageKitUploadAuthResponse>({
-    functionName: 'imagekit-auth',
-    body,
-    headers: { Authorization: `Bearer ${accessToken}` },
-    fallbackMessage: 'Failed to fetch ImageKit upload auth',
-  });
-
-  const payload = data as Partial<ImageKitUploadAuthResponse> | null;
-  if (
-    !payload ||
-    !payload.publicKey ||
-    !payload.signature ||
-    !payload.token ||
-    !payload.expire ||
-    !payload.folder ||
-    !payload.urlEndpoint
-  ) {
-    throw new Error('ImageKit upload auth response was incomplete')
-  }
-
-  return payload as ImageKitUploadAuthResponse;
+  // ImageKit is not used in US version - all images are in R2
+  throw new Error('ImageKit upload is not available in US version. Please use R2 upload instead.');
 }
 
 function mapUploadResponseToRecord(uploadResponse: UploadResponse, providerOriginalUrl?: string | null): ProductImageRecordInput {

@@ -294,35 +294,23 @@ export default function SalesReport() {
 
   const [from, setFrom] = useState(firstOfMonth);
   const [to,   setTo]   = useState(today);
-  const [tab, setTab] = useState<'tickets' | 'products' | 'prints' | 'socks' | 'dressing-room'>('tickets');
-  const [ticketPage, setTicketPage] = useState(1);
   const [productPage, setProductPage] = useState(1);
-  const [printPage, setPrintPage] = useState(1);
-  const [sockPage, setSockPage] = useState(1);
-  const [dressingRoomPage, setDressingRoomPage] = useState(1);
+  const ITEMS_PER_PAGE = 20;
 
-  const { data: tickets  = [], isLoading: ticketsLoading,  error: ticketsError, refetch: refetchTickets } = useTicketSales(queryEnabled);
-  const { data: products = [], isLoading: productsLoading, error: productsError, refetch: refetchProducts } = useProductSales(queryEnabled);
-  const { data: prints   = [], isLoading: printsLoading,   error: printsError, refetch: refetchPrints } = usePrintSales(queryEnabled);
-  const { data: socks    = [], isLoading: socksLoading,    error: socksError, refetch: refetchSocks } = useSockSales(queryEnabled);
-  const { data: dressingRooms = [], isLoading: dressingRoomsLoading, error: dressingRoomsError, refetch: refetchDressingRooms } = useDressingRoomSales(queryEnabled);
+  const { data: products = [], isLoading: productsLoading } = useProductSales(queryEnabled);
 
   // Auto-refresh effect (every 10 seconds, silent)
   useEffect(() => {
     if (!queryEnabled) return;
 
     const interval = setInterval(() => {
-      refetchTickets();
       refetchProducts();
-      refetchPrints();
-      refetchSocks();
-      refetchDressingRooms();
     }, 10000); // 10 seconds
 
     return () => clearInterval(interval);
-  }, [queryEnabled, refetchTickets, refetchProducts, refetchPrints, refetchSocks, refetchDressingRooms]);
+  }, [queryEnabled, refetchProducts]);
 
-  const queryError = ticketsError || productsError || printsError || socksError || dressingRoomsError;
+  const queryError = productsError;
   const isAuthError = queryError instanceof Error &&
     (queryError.message.includes('JWT') ||
      queryError.message.includes('token') ||
@@ -343,14 +331,6 @@ export default function SalesReport() {
   const fromMs = getUTCTimestamp(from, false);
   const toMs   = getUTCTimestamp(to, true);
 
-  const filteredTickets = useMemo(() =>
-    tickets.filter(t => {
-      const ms = new Date(t.created_at).getTime();
-      return ms >= fromMs && ms <= toMs;
-    }),
-    [tickets, fromMs, toMs]
-  );
-
   const filteredProducts = useMemo(() =>
     products.filter(o => {
       // Use paid_at for date filtering (when money was actually received)
@@ -364,53 +344,9 @@ export default function SalesReport() {
     [products, fromMs, toMs]
   );
 
-  const filteredPrints = useMemo(() =>
-    prints.filter(p => {
-      // Use paid_at for date filtering (when payment was confirmed) - must match DOKU date
-      const dateStr = p.paid_at || p.created_at;
-      if (!dateStr) return false;
-      const ms = new Date(dateStr).getTime();
-      return ms >= fromMs && ms <= toMs;
-    }),
-    [prints, fromMs, toMs]
-  );
-
-  const filteredSocks = useMemo(() =>
-    socks.filter(s => {
-      // Use report_date for filtering
-      const ms = new Date(s.report_date).getTime();
-      return ms >= fromMs && ms <= toMs;
-    }),
-    [socks, fromMs, toMs]
-  );
-
-  const filteredDressingRooms = useMemo(() =>
-    dressingRooms.filter(d => {
-      // Use created_at for filtering
-      const ms = new Date(d.created_at).getTime();
-      return ms >= fromMs && ms <= toMs;
-    }),
-    [dressingRooms, fromMs, toMs]
-  );
-
   // ── Pagination ───────────────────────────────────────────────────
   const ITEMS_PER_PAGE = 100;
   
-  const ticketPagination = useMemo(() => {
-    const total = filteredTickets.length;
-    const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
-    const page = Math.max(1, Math.min(ticketPage, totalPages));
-    const start = (page - 1) * ITEMS_PER_PAGE;
-    const end = start + ITEMS_PER_PAGE;
-    return {
-      data: filteredTickets.slice(start, end),
-      page,
-      totalPages,
-      total,
-      start,
-    };
-  }, [filteredTickets, ticketPage]);
-
   const productPagination = useMemo(() => {
     const total = filteredProducts.length;
     const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
@@ -426,66 +362,9 @@ export default function SalesReport() {
     };
   }, [filteredProducts, productPage]);
 
-  const printPagination = useMemo(() => {
-    const total = filteredPrints.length;
-    const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
-    const page = Math.max(1, Math.min(printPage, totalPages));
-    const start = (page - 1) * ITEMS_PER_PAGE;
-    const end = start + ITEMS_PER_PAGE;
-    return {
-      data: filteredPrints.slice(start, end),
-      page,
-      totalPages,
-      total,
-      start,
-    };
-  }, [filteredPrints, printPage]);
-
-  const sockPagination = useMemo(() => {
-    const total = filteredSocks.length;
-    const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
-    const page = Math.max(1, Math.min(sockPage, totalPages));
-    const start = (page - 1) * ITEMS_PER_PAGE;
-    const end = start + ITEMS_PER_PAGE;
-    return {
-      data: filteredSocks.slice(start, end),
-      page,
-      totalPages,
-      total,
-      start,
-    };
-  }, [filteredSocks, sockPage]);
-
-  const dressingRoomPagination = useMemo(() => {
-    const total = filteredDressingRooms.length;
-    const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
-    const page = Math.max(1, Math.min(dressingRoomPage, totalPages));
-    const start = (page - 1) * ITEMS_PER_PAGE;
-    const end = start + ITEMS_PER_PAGE;
-    return {
-      data: filteredDressingRooms.slice(start, end),
-      page,
-      totalPages,
-      total,
-      start,
-    };
-  }, [filteredDressingRooms, dressingRoomPage]);
-
-  // ── Summaries ────────────────────────────────────────────────────────────
-  const ticketStats = useMemo(() => {
-    const paid = filteredTickets.length;
-    const revenue = paid * TICKET_PRICE;
-    console.log(`[SalesReport] Tickets - Count: ${paid}, Revenue: ${revenue}`);
-    return { paid, revenue, used: paid };
-  }, [filteredTickets]);
-  
   // Reset pages when filters change
   useMemo(() => {
-    setTicketPage(1);
     setProductPage(1);
-    setPrintPage(1);
-    setSockPage(1);
-    setDressingRoomPage(1);
   }, [from, to]);
   
   const productStats = useMemo(() => {
@@ -496,51 +375,10 @@ export default function SalesReport() {
     return { orders: productOrders, revenue: productRevenue, items };
   }, [filteredProducts]);
 
-  const printStats = useMemo(() => {
-    const orders = filteredPrints.length;
-    const revenue = filteredPrints.reduce((s, p) => s + (p.amount || 0), 0);
-    console.log(`[SalesReport] Prints - Count: ${orders}, Revenue: ${revenue}`);
-    return { orders, revenue };
-  }, [filteredPrints]);
-
-  const sockStats = useMemo(() => {
-    const orders = filteredSocks.length;
-    const revenue = filteredSocks.reduce((s, s_) => s + (s_.total || 0), 0);
-    const quantity = filteredSocks.reduce((s, s_) => s + (s_.terjual || 0), 0);
-    console.log(`[SalesReport] Socks - Count: ${orders}, Revenue: ${revenue}, Qty: ${quantity}`);
-    return { orders, revenue, quantity };
-  }, [filteredSocks]);
-
-  const dressingRoomStats = useMemo(() => {
-    const orders = filteredDressingRooms.length;
-    const revenue = filteredDressingRooms.reduce((s, d) => s + (d.total || 0), 0);
-    const items = filteredDressingRooms.reduce((s, d) => s + (d.rental_order_items?.reduce((ss, i) => ss + i.quantity, 0) || 0), 0);
-    console.log(`[SalesReport] Dressing Room - Count: ${orders}, Revenue: ${revenue}, Items: ${items}`);
-    return { orders, revenue, items };
-  }, [filteredDressingRooms]);
-
-  const totalRevenue = ticketStats.revenue + productStats.revenue + printStats.revenue + sockStats.revenue + dressingRoomStats.revenue;
-  console.log(`[SalesReport] TOTAL REVENUE: ${totalRevenue} (Tickets: ${ticketStats.revenue} + Products: ${productStats.revenue} + Prints: ${printStats.revenue} + Socks: ${sockStats.revenue} + Dressing Room: ${dressingRoomStats.revenue})`);
+  const totalRevenue = productStats.revenue;
+  console.log(`[SalesReport] TOTAL REVENUE: ${totalRevenue} (Products: ${productStats.revenue})`);
 
   // ── XLSX Exports ──────────────────────────────────────────────────────────
-  function exportTicketsXLSX() {
-    const ts = new Date().toISOString().slice(0, 10);
-    const rows = filteredTickets.map((t, i) => ({
-      'No': i + 1,
-      'Kode Tiket': t.ticket_code ?? '-',
-      'Nama Tiket': t.tickets?.name ?? '-',
-      'Tanggal Valid': formatDate(t.valid_date),
-      'Sesi': t.time_slot ?? '-',
-      'Status': t.status,
-      'Harga (Rp)': TICKET_PRICE,
-      'Tanggal Beli': formatDatetime(t.created_at),
-      'Tanggal Pakai': formatDatetime(t.used_at),
-    }));
-    // Totals row
-    rows.push({ 'No': '', 'Kode Tiket': '', 'Nama Tiket': 'TOTAL', 'Tanggal Valid': '', 'Sesi': '', 'Status': '', 'Harga (Rp)': ticketStats.revenue, 'Tanggal Beli': '', 'Tanggal Pakai': '' } as any);
-    downloadXLSX(`laporan-tiket-${ts}.xlsx`, [{ name: 'Tiket Terjual', rows }]);
-  }
-
   function exportProductsXLSX() {
     const ts = new Date().toISOString().slice(0, 10);
 
@@ -599,83 +437,7 @@ export default function SalesReport() {
     ]);
   }
 
-  function exportPrintsXLSX() {
-    const ts = new Date().toISOString().slice(0, 10);
-    const rows = filteredPrints.map((p, i) => ({
-      'No': i + 1,
-      'Doku Order ID': p.doku_order_id ?? '-',
-      'Nama Customer': p.customer_name ?? '-',
-      'Email': p.customer_email ?? '-',
-      'Amount (Rp)': p.amount,
-      'Status': p.status ?? '-',
-      'No. Antrian': p.queue_number ?? '-',
-      'Tanggal Bayar': formatDatetime(p.paid_at),
-      'Tanggal Buat': formatDatetime(p.created_at),
-    }));
-    rows.push({ 'No': '', 'Doku Order ID': 'TOTAL', 'Nama Customer': '', 'Email': '', 'Amount (Rp)': printStats.revenue, 'Status': '', 'No. Antrian': '', 'Tanggal Bayar': '', 'Tanggal Buat': '' } as any);
-    downloadXLSX(`laporan-cetak-${ts}.xlsx`, [{ name: 'Cetak', rows }]);
-  }
-
-  function exportSocksXLSX() {
-    const ts = new Date().toISOString().slice(0, 10);
-    const rows = filteredSocks.map((s, i) => ({
-      'No': i + 1,
-      'Tanggal Laporan': formatDate(s.report_date),
-      'Stok Awal': s.stock_awal,
-      'Terjual': s.terjual,
-      'Sisa': s.sisa,
-      'Harga per Pasang (Rp)': s.harga_per_pasang,
-      'Total (Rp)': s.total,
-      'Catatan': s.catatan ?? '-',
-      'Tanggal Input': formatDatetime(s.created_at),
-    }));
-    rows.push({ 'No': '', 'Tanggal Laporan': 'TOTAL', 'Stok Awal': '', 'Terjual': filteredSocks.reduce((s, s_) => s + s_.terjual, 0), 'Sisa': '', 'Harga per Pasang (Rp)': '', 'Total (Rp)': sockStats.revenue, 'Catatan': '', 'Tanggal Input': '' } as any);
-    downloadXLSX(`laporan-kaos-kaki-${ts}.xlsx`, [{ name: 'Kaos Kaki', rows }]);
-  }
-
-  function exportDressingRoomXLSX() {
-    const ts = new Date().toISOString().slice(0, 10);
-    
-    // Sheet 1 — Orders
-    const orderRows = filteredDressingRooms.map((d, i) => ({
-      'No': i + 1,
-      'No. Order': d.order_number,
-      'Nama Customer': d.customer_name,
-      'Email': d.customer_email,
-      'Telepon': d.customer_phone ?? '-',
-      'Durasi (Hari)': d.duration_days,
-      'Subtotal (Rp)': d.subtotal,
-      'Deposit (Rp)': d.deposit_amount,
-      'Total (Rp)': d.total,
-      'Status': d.status,
-      'Tanggal Order': formatDatetime(d.created_at),
-    }));
-    orderRows.push({ 'No': '', 'No. Order': 'TOTAL', 'Nama Customer': '', 'Email': '', 'Telepon': '', 'Durasi (Hari)': '', 'Subtotal (Rp)': '', 'Deposit (Rp)': '', 'Total (Rp)': dressingRoomStats.revenue, 'Status': '', 'Tanggal Order': '' } as any);
-
-    // Sheet 2 — Items Detail
-    const itemRows: Record<string, unknown>[] = [];
-    filteredDressingRooms.forEach(d => {
-      d.rental_order_items?.forEach(item => {
-        itemRows.push({
-          'No. Order': d.order_number,
-          'Nama Customer': d.customer_name,
-          'Nama Item': item.product_name,
-          'Qty': item.quantity,
-          'Harga Harian (Rp)': item.daily_rate,
-          'Deposit Item (Rp)': item.item_deposit_amount,
-          'Total Rental (Rp)': item.total_rental_cost,
-          'Tanggal Order': formatDatetime(d.created_at),
-        });
-      });
-    });
-
-    downloadXLSX(`laporan-dressing-room-${ts}.xlsx`, [
-      { name: 'Pesanan', rows: orderRows },
-      ...(itemRows.length > 0 ? [{ name: 'Detail Item', rows: itemRows }] : []),
-    ]);
-  }
-
-  const isLoading = tab === 'tickets' ? ticketsLoading : tab === 'products' ? productsLoading : tab === 'prints' ? printsLoading : tab === 'socks' ? socksLoading : dressingRoomsLoading;
+  const isLoading = productsLoading;
 
   return (
     <AdminLayout
@@ -711,15 +473,11 @@ export default function SalesReport() {
         </div>
       )}
       {/* ── Summary Cards ─────────────────────────────────────────── */}
-      <div className="grid grid-cols-2 lg:grid-cols-7 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         {[
           { label: 'Total Pendapatan', value: formatRupiah(totalRevenue), icon: 'payments', color: 'text-emerald-600', bg: 'bg-emerald-50 border-emerald-200' },
-          { label: 'Tiket Terpakai', value: `${ticketStats.paid} tiket`, icon: 'confirmation_number', color: 'text-violet-600', bg: 'bg-violet-50 border-violet-200' },
-          { label: 'Pendapatan Tiket', value: formatRupiah(ticketStats.revenue), icon: 'local_activity', color: 'text-blue-600', bg: 'bg-blue-50 border-blue-200' },
           { label: 'Pendapatan Produk', value: formatRupiah(productStats.revenue), icon: 'shopping_bag', color: 'text-pink-600', bg: 'bg-pink-50 border-pink-200' },
-          { label: 'Pendapatan Cetak', value: formatRupiah(printStats.revenue), icon: 'print', color: 'text-orange-600', bg: 'bg-orange-50 border-orange-200' },
-          { label: 'Pendapatan Kaos Kaki', value: formatRupiah(sockStats.revenue), icon: 'checkroom', color: 'text-indigo-600', bg: 'bg-indigo-50 border-indigo-200' },
-          { label: 'Pendapatan Dressing Room', value: formatRupiah(dressingRoomStats.revenue), icon: 'checkroom', color: 'text-cyan-600', bg: 'bg-cyan-50 border-cyan-200' },
+          { label: 'Total Orders', value: `${productStats.orders} orders`, icon: 'shopping_cart', color: 'text-blue-600', bg: 'bg-blue-50 border-blue-200' },
         ].map(card => (
           <div key={card.label} className={`rounded-xl border ${card.bg} p-4 flex flex-col gap-2`}>
             <div className="flex items-center gap-2">
@@ -761,62 +519,19 @@ export default function SalesReport() {
         </button>
       </div>
 
-      {/* ── Tabs + Export ─────────────────────────────────────────── */}
+      {/* ── Products Table + Export ─────────────────────────────────────────── */}
       <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
         <div className="flex items-center justify-between border-b border-gray-200 px-4 py-3 gap-2 flex-wrap">
-          {/* Tab Switcher */}
-          <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
-            <button
-              onClick={() => setTab('tickets')}
-              className={`px-4 py-1.5 rounded-md text-sm font-bold transition-colors ${tab === 'tickets' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
-            >
-              <span className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[16px]">confirmation_number</span>
-                Tiket ({ticketStats.paid})
-              </span>
-            </button>
-            <button
-              onClick={() => setTab('products')}
-              className={`px-4 py-1.5 rounded-md text-sm font-bold transition-colors ${tab === 'products' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
-            >
-              <span className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[16px]">shopping_bag</span>
-                Produk ({productStats.orders})
-              </span>
-            </button>
-            <button
-              onClick={() => setTab('prints')}
-              className={`px-4 py-1.5 rounded-md text-sm font-bold transition-colors ${tab === 'prints' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
-            >
-              <span className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[16px]">print</span>
-                Cetak ({printStats.orders})
-              </span>
-            </button>
-            <button
-              onClick={() => setTab('socks')}
-              className={`px-4 py-1.5 rounded-md text-sm font-bold transition-colors ${tab === 'socks' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
-            >
-              <span className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[16px]">checkroom</span>
-                Kaos Kaki ({sockStats.orders})
-              </span>
-            </button>
-            <button
-              onClick={() => setTab('dressing-room')}
-              className={`px-4 py-1.5 rounded-md text-sm font-bold transition-colors ${tab === 'dressing-room' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
-            >
-              <span className="flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[16px]">checkroom</span>
-                Dressing Room ({dressingRoomStats.orders})
-              </span>
-            </button>
-          </div>
+          {/* Title */}
+          <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+            <span className="material-symbols-outlined">shopping_bag</span>
+            Product Orders ({productStats.orders})
+          </h3>
 
           {/* Export Button */}
           <button
-            onClick={tab === 'tickets' ? exportTicketsXLSX : tab === 'products' ? exportProductsXLSX : tab === 'prints' ? exportPrintsXLSX : tab === 'socks' ? exportSocksXLSX : exportDressingRoomXLSX}
-            disabled={isLoading || (tab === 'tickets' ? tickets.length === 0 : tab === 'products' ? products.length === 0 : tab === 'prints' ? prints.length === 0 : tab === 'socks' ? socks.length === 0 : dressingRooms.length === 0)}
+            onClick={exportProductsXLSX}
+            disabled={isLoading || products.length === 0}
             className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white text-sm font-bold rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
           >
             <span className="material-symbols-outlined text-[18px]">download</span>
@@ -824,128 +539,9 @@ export default function SalesReport() {
           </button>
         </div>
 
-        {/* ── Tickets Table ──────────────────────────────────────── */}
-        {tab === 'tickets' && (
-          <>
-            <div className="px-4 py-2 bg-violet-50 border-b border-violet-100 flex items-center gap-2">
-              <span className="text-xs text-violet-700">
-                Harga per tiket: <strong>{formatRupiah(TICKET_PRICE)}</strong>
-              </span>
-              <span className="text-xs text-gray-400">·</span>
-              <span className="text-xs text-violet-700">
-                Total: <strong>{formatRupiah(ticketStats.revenue)}</strong>
-              </span>
-              <span className="text-xs text-gray-400">·</span>
-              <span className="text-xs text-violet-700">
-                Sudah masuk: <strong>{ticketStats.used}</strong>
-              </span>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="bg-gray-50">
-                  <tr>
-                    {['No', 'Kode Tiket', 'Nama Tiket', 'Tanggal Valid', 'Sesi', 'Status', 'Harga', 'Dibuat'].map(h => (
-                      <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase whitespace-nowrap">{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {isLoading ? (
-                    Array.from({ length: 5 }).map((_, i) => (
-                      <tr key={i}>
-                        {Array.from({ length: 8 }).map((_, j) => (
-                          <td key={j} className="px-4 py-3"><div className="h-4 bg-gray-100 rounded animate-pulse w-20" /></td>
-                        ))}
-                      </tr>
-                    ))
-                  ) : ticketPagination.data.length === 0 ? (
-                    <tr>
-                      <td colSpan={8} className="px-4 py-10 text-center text-gray-400">
-                        <span className="material-symbols-outlined text-4xl mb-2 block">inbox</span>
-                        Tidak ada data tiket di periode ini
-                      </td>
-                    </tr>
-                  ) : ticketPagination.data.map((t, i) => (
-                    <tr key={t.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-4 py-3 text-gray-500 text-xs">{ticketPagination.start + i + 1}</td>
-                      <td className="px-4 py-3 font-mono font-semibold text-gray-900 text-xs">{t.ticket_code ?? '-'}</td>
-                      <td className="px-4 py-3 text-gray-700">{t.tickets?.name ?? '-'}</td>
-                      <td className="px-4 py-3 text-gray-700 whitespace-nowrap">{formatDate(t.valid_date)}</td>
-                      <td className="px-4 py-3 text-gray-600">{t.time_slot?.slice(0, 5) ?? '-'}</td>
-                      <td className="px-4 py-3">
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${
-                          t.status === 'active'  ? 'bg-green-100 text-green-700' :
-                          t.status === 'used'    ? 'bg-blue-100 text-blue-700' :
-                          t.status === 'expired' ? 'bg-gray-100 text-gray-500' :
-                          'bg-red-100 text-red-700'
-                        }`}>{t.status}</span>
-                      </td>
-                      <td className="px-4 py-3 font-semibold text-gray-900 whitespace-nowrap">{formatRupiah(TICKET_PRICE)}</td>
-                      <td className="px-4 py-3 text-gray-500 text-xs whitespace-nowrap">{formatDate(t.created_at)}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            {!isLoading && ticketPagination.data.length > 0 && (
-              <div className="px-4 py-4 border-t border-gray-100 bg-gray-50 flex items-center justify-between gap-4 flex-wrap">
-                <div className="flex items-center gap-4 text-xs text-gray-600">
-                  <span>
-                    Menampilkan <strong>{ticketPagination.start + 1}–{Math.min(ticketPagination.start + ITEMS_PER_PAGE, ticketPagination.total)}</strong> dari <strong>{ticketPagination.total}</strong> tiket
-                  </span>
-                  <span>·</span>
-                  <span className="font-bold text-gray-900">{formatRupiah(ticketStats.revenue)}</span>
-                </div>
-                
-                {ticketPagination.totalPages > 1 && (
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => setTicketPage(p => Math.max(1, p - 1))}
-                      disabled={ticketPagination.page === 1}
-                      className="flex items-center gap-1 px-3 py-1.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <span className="material-symbols-outlined text-[16px]">chevron_left</span>
-                      Sebelumnya
-                    </button>
-                    
-                    <div className="flex items-center gap-1">
-                      {Array.from({ length: ticketPagination.totalPages }).map((_, i) => {
-                        const pageNum = i + 1;
-                        return (
-                          <button
-                            key={pageNum}
-                            onClick={() => setTicketPage(pageNum)}
-                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                              ticketPagination.page === pageNum
-                                ? 'bg-violet-600 text-white'
-                                : 'border border-gray-300 text-gray-700 hover:bg-gray-100'
-                            }`}
-                          >
-                            {pageNum}
-                          </button>
-                        );
-                      })}
-                    </div>
-                    
-                    <button
-                      onClick={() => setTicketPage(p => Math.min(ticketPagination.totalPages, p + 1))}
-                      disabled={ticketPagination.page === ticketPagination.totalPages}
-                      className="flex items-center gap-1 px-3 py-1.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      Berikutnya
-                      <span className="material-symbols-outlined text-[16px]">chevron_right</span>
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
-          </>
-        )}
-
         {/* ── Products Table ─────────────────────────────────────── */}
-        {tab === 'products' && (
-          <>
-            <div className="px-4 py-2 bg-blue-50 border-b border-blue-100 flex items-center gap-2 flex-wrap">
+        <>
+          <div className="px-4 py-2 bg-blue-50 border-b border-blue-100 flex items-center gap-2 flex-wrap">
               <span className="text-xs text-blue-700">
                 Total: <strong>{productStats.orders}</strong>
               </span>
@@ -1061,10 +657,10 @@ export default function SalesReport() {
               </div>
             )}
           </>
-        )}
-
-        {/* ── Prints Table ──────────────────────────────────────── */}
-        {tab === 'prints' && (
+      </div>
+    </AdminLayout>
+  );
+}
           <>
             <div className="px-4 py-2 bg-orange-50 border-b border-orange-100 flex items-center gap-2 flex-wrap">
               <span className="text-xs text-orange-700">

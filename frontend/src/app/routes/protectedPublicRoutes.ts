@@ -3,9 +3,8 @@ import { lazy } from 'react';
 import type { AppRouteConfig } from './routeTypes';
 
 const ProductCheckoutPage = lazy(() => import('../../pages/ProductCheckoutPage'));
-const BookingPage = lazy(() => import('../../pages/BookingPage'));
+// BOOKING REMOVED - US version e-commerce only
 const PaymentPage = lazy(() => import('../../pages/PaymentPage'));
-const BookingSuccessPage = lazy(() => import('../../pages/BookingSuccessPage'));
 const CartPage = lazy(() => import('../../pages/CartPage'));
 const MyTicketsPage = lazy(() => import('../../pages/MyTicketsPage'));
 const MyProductOrdersPage = lazy(() => import('../../pages/MyProductOrdersPage'));
@@ -18,9 +17,8 @@ const ProfilePage = lazy(() => import('../../pages/account/ProfilePage'));
 export const protectedPublicRouteConfigs: AppRouteConfig[] = [
   { path: 'cart', Page: CartPage },
   { path: 'checkout/product', Page: ProductCheckoutPage },
-  { path: 'booking/:slug', Page: BookingPage },
+  // BOOKING ROUTES REMOVED - US version e-commerce only
   { path: 'payment', Page: PaymentPage },
-  { path: 'booking-success', Page: BookingSuccessPage },
   { path: 'my-tickets', Page: MyTicketsPage },
   { path: 'my-orders', Page: MyProductOrdersPage },
   { path: 'my-points', Page: MyPointsPage },

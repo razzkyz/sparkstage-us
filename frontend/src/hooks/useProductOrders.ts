@@ -53,7 +53,7 @@ export function useProductOrders() {
           // Exclude completed orders - they are fetched separately
           supabase
             .from('order_products')
-            .select('id, order_number, channel, payment_status, status, total, pickup_code, pickup_status, paid_at, updated_at, created_at, sales_staff_name, profiles(name, email), order_product_items(id, quantity, price, subtotal, product_variants(name, products(name, categories(name), product_images(image_url, is_primary))))')
+            .select('id, order_number, channel, payment_status, status, total, pickup_code, pickup_status, paid_at, updated_at, created_at, sales_staff_name, profiles(name, email), order_product_items(id, quantity, price, subtotal, product_variants(variant_name, products(name, categories(name), product_images(image_url))))')
             .abortSignal(timeoutSignal)
             .or('and(payment_status.eq.paid,pickup_status.neq.completed),and(payment_status.in.(unpaid,pending),status.eq.awaiting_payment,channel.eq.cashier)')
             .order('paid_at', { ascending: false, nullsFirst: false })
@@ -62,7 +62,7 @@ export function useProductOrders() {
           // Completed orders - fetch ALL without limit
           supabase
             .from('order_products')
-            .select('id, order_number, channel, payment_status, status, total, pickup_code, pickup_status, paid_at, updated_at, created_at, sales_staff_name, profiles(name, email), order_product_items(id, quantity, price, subtotal, product_variants(name, products(name, categories(name), product_images(image_url, is_primary))))')
+            .select('id, order_number, channel, payment_status, status, total, pickup_code, pickup_status, paid_at, updated_at, created_at, sales_staff_name, profiles(name, email), order_product_items(id, quantity, price, subtotal, product_variants(variant_name, products(name, categories(name), product_images(image_url))))')
             .abortSignal(timeoutSignal)
             .eq('payment_status', 'paid')
             .eq('pickup_status', 'completed')

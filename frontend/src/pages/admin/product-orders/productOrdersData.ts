@@ -36,7 +36,7 @@ export async function loadProductOrderDetailsByPickupCode(pickupCode: string): P
   const orderId = Number((orderRow as { id: number | string }).id);
   const { data: itemRows, error: itemsError } = await supabase
     .from('order_product_items')
-    .select('id, quantity, price, subtotal, product_variants(name, products(name))')
+    .select('id, quantity, price, subtotal, product_variants(variant_name, products(name))')
     .eq('order_product_id', orderId);
 
   if (itemsError) throw itemsError;

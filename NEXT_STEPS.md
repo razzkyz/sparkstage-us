@@ -1,181 +1,158 @@
-# 🎯 NEXT STEPS - Data Cleanup & Production Sync
+# 🚀 SparkStage US - Next Steps
 
-## ✅ Apa yang sudah siap
+**Current Status:** Database fully populated with 922 products ✅
 
-Semua tools sudah dibuat dan siap digunakan:
+## Immediate Actions (Right Now)
 
-### Scripts
-✅ `scripts/identify-dummy-data.ts` - Scan dummy data  
-✅ `scripts/cleanup-dummy-data.ts` - Delete with cascade  
-✅ `scripts/validate-production-data.ts` - Validate integrity  
-✅ `scripts/sync-dummy-to-production.ts` - Update format  
-
-### Database
-✅ `supabase/migrations/20260523000000_add_data_cleanup_functions.sql` - SQL functions  
-
-### Documentation  
-✅ `docs/runbooks/data-cleanup-sync.md` - Complete runbook  
-✅ `DATA_CLEANUP_SUMMARY.md` - Quick reference  
-✅ `SQL_CLEANUP_REFERENCE.sql` - SQL quick reference  
-
-### Configuration
-✅ `package.json` - 6 new NPM scripts added
-
----
-
-## 🚀 Langkah-langkah Berikutnya
-
-### 1️⃣ Push Database Migration
-
+### 1. Verify Migration Success
 ```bash
-cd /path/to/sparkstage
+# Refresh your browser running on http://localhost:5174
+# Press F5 or Ctrl+R
+```
+
+**What to check:**
+- Shop page shows products with images
+- Product images load from `cdn-us.sparkstage55.com`
+- Product details open correctly
+- Search and filters work
+
+### 2. Check Console for Errors
+Open browser DevTools (F12) and check for:
+- ❌ Image loading errors (404s)
+- ❌ Database query errors
+- ❌ Missing data warnings
+
+## Development Phase (Next Hours)
+
+### 3. Payment Integration
+**Current State:** DOKU code removed  
+**Required:** Stripe integration
+
+**Files to create/update:**
+- `supabase/functions/create-stripe-ticket-checkout/` - Replace DOKU ticket checkout
+- `supabase/functions/create-stripe-product-checkout/` - Replace DOKU product checkout
+- `supabase/functions/stripe-webhook/` - Handle Stripe webhooks
+- `frontend/src/pages/Checkout.tsx` - Update with Stripe UI
+- `frontend/src/pages/admin/Orders.tsx` - Update for Stripe orders
+
+**Documentation:**
+- See `.agents/skills/sparkstage-us-builder/SKILL.md` for Stripe migration guide
+- Stripe test keys needed in `.env.local`
+
+### 4. Shipping Integration
+**Current State:** RajaOngkir (Indonesia) removed  
+**Required:** US shipping provider (USPS/FedEx/UPS)
+
+**Recommended:** EasyPost API (multi-carrier)
+- Single API for USPS, FedEx, UPS
+- Flat rate shipping for MVP
+- Address validation included
+
+**Files to create/update:**
+- `supabase/functions/calculate-shipping/` - Replace RajaOngkir
+- `frontend/src/hooks/useShipping.ts` - Update shipping logic
+- `frontend/src/pages/Checkout.tsx` - Update shipping UI
+
+### 5. Currency & Localization
+**Current State:** IDR (Indonesia Rupiah)  
+**Required:** USD (US Dollar)
+
+**Files to update:**
+- All price displays in frontend
+- Database prices (may need conversion script)
+- Currency formatter utilities
+
+## Testing Phase (Next Days)
+
+### 6. End-to-End Testing
+Test complete user flows:
+- [ ] Browse products
+- [ ] Add to cart
+- [ ] Checkout with Stripe
+- [ ] Receive order confirmation
+- [ ] Admin order management
+
+### 7. Admin Features
+Verify admin panels work:
+- [ ] Product management
+- [ ] Order management
+- [ ] User management
+- [ ] Inventory management
+
+## Production Prep (Next Week)
+
+### 8. Environment Setup
+**Stripe:**
+- [ ] Get production Stripe keys
+- [ ] Configure webhook endpoint
+- [ ] Test webhook signing
+
+**Shipping:**
+- [ ] Get production EasyPost key
+- [ ] Configure shipping rates
+- [ ] Test address validation
+
+**Domain:**
+- [ ] Configure production domain
+- [ ] Setup SSL certificates
+- [ ] Configure CORS origins
+
+### 9. Deployment
+**Supabase:**
+- [ ] Review RLS policies for security
+- [ ] Setup database backups
+- [ ] Configure database limits
+
+**Frontend:**
+- [ ] Build production bundle
+- [ ] Deploy to hosting (Vercel/Netlify)
+- [ ] Configure environment variables
+
+**Edge Functions:**
+- [ ] Deploy all Supabase functions
+- [ ] Configure secrets (Stripe, EasyPost)
+- [ ] Test webhook endpoints
+
+## Resources
+
+### Documentation
+- `PRODUCT_MIGRATION_COMPLETE.md` - Migration summary
+- `R2_MIGRATION_COMPLETE_SUMMARY.md` - R2 bucket setup
+- `.agents/skills/sparkstage-us-builder/SKILL.md` - Complete US migration guide
+
+### Development Server
+```bash
+# Frontend (already running)
+npm run dev  # http://localhost:5174
+
+# Supabase Functions (when ready)
+npm run supabase:functions:serve
+```
+
+### Useful Commands
+```bash
+# Deploy database changes
 npm run supabase:db:push
+
+# Check database status
+npm run supabase:db:status
+
+# View function logs
+npm run supabase:functions:logs <function-name>
 ```
 
-Ini akan apply migration yang berisi SQL functions untuk cleanup.
+## Getting Help
 
-### 2️⃣ Identify Dummy Data
+**Skill Available:** `sparkstage-us-builder`
+- Expert guidance for Stripe integration
+- Shipping provider setup
+- Testing strategies
+- Deployment steps
 
-```bash
-npm run data:identify-dummy
-```
-
-Review output untuk lihat berapa banyak dummy data ada.
-
-### 3️⃣ Validate Production Data
-
-```bash
-npm run data:validate-production
-```
-
-Pastikan production data dari DOKU valid sebelum cleanup.
-
-### 4️⃣ Choose Your Strategy
-
-**PILIH SATU:**
-
-#### Strategy A: CLEANUP (Recommended)
-Hapus semua dummy data, keep hanya production:
-```bash
-npm run data:cleanup-dummy         # dry-run
-npm run data:cleanup-dummy:confirm # execute
-```
-
-#### Strategy B: SYNC (Optional)  
-Keep dummy untuk testing tapi update ke production format:
-```bash
-npm run data:sync-dummy-to-production         # dry-run
-npm run data:sync-dummy-to-production:confirm # execute
-```
-
-### 5️⃣ Verify Results
-
-```bash
-npm run data:validate-production
-```
-
-Pastikan production data still intact.
+**Activate:** Say "Help me with Stripe integration" or "Setup US shipping"
 
 ---
 
-## 📋 Safety Checklist
+**You're ready to start building! 🎉**
 
-SEBELUM execute cleanup/sync:
-
-- [ ] Database sudah di-backup
-- [ ] Sudah read `docs/runbooks/data-cleanup-sync.md`
-- [ ] Sudah run identify dan review output
-- [ ] Sudah run validate-production
-- [ ] Sudah run DRY-RUN (cleanup atau sync)
-- [ ] Sudah understand apa yang akan didelete/update
-- [ ] Supabase migration sudah di-push
-- [ ] Environment sudah production atau staging (not local dev)
-
----
-
-## 📁 File Reference
-
-### Documentation (Read these first)
-- `DATA_CLEANUP_SUMMARY.md` - Quick overview (you're reading now!)
-- `docs/runbooks/data-cleanup-sync.md` - Detailed runbook with troubleshooting
-- `SQL_CLEANUP_REFERENCE.sql` - SQL query reference
-
-### Scripts
-- `scripts/identify-dummy-data.ts` - Scan only, no changes
-- `scripts/cleanup-dummy-data.ts` - Delete with dry-run option
-- `scripts/validate-production-data.ts` - Validate only, no changes
-- `scripts/sync-dummy-to-production.ts` - Update with dry-run option
-
-### Database
-- `supabase/migrations/20260523000000_add_data_cleanup_functions.sql` - RPC functions
-
----
-
-## 💡 Tips
-
-### If you have questions:
-1. Check `docs/runbooks/data-cleanup-sync.md` - Complete guide
-2. Check `SQL_CLEANUP_REFERENCE.sql` - SQL examples
-3. Run identify/validate scripts first to understand data
-
-### If something goes wrong:
-1. Stop immediately - don't run execute command
-2. Check backup database
-3. Restore from backup if needed
-4. Review troubleshooting in runbook
-
-### For dry-runs:
-- Always run dry-run first
-- Read output carefully
-- Only proceed to confirm if output looks correct
-
----
-
-## 🔗 Database Functions Available
-
-After migration is pushed, these RPC functions available in Supabase:
-
-```sql
--- Get summary of dummy data
-SELECT * FROM public.get_dummy_data_summary();
-
--- List dummy products
-SELECT * FROM public.identify_dummy_products();
-
--- List test orders
-SELECT * FROM public.identify_test_orders();
-
--- List orders missing DOKU
-SELECT * FROM public.identify_orders_without_doku();
-
--- Execute cleanup (⚠️ only after backup!)
-SELECT * FROM public.cleanup_dummy_data();
-```
-
----
-
-## ⏰ Estimated Time
-
-- Identify: ~30 seconds
-- Validate: ~30 seconds  
-- Cleanup dry-run: ~1-2 minutes
-- Cleanup execute: ~2-5 minutes (depends on data size)
-- Cleanup verify: ~30 seconds
-
----
-
-## ✅ When Done
-
-After cleanup/sync is complete:
-
-1. ✅ Verify production data is intact
-2. ✅ Check DOKU webhook logs
-3. ✅ Check audit_logs table for cleanup record
-4. ✅ Commit this work to git
-5. ✅ Document cleanup in team notes
-
----
-
-**Ready? Let's go! 🚀**
-
-Start with: `npm run supabase:db:push` and then `npm run data:identify-dummy`
+Your database is populated, images are ready, and you have a clean foundation for the US version.

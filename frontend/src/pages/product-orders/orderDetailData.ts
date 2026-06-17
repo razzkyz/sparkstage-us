@@ -28,8 +28,8 @@ export function mapProductOrderItemRows(rows: ProductOrderItemRow[] | null | und
 
     let imageUrl = product?.image_url ?? undefined;
     if (!imageUrl && product?.product_images && Array.isArray(product.product_images)) {
-      const primaryImage = product.product_images.find((image) => image.is_primary);
-      imageUrl = primaryImage?.image_url ?? product.product_images[0]?.image_url ?? undefined;
+      // US DB doesn't have is_primary, just use first image
+      imageUrl = product.product_images[0]?.image_url ?? undefined;
     }
 
     return {
@@ -91,7 +91,7 @@ export async function fetchProductOrderDetail(orderNumber: string) {
       supabase
         .from('order_product_items')
         .select(
-          'id, quantity, price, subtotal, product_variants(id, name, product_id, products(id, name, image_url, product_images(image_url, is_primary)))'
+          'id, quantity, price, subtotal, product_variants(id, variant_name, product_id, products(id, name, image_url, product_images(image_url)))'
         )
         .eq('order_product_id', orderId)
         .abortSignal(timeoutSignal),

@@ -44,12 +44,9 @@ const NewsPageManager = lazy(() => import("../../pages/admin/NewsPageManager"));
 const CharmBarPageManager = lazy(
   () => import("../../pages/admin/CharmBarPageManager"),
 );
-const BookingPageManager = lazy(
-  () => import("../../pages/admin/BookingPageManager"),
-);
-const EntranceBookingManager = lazy(
-  () => import("../../pages/admin/EntranceBookingManager"),
-);
+// BOOKING REMOVED - US version e-commerce only
+// const BookingPageManager = lazy(() => import("../../pages/admin/BookingPageManager"));
+// const EntranceBookingManager = lazy(() => import("../../pages/admin/EntranceBookingManager"));
 const DressingRoomManager = lazy(
   () => import("../../pages/admin/DressingRoomManager"),
 );
@@ -60,13 +57,14 @@ const DressingRoomScan = lazy(
 const BeautyPosterManager = lazy(
   () => import("../../pages/admin/BeautyPosterManager"),
 );
-const EventBookings = lazy(() => import("../../pages/admin/EventBookings"));
+// EVENT BOOKINGS REMOVED - US version e-commerce only
+// const EventBookings = lazy(() => import("../../pages/admin/EventBookings"));
 const VenueReviewsAdmin = lazy(
   () => import("../../pages/admin/VenueReviewsAdmin"),
 );
 const TabletQRScanner = lazy(() => import("../../pages/admin/TabletQRScanner"));
 const RentalScannerPage = lazy(() => import("../../pages/admin/RentalScannerPage"));
-const SalesReport = lazy(() => import("../../pages/admin/SalesReport"));
+const SalesReport = lazy(() => import("../../pages/admin/SalesReportSimple"));
 const AuditLogsPage = lazy(() => import("../../pages/admin/AuditLogsPage"));
 const AdminPointsManager = lazy(
   () => import("../../pages/admin/AdminPointsManager"),
@@ -108,8 +106,7 @@ export const adminRouteConfigs: AppRouteConfig[] = [
   { path: "/admin/stages", Page: StageManager },
   { path: "/admin/stage-analytics", Page: StageAnalytics },
   { path: "/admin/qr-bulk", Page: StageBulkQR },
-  { path: "/admin/booking-page", Page: BookingPageManager },
-  { path: "/admin/entrance-booking", Page: EntranceBookingManager },
+  // BOOKING ADMIN ROUTES REMOVED - US version e-commerce only
   { path: "/admin/product-pickup", Page: ProductPickup },
   { path: "/admin/order-ticket", Page: OrderTicket },
   { path: "/admin/product-orders", Page: ProductOrders },
@@ -123,7 +120,7 @@ export const adminRouteConfigs: AppRouteConfig[] = [
   { path: "/admin/rental-orders", Page: RentalOrders },
   { path: "/admin/dressing-room-scan", Page: DressingRoomScan },
   { path: "/admin/glam-page", Page: BeautyPosterManager },
-  { path: "/admin/event-bookings", Page: EventBookings },
+  // EVENT BOOKINGS REMOVED - US version e-commerce only
   { path: "/admin/tablet-qr-scanner", Page: TabletQRScanner },
   { path: "/admin/rental-scanner", Page: RentalScannerPage },
   { path: "/admin/venue-reviews", Page: VenueReviewsAdmin },

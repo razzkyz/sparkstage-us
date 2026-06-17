@@ -73,34 +73,22 @@ const Navbar = () => {
     const path = location.pathname;
     if (path === "/") return "on-stage";
     if (path.startsWith("/on-stage")) return "on-stage";
-    if (path.startsWith("/events")) return "event";
-    if (
-      path.startsWith("/shop") ||
+    if (path.startsWith("/shop") ||
       path.startsWith("/glam") ||
       path.startsWith("/beauty") ||
       path.startsWith("/charm-bar") ||
       path.startsWith("/chamr-bar")
     )
       return "shop";
-    // if (path.startsWith("/dressing-room") || path.startsWith("/fashion"))
-      return "dressing-room";
+    if (path.startsWith("/events")) return "event";
     if (path.startsWith("/news")) return "news";
-    if (path.startsWith("/booking")) return "booking";
     return "";
   })();
 
   const navItems: NavItem[] = [
     { key: "on-stage", label: "ON STAGE", to: "/on-stage", icon: Camera },
-    {
-      key: "booking",
-      label: "BOOKING",
-      to: "/booking",
-      isPink: true,
-      icon: Ticket,
-    },
-    // { key: "dressing-room", label: "FASHION ON DEMAND", to: "/dressing-room" },
     { key: "shop", label: "SHOP", to: "/shop", icon: ShoppingBag },
-    { key: "event", label: "EVENT", to: "/events", icon: CalendarDays },
+    { key: "event", label: "EVENTS", to: "/events", icon: CalendarDays },
     { key: "news", label: "NEWS", to: "/news", icon: Newspaper },
   ];
 
@@ -184,10 +172,10 @@ const Navbar = () => {
     <>
       {/* ── Sticky Header Wrapper (Top Bar + Desktop Nav) ── */}
       <div
-        className={`sticky top-0 z-[110] bg-white transition-shadow duration-300 ${scrolled ? "shadow-[0_4px_16px_rgba(0,0,0,0.08)]" : ""}`}
+        className={`sticky top-0 z-[110] bg-white transition-all duration-300 ${scrolled ? "shadow-lg shadow-pink-100/50" : "shadow-sm"}`}
       >
         {/* Top Bar */}
-        <div className="border-b border-gray-200 lg:border-b-3 lg:border-main-500">
+        <div className="border-b border-pink-100">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between py-2 lg:py-1">
               <div className="w-1/3 flex items-center gap-3">
@@ -198,7 +186,6 @@ const Navbar = () => {
                     src="/images/landing/HeaderLogo.webp"
                     alt="Stage 55"
                     className="h-15 w-auto md:h-18 object-contain "
-                    fetchPriority="high"
                     width={150}
                     height={48}
                   />
@@ -206,7 +193,6 @@ const Navbar = () => {
                     src="/images/landing/stage55.png"
                     alt="Stage 55"
                     className="h-10 w-auto md:h-12 object-contain "
-                    fetchPriority="high"
                     width={150}
                     height={48}
                   />
@@ -221,7 +207,7 @@ const Navbar = () => {
                     aria-expanded={sidebarOpen}
                     aria-controls="mobile-sidebar"
                     onClick={() => setSidebarOpen(true)}
-                    className="p-2 -ml-1 rounded-xl bg-gray-50/80 text-black  hover:text-[#ff4b86] hover:text-pink  hover:shadow-md active:bg-pink-100 transition-all duration-300 active:scale-90"
+                    className="p-2 -ml-1 rounded-xl bg-pink-50 text-pink-600 hover:bg-pink-100 hover:text-pink-700 hover:shadow-md active:scale-90 transition-all duration-300"
                   >
                     <Menu className="h-6 w-6" strokeWidth={2.5} />
                   </button>
@@ -238,7 +224,6 @@ const Navbar = () => {
                     src="/images/landing/HeaderLogo.webp"
                     alt="Stage 55"
                     className="h-[4rem] md:h-[5rem] w-auto object-cover"
-                    fetchPriority="high"
                     width={200}
                     height={64}
                   />
@@ -246,7 +231,6 @@ const Navbar = () => {
                     src="/images/landing/stage55.png"
                     alt="Stage 55"
                     className="h-[2.5rem] md:h-[3.5rem] w-auto object-contain"
-                    fetchPriority="high"
                     width={150}
                     height={48}
                   />
@@ -301,7 +285,7 @@ const Navbar = () => {
                       {isAdmin && (
                         <Link
                           to="/admin/dashboard"
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-[#ff4b86] text-white rounded-md hover:bg-[#e63d75] transition-colors shadow-sm"
+                          className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-pink-600 to-rose-600 text-white rounded-lg hover:from-pink-700 hover:to-rose-700 transition-all duration-200 shadow-md hover:shadow-lg"
                           title="Admin Dashboard"
                         >
                           <span className="material-symbols-outlined text-sm">
@@ -314,7 +298,7 @@ const Navbar = () => {
                       <button
                         onClick={handleSignOutClick}
                         disabled={loggingOut}
-                        className="text-gray-600 hover:text-primary transition-colors cursor-pointer"
+                        className="p-2 text-gray-600 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-all duration-200 cursor-pointer"
                         title={t("auth.signOut")}
                       >
                         <LogOut className="h-5 w-5" />
@@ -326,42 +310,31 @@ const Navbar = () => {
                   {user && (
                     <Link
                       to="/my-points"
-                      className="group relative flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-pink-400/40"
-                      style={{
-                        background:
-                          "linear-gradient(135deg, #ff2d72 0%, #ff4b86 50%, #ff6b9d 100%)",
-                        boxShadow: "0 2px 10px rgba(255,75,134,0.4)",
-                      }}
+                      className="group relative flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-pink-500 via-pink-600 to-rose-500 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-pink-300/50 hover:from-pink-600 hover:via-pink-700 hover:to-rose-600"
                       title={`SPARK CLUB · ${loyaltyRank.label} · ${loyaltyPoints.toLocaleString()} poin`}
                     >
-                      <span className="text-sm leading-none">
+                      <span className="text-base drop-shadow">
                         {loyaltyRank.icon}
                       </span>
-                      <span className="text-xs font-black tracking-tight text-white">
+                      <span className="text-sm font-black tracking-tight text-white drop-shadow">
                         {loyaltyPoints.toLocaleString()}
                       </span>
-                      <span className="text-[9px] font-bold text-white/70 uppercase tracking-wide">
-                        pts
+                      <span className="text-[10px] font-bold text-white/90 uppercase tracking-wide">
+                        PTS
                       </span>
-                      <span
-                        className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-                        style={{
-                          background:
-                            "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%)",
-                        }}
-                      />
+                      <div className="absolute inset-0 rounded-full bg-white/0 group-hover:bg-white/10 transition-all duration-300" />
                     </Link>
                   )}
 
                   {/* Cart, My Tickets, My Orders — selalu tampil di desktop */}
                   <Link
                     to="/my-tickets"
-                    className="relative text-gray-600 hover:text-main-600 transition-colors"
+                    className="relative p-2 text-gray-600 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-all duration-200"
                     title={t("nav.myTickets")}
                   >
                     <Ticket className="h-5 w-5" />
                     {ticketCount > 0 && (
-                      <span className="absolute -top-1.5 -right-1.5 bg-main-600 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
+                      <span className="absolute -top-0.5 -right-0.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold shadow-md">
                         {ticketCount}
                       </span>
                     )}
@@ -369,12 +342,12 @@ const Navbar = () => {
 
                   <Link
                     to="/my-orders"
-                    className="relative text-gray-600 hover:text-main-600 transition-colors hidden"
+                    className="relative p-2 text-gray-600 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-all duration-200 hidden"
                     title={t("nav.myOrders")}
                   >
                     <ReceiptText className="h-5 w-5" />
                     {orderCount > 0 && (
-                      <span className="absolute -top-1.5 -right-1.5 bg-main-600 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
+                      <span className="absolute -top-0.5 -right-0.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold shadow-md">
                         {orderCount}
                       </span>
                     )}
@@ -382,12 +355,12 @@ const Navbar = () => {
 
                   <Link
                     to="/cart"
-                    className="relative text-gray-600 hover:text-main-600 transition-colors"
+                    className="relative p-2 text-gray-600 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-all duration-200"
                     aria-label={t("nav.cart")}
                   >
                     <ShoppingCart className="h-5 w-5" />
                     {totalQuantity > 0 && (
-                      <span className="absolute -top-1.5 -right-1.5 bg-main-600 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
+                      <span className="absolute -top-0.5 -right-0.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold shadow-md animate-pulse">
                         {totalQuantity}
                       </span>
                     )}
@@ -397,7 +370,7 @@ const Navbar = () => {
                   {user ? (
                     <Link
                       to="/profile"
-                      className="text-gray-600 hover:text-primary transition-colors"
+                      className="p-2 text-gray-600 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-all duration-200"
                       title="Profile"
                     >
                       <UserRound className="h-5 w-5" />
@@ -405,7 +378,7 @@ const Navbar = () => {
                   ) : (
                     <Link
                       to="/login"
-                      className="relative text-gray-600 hover:text-main-600 transition-colors"
+                      className="px-4 py-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold text-sm rounded-lg hover:from-pink-600 hover:to-rose-600 transition-all duration-200 shadow-md hover:shadow-lg"
                       aria-label={t("auth.signIn")}
                       title={t("auth.signIn")}
                     >
@@ -454,13 +427,13 @@ const Navbar = () => {
 
                   <Link
                     to="/my-tickets"
-                    className="relative text-gray-600 hover:text-main-600 transition-colors"
+                    className="relative p-2 text-gray-600 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-all duration-200"
                     aria-label={t("nav.myTickets")}
                     title={t("nav.myTickets")}
                   >
                     <Ticket className="h-5 w-5" />
                     {ticketCount > 0 && (
-                      <span className="absolute -top-0.5 -right-0.5 bg-main-600 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
+                      <span className="absolute -top-0.5 -right-0.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold shadow-md">
                         {ticketCount}
                       </span>
                     )}
@@ -470,13 +443,13 @@ const Navbar = () => {
 
                   <Link
                     to="/my-orders"
-                    className="relative text-gray-600 hover:text-main-600 transition-colors hidden"
+                    className="relative p-2 text-gray-600 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-all duration-200 hidden"
                     aria-label={t("nav.myOrders")}
                     title={t("nav.myOrders")}
                   >
                     <ReceiptText className="h-5 w-5" />
                     {orderCount > 0 && (
-                      <span className="absolute -top-0.5 -right-0.5 bg-main-600 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
+                      <span className="absolute -top-0.5 -right-0.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold shadow-md">
                         {orderCount}
                       </span>
                     )}
@@ -486,12 +459,12 @@ const Navbar = () => {
 
                   <Link
                     to="/cart"
-                    className="relative text-gray-600 hover:text-main-600 transition-colors"
+                    className="relative p-2 text-gray-600 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-all duration-200"
                     aria-label={t("nav.cart")}
                   >
                     <ShoppingCart className="h-5 w-5" />
                     {totalQuantity > 0 && (
-                      <span className="absolute -top-0.5 -right-0.5 bg-main-600 text-white text-[10px] w-4.5 h-4.5 flex items-center justify-center rounded-full">
+                      <span className="absolute -top-0.5 -right-0.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold shadow-md animate-pulse">
                         {totalQuantity}
                       </span>
                     )}
@@ -501,7 +474,7 @@ const Navbar = () => {
                   {user ? (
                     <Link
                       to="/profile"
-                      className="relative text-gray-600 hover:text-main-600 transition-colors hidden"
+                      className="relative p-2 text-gray-600 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-all duration-200 hidden"
                       aria-label="Profile"
                       title="Profile"
                     >
@@ -510,7 +483,7 @@ const Navbar = () => {
                   ) : (
                     <Link
                       to="/login"
-                      className="relative text-gray-600 hover:text-main-600 transition-colors"
+                      className="px-3 py-1.5 bg-gradient-to-r from-pink-500 to-rose-500 text-white font-bold text-xs rounded-lg hover:from-pink-600 hover:to-rose-600 transition-all duration-200 shadow-md"
                       aria-label={t("auth.signIn")}
                       title={t("auth.signIn")}
                     >
@@ -524,7 +497,7 @@ const Navbar = () => {
         </div>
 
         {/* Main Navigation - Desktop (inside sticky wrapper) */}
-        <nav className="hidden py-0.5 lg:block w-full relative bg-white border-b border-gray-200">
+        <nav className="hidden py-1 lg:block w-full relative bg-gradient-to-b from-white to-pink-50/30">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             {/* Star positioned relative to this wrapper */}
             <div
@@ -567,18 +540,18 @@ const Navbar = () => {
                       key={item.key}
                       ref={(el) => (desktopNavItemsRef.current[idx] = el)}
                       to={item.to}
-                      className={`text-sm font-medium px-2 py-2 transition-colors flex items-center justify-center gap-2 z-10 relative whitespace-nowrap ${
+                      className={`group text-sm font-bold uppercase tracking-wider px-4 py-2.5 transition-all duration-300 flex items-center justify-center gap-2 z-10 relative whitespace-nowrap rounded-lg ${
                         isActive
-                          ? "text-main-500"
-                          : "text-black hover:text-main-500"
+                          ? "text-white bg-gradient-to-r from-pink-500 to-pink-600 shadow-md shadow-pink-200"
+                          : "text-gray-700 hover:text-pink-600 hover:bg-pink-50/80"
                       }`}
                     >
-                      {Icon && item.key === "booking" && (
-                        <div className="bg-main-500 rounded-full p-1">
-                          <Icon className="w-3 h-3 text-white" />
-                        </div>
+                      <span className={`transition-transform duration-300 ${isActive ? "" : "group-hover:scale-110"}`}>
+                        {item.label}
+                      </span>
+                      {isActive && (
+                        <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1/2 h-1 bg-gradient-to-r from-transparent via-white to-transparent rounded-full opacity-80" />
                       )}
-                      {item.label}
                     </Link>
                   );
                 })}
@@ -631,10 +604,7 @@ const Navbar = () => {
               <div className="flex items-center gap-3">
                 {/* Avatar initial */}
                 <div
-                  className="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 text-white text-sm font-black"
-                  style={{
-                    background: "linear-gradient(135deg, #ff2d72, #ff6b9d)",
-                  }}
+                  className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-white text-base font-black bg-gradient-to-br from-pink-500 to-rose-500 shadow-md"
                 >
                   {getUserDisplayName(user).charAt(0).toUpperCase()}
                 </div>
@@ -646,11 +616,7 @@ const Navbar = () => {
                   <Link
                     to="/my-points"
                     onClick={() => setSidebarOpen(false)}
-                    className="inline-flex items-center gap-1 mt-0.5 rounded-full px-2 py-0.5 text-[10px] font-black tracking-wide active:scale-95 transition-transform"
-                    style={{
-                      background: "linear-gradient(135deg, #ff2d72, #ff6b9d)",
-                      color: "white",
-                    }}
+                    className="inline-flex items-center gap-1.5 mt-1 rounded-full px-2.5 py-1 text-[11px] font-black tracking-wide bg-gradient-to-r from-pink-500 to-rose-500 text-white active:scale-95 transition-transform shadow-sm"
                   >
                     <span>{loyaltyRank.icon}</span>
                     <span>{loyaltyPoints.toLocaleString()}</span>
@@ -703,16 +669,16 @@ const Navbar = () => {
               return (
                 <div key={item.key} className="flex flex-col">
                   <div
-                    className={`flex items-center justify-between px-5 py-2.5 transition-colors ${
+                    className={`flex items-center justify-between px-5 py-3 transition-all duration-200 ${
                       isActive
-                        ? "bg-pink-50 border-r-4 border-[#ff4b86]"
-                        : "hover:bg-pink-50/60"
+                        ? "bg-gradient-to-r from-pink-50 to-rose-50 border-r-4 border-pink-500 shadow-sm"
+                        : "hover:bg-pink-50/50"
                     }`}
                   >
                     <Link
                       to={item.to}
                       onClick={() => setSidebarOpen(false)}
-                      className={`flex-1 flex items-center gap-3 py-1 text-sm font-bold uppercase tracking-wider ${isActive ? "text-[#ff4b86]" : "text-gray-700 hover:text-[#ff4b86]"}`}
+                      className={`flex-1 flex items-center gap-3 py-1 text-sm font-bold uppercase tracking-wider transition-colors ${isActive ? "text-pink-600" : "text-gray-700 hover:text-pink-600"}`}
                     >
                       {Icon ? (
                         <div className="bg-main-500 rounded-full p-1 flex-shrink-0">

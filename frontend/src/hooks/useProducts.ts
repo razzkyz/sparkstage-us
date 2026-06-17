@@ -31,7 +31,7 @@ export type Product = ProductSummary;
 
 type ProductVariantRow = {
   id?: unknown;
-  name?: unknown;
+  variant_name?: unknown;
   price?: unknown;
   is_active?: unknown;
   stock?: unknown;
@@ -40,7 +40,6 @@ type ProductVariantRow = {
 
 type ProductImageRow = {
   image_url?: unknown;
-  is_primary?: unknown;
   display_order?: unknown;
 };
 
@@ -68,16 +67,13 @@ function getPrimaryImage(productImages: ProductImageRow[] | undefined) {
   const normalizedImages = productImages
     .map((image) => ({
       image_url: typeof image.image_url === 'string' ? image.image_url : '',
-      is_primary: Boolean(image.is_primary),
       display_order: toNumber(image.display_order, 0),
     }))
     .filter((image) => image.image_url);
 
   if (normalizedImages.length === 0) return undefined;
 
-  const primary = normalizedImages.find((image) => image.is_primary);
-  if (primary) return primary.image_url;
-
+  // Return image with lowest display_order (US DB doesn't have is_primary)
   return normalizedImages.reduce((lowest, current) =>
     lowest.display_order <= current.display_order ? lowest : current
   ).image_url;
@@ -89,19 +85,15 @@ function getAllImages(productImages: ProductImageRow[] | undefined) {
   const normalizedImages = productImages
     .map((image) => ({
       image_url: typeof image.image_url === 'string' ? image.image_url : '',
-      is_primary: Boolean(image.is_primary),
       display_order: toNumber(image.display_order, 0),
     }))
     .filter((image) => image.image_url);
 
   if (normalizedImages.length === 0) return [];
 
-  // Sort: primary first, then by display_order
+  // Sort by display_order (US DB doesn't have is_primary)
   return normalizedImages
-    .sort((a, b) => {
-      if (a.is_primary !== b.is_primary) return a.is_primary ? -1 : 1;
-      return a.display_order - b.display_order;
-    })
+    .sort((a, b) => a.display_order - b.display_order)
     .map((img) => img.image_url);
 }
 
@@ -131,7 +123,7 @@ function transformProductSummary(row: ProductRow): ProductSummary {
     if (available > 0 && price >= 0 && price < defaultVariantPrice) {
       defaultVariantPrice = price;
       defaultVariantId = toNumber(variant.id, 0);
-      defaultVariantName = typeof variant.name === 'string' ? variant.name : String(variant.name ?? '');
+      defaultVariantName = typeof variant.variant_name === 'string' ? variant.variant_name : String(variant.variant_name ?? '');
     }
   }
 
@@ -191,8 +183,8 @@ async function fetchProductSummaries(signal?: AbortSignal) {
             name,
             description,
             categories(slug, is_active),
-            product_images(image_url, is_primary, display_order),
-            product_variants(id, name, price, is_active, stock, reserved_stock)
+            product_images(image_url, display_order),
+            product_variants(id, variant_name, price, is_active, stock, reserved_stock)
           `
           )
           .abortSignal(timeoutSignal)
@@ -233,7 +225,7 @@ async function fetchProductPickerOptions(signal?: AbortSignal) {
             id,
             name,
             categories(slug, is_active),
-            product_images(image_url, is_primary, display_order),
+            product_images(image_url, display_order),
             product_variants(price, is_active)
           `
           )

@@ -15,7 +15,6 @@ type Variant = {
 
 type ProductImageRow = {
   image_url: string;
-  is_primary: boolean;
   display_order: number;
 };
 
@@ -39,8 +38,8 @@ export async function fetchProductDetail(numericId: number, signal: AbortSignal)
           description,
           categories(name),
           image_url,
-          product_images(image_url, is_primary, display_order),
-          product_variants(id, name, price, attributes, is_active, stock, reserved_stock)
+          product_images(image_url, display_order),
+          product_variants(id, variant_name, price, attributes, is_active, stock, reserved_stock)
         `
     )
     .abortSignal(signal)
@@ -58,15 +57,12 @@ export async function fetchProductDetail(numericId: number, signal: AbortSignal)
   const productImages = ((data as { product_images?: unknown[] }).product_images || []) as ProductImageRow[];
   const sortedProductImages = productImages
     .slice()
-    .sort((a, b) => {
-      if (a.is_primary !== b.is_primary) return a.is_primary ? -1 : 1;
-      return a.display_order - b.display_order;
-    });
+    .sort((a, b) => a.display_order - b.display_order); // Sort by display_order only
   const imageUrls = sortedProductImages.map((img) => img.image_url).filter(Boolean);
   const primaryImageUrl = imageUrls[0] ?? legacyProductImage ?? undefined;
   const variants = ((data as { product_variants?: unknown[] }).product_variants || []) as {
     id: number;
-    name: string;
+    variant_name: string;
     price: string | number | null;
     attributes: Record<string, unknown> | null;
     is_active: boolean | null;
@@ -84,7 +80,7 @@ export async function fetchProductDetail(numericId: number, signal: AbortSignal)
       const size = typeof v.attributes?.size === 'string' ? v.attributes.size : undefined;
       return {
         id: Number(v.id),
-        name: String(v.name),
+        name: String(v.variant_name),
         price: Number.isFinite(price) ? price : 0,
         available,
         imageUrl: imageUrl ?? primaryImageUrl,

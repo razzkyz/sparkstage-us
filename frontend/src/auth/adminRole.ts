@@ -21,7 +21,7 @@ export async function lookupAdminRole(
   try {
     const { data, error } = await supabase
       .from('user_role_assignments')
-      .select('role_name')
+      .select('role')
       .eq('user_id', userId)
       .abortSignal(signal);
 
@@ -30,7 +30,7 @@ export async function lookupAdminRole(
     }
 
     const isAdmin =
-      data?.some((row) => ADMIN_ROLES.has(String(row.role_name ?? '').toLowerCase())) ?? false;
+      data?.some((row) => ADMIN_ROLES.has(String(row.role ?? '').toLowerCase())) ?? false;
     return { ok: true, isAdmin };
   } catch (error) {
     const isTransient =
@@ -59,7 +59,7 @@ export async function lookupUserRole(
   try {
     const { data, error } = await supabase
       .from('user_role_assignments')
-      .select('role_name')
+      .select('role')
       .eq('user_id', userId)
       .abortSignal(signal);
 
@@ -67,7 +67,7 @@ export async function lookupUserRole(
       throw error;
     }
 
-    const role = data?.[0]?.role_name?.toLowerCase();
+    const role = data?.[0]?.role?.toLowerCase();
     return { ok: true, role };
   } catch (error) {
     const isTransient =

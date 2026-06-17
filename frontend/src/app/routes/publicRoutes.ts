@@ -7,9 +7,7 @@ const Events = lazy(() => import("../../pages/Events"));
 const SparkClub = lazy(() => import("../../pages/SparkClub"));
 const CharmBar = lazy(() => import("../../pages/CharmBar"));
 const News = lazy(() => import("../../pages/News"));
-const JourneySelectionPage = lazy(
-  () => import("../../pages/JourneySelectionPage"),
-);
+// BOOKING REMOVED - US version e-commerce only
 const ProductDetailPage = lazy(() => import("../../pages/ProductDetailPage"));
 const RetailProductDetailPage = lazy(() => import("../../pages/RetailProductDetailPage"));
 const DressingRoomLandingPage = lazy(
@@ -22,7 +20,6 @@ const DressingRoomCollectionPage = lazy(
   () => import("../../pages/DressingRoomCollectionPage"),
 );
 const BeautyPage = lazy(() => import("../../pages/BeautyPage"));
-const Booking = lazy(() => import("../../pages/Booking"));
 const RetailShopPage = lazy(() => import("../../pages/RetailShopPage"));
 
 export const publicRouteConfigs: AppRouteConfig[] = [
@@ -36,8 +33,7 @@ export const publicRouteConfigs: AppRouteConfig[] = [
   { path: "spark-club", Page: SparkClub },
   { path: "charm-bar", Page: CharmBar },
   { path: "news", Page: News },
-  { path: "journey", Page: JourneySelectionPage },
-  { path: "booking", Page: Booking },
+  // BOOKING ROUTES REMOVED - US version e-commerce only
   { path: "shop/retail", Page: RetailShopPage },
   { path: "shop/retail/product/:productId", Page: RetailProductDetailPage },
 ];
