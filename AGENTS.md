@@ -2,11 +2,11 @@
 
 ## Purpose
 
-Spark Stage is a fullstack booking ticket and commerce app.
+Spark Stage is a fullstack e-commerce retail platform.
 
 - Frontend: Vite + React + TypeScript in `frontend/`
 - Backend: Supabase Postgres + Edge Functions in `supabase/`
-- Payments: DOKU for tickets and product orders
+- Payments: DOKU for product orders
 
 ## Repo Map
 
@@ -51,6 +51,15 @@ Spark Stage is a fullstack booking ticket and commerce app.
   - Rollback scripts: Available for instant revert if needed ✅
   - **Cost savings:** Rp 504K - 2.3M per year (84-96% reduction) 💰
   - **Next Step:** Deploy upload code when ready (see deployment guide)
+- **R2 Migration for US Version (NEW 2026-06-17):**
+  - Status: 🎯 Ready to implement
+  - Guide: `R2_MIGRATION_US_VERSION.md`
+  - Edge Function: `supabase/functions/r2-upload-url/` ✅ (already exists)
+  - Environment: `.env.local` configured with service role key ✅
+  - Strategy: Skip ImageKit entirely, use R2 from day 1
+  - CORS fix: `CORS_FIX_COMPLETE.md`
+  - Estimated time: 2-3 hours for full migration
+  - Cost savings: $500-2,000/year vs ImageKit
 - Stock Opname implementation: `STOCK_OPNAME_IMPLEMENTATION_SUMMARY.md`
 - Stock Opname deployment guide: `READY_TO_DEPLOY.md`
 - Stock Opname finalize workflow: `docs/runbooks/STOCK_OPNAME_FINALIZE.md`
@@ -165,7 +174,6 @@ npm run supabase:functions:serve
 
 ## Risk Zones
 
-- Ticket payment flow: `create-doku-ticket-checkout`, `doku-webhook`, `sync-doku-ticket-status`
 - Product payment flow: `create-doku-product-checkout`, `sync-doku-product-status`
 - Shared payment logic: `supabase/functions/_shared/payment-effects.ts`
 - WhatsApp invoice sending: `supabase/functions/send-whatsapp-invoice`, `supabase/functions/_shared/fonnte.ts`
@@ -175,9 +183,8 @@ npm run supabase:functions:serve
 
 ## Auth & Roles
 
-Current roles: `admin`, `super_admin`, `starguide`, `kasir`
+Current roles: `admin`, `super_admin`, `kasir`
 - **Admin**: Full access to all admin features
-- **StarGuide**: Ticket scanning only (entrance management)
 - **Kasir**: Sales dashboard + product QR scanning (read-only)
 
 Role assignment: `user_role_assignments` table, managed via `frontend/src/auth/adminRole.ts`
