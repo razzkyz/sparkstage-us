@@ -473,7 +473,7 @@ const Shop = () => {
 
           <div className="flex justify-center mb-6 mt-4">
             <img
-              src="/images/landing/glam-logo.webp"
+              src="/images/landing/Glam.webp"
               alt="Glam"
               className="h-16 sm:h-20 md:h-24 lg:h-32 object-contain drop-shadow-sm"
             />
