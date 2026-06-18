@@ -3,113 +3,127 @@
 **Date:** 2026-06-18  
 **Status:** ✅ Complete
 
+## Summary
+
+Shop page (`/shop`) sekarang menampilkan **ONLY Glam products** dengan filtering yang sama seperti BeautyPage (`/beauty`). Tidak ada tab navigator, langsung tampilkan produk Glam saja.
+
 ## Changes Made
 
-Shop page telah diubah untuk hanya menampilkan **Glam** section saja. Charm Bar dan Spark Club telah dinonaktifkan sementara.
+### 1. Navbar - SHOP Link (`frontend/src/components/Navbar.tsx`)
 
-### 1. Shop Page Navigator (`frontend/src/pages/Shop.tsx`)
+**Result:**
+- Desktop: Click "SHOP" → langsung ke `/shop`
+- Mobile sidebar: Click "SHOP" → langsung ke `/shop`  
+- Dropdown menu disabled (commented out)
+- Tidak ada sub-menu Glam/Charm/Spark
 
-**Before:**
-- 3 tabs: Glam, Charm Bar, Spark Club
-- Spark Club sebagai active tab
+### 2. Shop Page (`frontend/src/pages/Shop.tsx`)
 
-**After:**
-- 1 tab: Glam (active)
-- Charm Bar dan Spark Club di-comment out
-- Logo diubah dari "SPARK CLUB" ke "glam-logo.webp"
+**Section Navigator:**
+- ❌ Removed: Tab navigator (Glam, Charm Bar, Spark Club)
+- ✅ Langsung tampilkan logo Glam saja
 
-### 2. Navbar Desktop & Mobile (`frontend/src/components/Navbar.tsx`)
-
-**Before:**
-- SHOP menu dengan dropdown: Glam Room, Charm Bar, Spark Club
-- Link ke `/shop`
-
-**After:**
-- SHOP menu langsung ke `/beauty` (Glam page)
-- Dropdown menu di-comment out
-- Mobile sidebar: link langsung ke `/beauty`, tidak ada dropdown
-
-### 3. Navigation Items Update
-
-**Before:**
+**Product Filtering:**
 ```typescript
-{ key: "shop", label: "SHOP", to: "/shop", icon: ShoppingBag }
+const GLAM_CATEGORY_SLUGS = new Set([
+  "makeup",
+  "eyewear",
+  "glitter",
+  "headliner",
+  "starglitter",
+  "star-glitter",
+  "popsocket",
+  "pop-socket",
+  "popsockets",
+  "body-glitter",
+]);
+
+// Filter logic: SAME as BeautyPage
+const glamProducts = products.filter(
+  (p) =>
+    (p.categorySlug != null && GLAM_CATEGORY_SLUGS.has(p.categorySlug)) ||
+    p.name.toLowerCase().includes("speckles") ||
+    p.name.toLowerCase().includes("patch"),
+);
 ```
 
-**After:**
+**Product Sorting:**
 ```typescript
-{ key: "shop", label: "SHOP", to: "/beauty", icon: ShoppingBag }
-```
-
-## Files Modified
-
-1. `frontend/src/pages/Shop.tsx`
-   - Section navigator: hanya Glam yang tampil
-   - Logo header: dari SPARK CLUB → Glam
-
-2. `frontend/src/components/Navbar.tsx`
-   - Main nav: SHOP → `/beauty`
-   - Mobile sidebar: SHOP → `/beauty`
-   - Dropdown disabled (commented out)
-   - State `shopDropdownOpen` disabled
-
-## User Experience
-
-### Desktop View
-- Click "SHOP" di navbar → langsung ke Glam page (`/beauty`)
-- Tidak ada dropdown menu
-
-### Mobile View  
-- Click "SHOP" di sidebar → langsung ke Glam page (`/beauty`)
-- Tidak ada sub-menu
-
-### Shop Page (`/shop`)
-- Hanya menampilkan 1 tab: **Glam** (active)
-- Charm Bar dan Spark Club tidak tampil
-
-## Product Filtering
-
-Products yang ditampilkan di Shop page sudah difilter:
-```typescript
-const nonCharmBarProducts = products.filter((p) => {
-  const nameLower = p.name.toLowerCase();
-  
-  // Filter out Charm Bar products
-  if (nameLower.includes("headliner") || 
-      nameLower.includes("pop socket") || 
-      nameLower.includes("lucky charm") || 
-      nameLower.includes("charm") || 
-      nameLower.includes("speckles")) {
-    return false;
-  }
-  
-  // Filter by category slug
-  if (!p.categorySlug) return true;
-  const slugLower = p.categorySlug.toLowerCase();
-  return !CHARM_BAR_CATEGORY_SLUGS.has(slugLower) && 
-         !GLAM_CATEGORY_SLUGS.has(slugLower);
+// Speckles/Patch products muncul duluan (same as BeautyPage)
+filtered.sort((a, b) => {
+  const aIsSpeckles = a.name.toLowerCase().includes("speckles") || 
+                      a.name.toLowerCase().includes("patch");
+  const bIsSpeckles = b.name.toLowerCase().includes("speckles") ||
+                      b.name.toLowerCase().includes("patch");
+  if (aIsSpeckles && !bIsSpeckles) return -1;
+  if (!aIsSpeckles && bIsSpeckles) return 1;
+  return 0;
 });
 ```
 
-## Re-enabling Other Sections
+## Product Categories Displayed
 
-Untuk mengaktifkan kembali Charm Bar atau Spark Club, uncomment kode yang di-comment di:
+**Glam Products:**
+- ✅ Makeup
+- ✅ Eyewear  
+- ✅ Glitter
+- ✅ Headliner
+- ✅ Popsocket
+- ✅ Body Glitter
+- ✅ Star Glitter
+- ✅ Speckles (Berry Love, Glam Night, Gold, Silver)
+- ✅ Patches
 
-1. `frontend/src/pages/Shop.tsx` - Section navigator tabs
-2. `frontend/src/components/Navbar.tsx` - Dropdown menu & state
+**Not Displayed:**
+- ❌ Charm Bar products (Lucky Charms, dll)
+- ❌ Spark Club products (other categories)
+
+## User Flow
+
+1. User click "SHOP" di navbar
+2. Navigate ke `/shop`
+3. Lihat logo "Glam" di atas
+4. Lihat produk Glam saja, dengan Speckles products di urutan paling atas
+5. Kategori filter tetap ada (All Products, BANGLE, BRACELET, GLASSES, dst)
+
+## Files Modified
+
+1. **`frontend/src/components/Navbar.tsx`**
+   - Main nav item: SHOP → `/shop` (tetap)
+   - Mobile sidebar: SHOP → `/shop` (tetap)
+   - Dropdown disabled
+
+2. **`frontend/src/pages/Shop.tsx`**
+   - Navigator tabs removed
+   - Logo: "SPARK CLUB" → "glam-logo.webp"
+   - Filter logic: Copy dari BeautyPage
+   - Sort logic: Speckles products first
 
 ## Build Status
 
-✅ `npm run build` - Success (1m 15s)
+✅ `npm run build` - Success (25.66s)
 
-## Related Pages
+## Testing Checklist
 
-- `/beauty` - Glam Room (ACTIVE)
-- `/charm-bar` - Charm Bar (route masih ada, tapi tidak linked dari Shop)
-- `/shop` - Spark Club (route masih ada, tapi tidak linked dari Shop)
+- [x] Navbar SHOP link → `/shop` ✅
+- [x] Shop page hanya tampilkan Glam products ✅
+- [x] Speckles products muncul paling atas ✅
+- [x] Tidak ada Charm Bar products ✅
+- [x] Tidak ada Spark Club products (non-Glam) ✅
+- [x] Logo Glam tampil di atas ✅
+- [x] Kategori filter masih berfungsi ✅
+- [x] Build successful ✅
+
+## Related Files
+
+- `frontend/src/pages/BeautyPage.tsx` - Reference untuk filter logic
+- `frontend/src/pages/Shop.tsx` - Main shop page
+- `frontend/src/components/Navbar.tsx` - Navigation
 
 ## Notes
 
-- Routes untuk Charm Bar dan Spark Club masih aktif, hanya navigation link yang dihidden
-- User masih bisa akses langsung via URL jika tahu route-nya
-- Untuk benar-benar disable, perlu hapus routes di `App.tsx`
+- Filter logic 100% sama dengan BeautyPage
+- Speckles products (4 items) akan selalu muncul paling atas
+- Routes untuk `/beauty`, `/charm-bar` masih aktif (bisa diakses langsung via URL)
+- Tidak ada tab navigator di Shop page
+
