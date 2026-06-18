@@ -225,7 +225,6 @@ const Shop = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { showToast } = useToast();
-  const firstCategoryRef = useRef<HTMLButtonElement>(null);
   const productsRef = useRef<HTMLDivElement>(null);
   const {
     activeCategory,
@@ -268,8 +267,11 @@ const Shop = () => {
     }
   }, [error, showToast]);
 
-  const { parentCategories, childCategoriesByParentSlug, allowedSlugMap } =
-    useMemo(() => buildShopCategoryIndex(categories), [categories]);
+  // Only extract allowedSlugMap - other category index fields disabled
+  const { allowedSlugMap } = useMemo(
+    () => buildShopCategoryIndex(categories),
+    [categories],
+  );
 
   const GLAM_CATEGORY_SLUGS = new Set([
     "makeup",
@@ -332,15 +334,8 @@ const Shop = () => {
     ],
   );
 
-  const activeSubcategories = useMemo(() => {
-    if (activeCategory === "all") return [];
-    return childCategoriesByParentSlug.get(activeCategory) ?? [];
-  }, [activeCategory, childCategoriesByParentSlug]);
-
-  const activeSubSubcategories = useMemo(() => {
-    if (activeSubcategory === "all") return [];
-    return childCategoriesByParentSlug.get(activeSubcategory) ?? [];
-  }, [activeSubcategory, childCategoriesByParentSlug]);
+  // Categories disabled - only showing "All Products" filter
+  // Subcategories and sub-subcategories removed
 
   const handleAddToCart = (product: Product) => {
     if (!user) {
@@ -368,20 +363,7 @@ const Shop = () => {
     }
   };
 
-  const scrollToCategory = (index: number) => {
-    const container = document.getElementById("category-scroll-container");
-    if (container) {
-      const buttons = container.querySelectorAll("button");
-      const targetButton = buttons[index];
-      if (targetButton) {
-        targetButton.scrollIntoView({
-          behavior: "smooth",
-          inline: "center",
-          block: "nearest",
-        });
-      }
-    }
-  };
+  // Category scroll removed - only "All Products" shown
 
   const scrollToProducts = () => {
     if (productsRef.current) {
@@ -522,8 +504,9 @@ const Shop = () => {
               </div>
 
               <div className="relative">
-                <div className="flex items-center">
-                  <button
+                <div className="flex items-center justify-center">
+                  {/* Category scroll buttons - DISABLED (only All Products) */}
+                  {/* <button
                     type="button"
                     onClick={() => {
                       const container = document.getElementById(
@@ -536,11 +519,11 @@ const Shop = () => {
                     className="absolute left-0 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 transition-all duration-200 border border-gray-200 hover:shadow-xl hover:scale-105 md:p-2.5 md:block hidden -mt-2"
                   >
                     <ChevronLeft className="w-3 h-3 md:w-4 md:h-4 text-gray-700" />
-                  </button>
+                  </button> */}
 
                   <div
                     id="category-scroll-container"
-                    className="flex space-x-4 md:space-x-6 overflow-x-auto w-full pb-0 hide-scrollbar px-4 md:px-12 justify-start md:justify-center scroll-smooth"
+                    className="flex space-x-4 md:space-x-6 overflow-x-auto w-full pb-0 hide-scrollbar px-4 md:px-12 justify-center scroll-smooth"
                   >
                     <button
                       type="button"
@@ -550,7 +533,6 @@ const Shop = () => {
                           subcategory: null,
                           subsubcategory: null,
                         });
-                        scrollToCategory(0);
                       }}
                       className={`text-sm whitespace-nowrap pb-3 border-b-2 px-2 ux-transition-color ${
                         activeCategory === "all"
@@ -560,7 +542,8 @@ const Shop = () => {
                     >
                       All Products
                     </button>
-                    {parentCategories.map((category, index) => (
+                    {/* Other categories disabled - only showing All Products */}
+                    {/* {parentCategories.map((category, index) => (
                       <button
                         type="button"
                         key={category.slug}
@@ -581,10 +564,10 @@ const Shop = () => {
                       >
                         {category.name}
                       </button>
-                    ))}
+                    ))} */}
                   </div>
 
-                  <button
+                  {/* <button
                     type="button"
                     onClick={() => {
                       const container = document.getElementById(
@@ -597,11 +580,12 @@ const Shop = () => {
                     className="absolute right-0 z-10 bg-white shadow-lg rounded-full p-2 hover:bg-gray-50 transition-all duration-200 border border-gray-200 hover:shadow-xl hover:scale-105 md:p-2.5 md:block hidden -mt-2"
                   >
                     <ChevronRight className="w-3 h-3 md:w-4 md:h-4 text-gray-700" />
-                  </button>
+                  </button> */}
                 </div>
               </div>
 
-              {activeCategory !== "all" && activeSubcategories.length > 0 ? (
+              {/* Subcategory filters - DISABLED (only All Products) */}
+              {/* {activeCategory !== "all" && activeSubcategories.length > 0 ? (
                 <div className="w-full justify-center flex overflow-x-auto hide-scrollbar pb-2 px-2">
                   <div className="flex gap-1.5 md:gap-2">
                     <button
@@ -641,9 +625,10 @@ const Shop = () => {
                     ))}
                   </div>
                 </div>
-              ) : null}
+              ) : null} */}
 
-              {activeCategory !== "all" &&
+              {/* Sub-subcategory filters - DISABLED (only All Products) */}
+              {/* {activeCategory !== "all" &&
               activeSubcategory !== "all" &&
               activeSubSubcategories.length > 0 ? (
                 <div className="w-full justify-center flex overflow-x-auto hide-scrollbar pb-3 px-2">
@@ -680,7 +665,7 @@ const Shop = () => {
                     ))}
                   </div>
                 </div>
-              ) : null}
+              ) : null} */}
             </div>
           </div>
 
