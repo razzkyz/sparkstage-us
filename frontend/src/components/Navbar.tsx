@@ -52,7 +52,7 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [shopDropdownOpen, setShopDropdownOpen] = useState(false);
+  // const [shopDropdownOpen, setShopDropdownOpen] = useState(false); // Disabled - only Glam active
   const [scannerOpen, setScannerOpen] = useState(false);
 
   const desktopNavItemsRef = useRef<
@@ -676,7 +676,7 @@ const Navbar = () => {
                     }`}
                   >
                     <Link
-                      to={item.to}
+                      to="/shop"
                       onClick={() => setSidebarOpen(false)}
                       className={`flex-1 flex items-center gap-3 py-1 text-sm font-bold uppercase tracking-wider transition-colors ${isActive ? "text-pink-600" : "text-gray-700 hover:text-pink-600"}`}
                     >
@@ -691,7 +691,8 @@ const Navbar = () => {
                       )}
                       {item.label}
                     </Link>
-                    <button
+                    {/* Dropdown disabled - only Glam available */}
+                    {/* <button
                       type="button"
                       onClick={(e) => {
                         e.preventDefault();
@@ -712,10 +713,10 @@ const Navbar = () => {
                           d="M19 9l-7 7-7-7"
                         />
                       </svg>
-                    </button>
+                    </button> */}
                   </div>
-                  {/* Dropdown Items */}
-                  <div
+                  {/* Dropdown Items - DISABLED (only Glam active) */}
+                  {/* <div
                     className={`overflow-hidden transition-all duration-300 ${shopDropdownOpen ? "max-h-48" : "max-h-0"}`}
                   >
                     <div className="bg-gray-50 flex flex-col py-1.5 border-y border-gray-100">
@@ -741,7 +742,7 @@ const Navbar = () => {
                         Spark Club
                       </Link>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               );
             }

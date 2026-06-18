@@ -21,7 +21,7 @@ import { queryKeys } from "../lib/queryKeys";
 import { buildShopCategoryIndex } from "./shop/buildShopCategoryIndex";
 import { filterShopProducts } from "./shop/filterShopProducts";
 import { useShopFilters } from "./shop/useShopFilters";
-import { CHARM_BAR_CATEGORY_SLUGS } from "./shop/charmBarSlugs";
+// import { CHARM_BAR_CATEGORY_SLUGS } from "./shop/charmBarSlugs"; // Not used - only Glam products
 import { AppLoadingScreen } from "../app/AppLoadingScreen";
 import { buildImageKitThumbUrl } from "../lib/imagekit";
 
@@ -281,50 +281,48 @@ const Shop = () => {
     "popsocket",
     "pop-socket",
     "popsockets",
+    "body-glitter",
   ]);
 
-  const nonCharmBarProducts = useMemo(
+  // Filter to show ONLY Glam products (same logic as BeautyPage)
+  const glamProducts = useMemo(
     () =>
-      products.filter((p) => {
-        const nameLower = p.name.toLowerCase();
-
-        // Filter out specific products by name (in case they don't have a category slug)
-        if (
-          nameLower.includes("headliner") ||
-          nameLower.includes("pop socket") ||
-          nameLower.includes("popsocket") ||
-          nameLower.includes("lucky charm") ||
-          nameLower.includes("lucky") ||
-          nameLower.includes("lucky-charm") ||
-          nameLower.includes("charm") ||
-          nameLower.includes("speckles")
-        ) {
-          return false;
-        }
-        if (!p.categorySlug) return true;
-        
-        const slugLower = p.categorySlug.toLowerCase();
-        return (
-          !CHARM_BAR_CATEGORY_SLUGS.has(slugLower) &&
-          !GLAM_CATEGORY_SLUGS.has(slugLower)
-        );
-      }),
+      products.filter(
+        (p) =>
+          (p.categorySlug != null && GLAM_CATEGORY_SLUGS.has(p.categorySlug)) ||
+          p.name.toLowerCase().includes("speckles") ||
+          p.name.toLowerCase().includes("patch"),
+      ),
     [products],
   );
 
   const filteredProducts = useMemo(
-    () =>
-      filterShopProducts({
-        products: nonCharmBarProducts,
+    () => {
+      const filtered = filterShopProducts({
+        products: glamProducts,
         activeCategory,
         activeSubcategory,
         activeSubSubcategory,
         searchQuery: deferredSearchQuery,
         allowedSlugMap,
         bestSellerIds: charmBarSettings?.best_seller_charms || [],
-      }),
+      });
+
+      // Sort to put Speckles/Patch products first (same as BeautyPage)
+      return filtered.sort((a, b) => {
+        const aIsSpeckles =
+          a.name.toLowerCase().includes("speckles") ||
+          a.name.toLowerCase().includes("patch");
+        const bIsSpeckles =
+          b.name.toLowerCase().includes("speckles") ||
+          b.name.toLowerCase().includes("patch");
+        if (aIsSpeckles && !bIsSpeckles) return -1;
+        if (!aIsSpeckles && bIsSpeckles) return 1;
+        return 0;
+      });
+    },
     [
-      nonCharmBarProducts,
+      glamProducts,
       activeCategory,
       activeSubcategory,
       activeSubSubcategory,
@@ -458,48 +456,25 @@ const Shop = () => {
         </header> */}
 
         <main className="max-w-7xl mx-auto px-6 lg:px-8 py-5">
-          {/* ── Shop Section Navigator ──────────────────────────── */}
-          <div className="mb-6">
+          {/* ── Shop Section Navigator - DISABLED (Only Glam products shown) ── */}
+          {/* <div className="mb-6">
             <div className="flex gap-3 sm:gap-4 justify-center flex-nowrap w-full px-2 sm:px-0 pb-2 -mb-2">
-              {/* Glam — current page (active) */}
               <Link
                 to="/beauty"
-                className="flex-shrink-0 flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full border-2 border-gray-200 text-gray-600 text-[11px] sm:text-sm font-bold uppercase tracking-wider hover:border-[#ff4b86] hover:text-[#ff4b86] hover:shadow-md transition-all duration-200"
+                className="flex-shrink-0 flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full border-2 border-[#ff4b86] bg-[#ff4b86] text-white text-[11px] sm:text-sm font-bold uppercase tracking-wider shadow-sm"
               >
                 <span className="material-symbols-outlined text-[14px] sm:text-[16px]">
                   face_retouching_natural
                 </span>
                 Glam
               </Link>
-
-              {/* Charm Bar */}
-              <Link
-                to="/charm-bar"
-                className="flex-shrink-0 flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full border-2 border-gray-200 text-gray-600 text-[11px] sm:text-sm font-bold uppercase tracking-wider hover:border-[#ff4b86] hover:text-[#ff4b86] hover:shadow-md transition-all duration-200"
-              >
-                <span className="material-symbols-outlined text-[14px] sm:text-[16px]">
-                  diamond
-                </span>
-                Charm
-              </Link>
-
-              {/* Spark Club */}
-              <Link
-                to="/shop"
-                className="flex-shrink-0 flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full border-2 border-[#ff4b86] bg-[#ff4b86] text-white text-[11px] sm:text-sm font-bold uppercase tracking-wider shadow-sm"
-              >
-                <span className="material-symbols-outlined text-[14px] sm:text-[16px]">
-                  shopping_bag
-                </span>
-                Spark
-              </Link>
             </div>
-          </div>
+          </div> */}
 
           <div className="flex justify-center mb-6 mt-4">
             <img
-              src="/images/landing/SPARK CLUB.webp"
-              alt="Charm Bar"
+              src="/images/landing/glam-logo.webp"
+              alt="Glam"
               className="h-16 sm:h-20 md:h-24 lg:h-32 object-contain drop-shadow-sm"
             />
           </div>
