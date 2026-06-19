@@ -172,12 +172,6 @@ export const DRESSING_ROOM_ADMIN_MENU_SECTIONS: AdminMenuSection[] = [
         path: "/admin/stock-opname",
         highlight: true,
       },
-      {
-        id: "retail-products",
-        label: "Produk Retail (E-Com)",
-        icon: "storefront",
-        path: "/admin/retail-products",
-      },
     ],
   },
   // Dressing Room section removed - US version is e-commerce only (no costume rental)
@@ -215,12 +209,6 @@ export const ADMIN_MENU_SECTIONS: AdminMenuSection[] = [
         path: "/admin/charm-bar-page",
       },
       {
-        id: "venue-reviews",
-        label: "Venue Reviews",
-        icon: "star",
-        path: "/admin/venue-reviews",
-      },
-      {
         id: "loyalty-points",
         label: "Kelola Poin Loyalty",
         icon: "card_giftcard",
@@ -232,12 +220,6 @@ export const ADMIN_MENU_SECTIONS: AdminMenuSection[] = [
         label: "Audit Logs",
         icon: "history",
         path: "/admin/audit-logs",
-      },
-      {
-        id: "divisions",
-        label: "Kelola Divisi",
-        icon: "apartment",
-        path: "/admin/divisions",
       },
     ],
   },
@@ -292,12 +274,6 @@ export const ADMIN_MENU_SECTIONS: AdminMenuSection[] = [
         icon: "fact_check",
         path: "/admin/stock-opname",
         highlight: true,
-      },
-      {
-        id: "retail-products",
-        label: "Produk Retail (E-Com)",
-        icon: "storefront",
-        path: "/admin/retail-products",
       },
     ],
   },

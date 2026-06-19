@@ -91,7 +91,7 @@ export async function fetchProductOrderDetail(orderNumber: string) {
       supabase
         .from('order_product_items')
         .select(
-          'id, quantity, price, subtotal, product_variants(id, name, product_id, products(id, name, image_url, product_images(image_url)))'
+          'id, quantity, price, subtotal, product_variants(id, name, product_id, products(id, name, product_images(image_url, is_primary, display_order)))'
         )
         .eq('order_product_id', orderId)
         .abortSignal(timeoutSignal),

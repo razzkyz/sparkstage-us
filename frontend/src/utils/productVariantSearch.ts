@@ -22,7 +22,7 @@ export async function searchProductVariants(query: string, limit = 12): Promise<
 
   const { data, error } = await supabase
     .from('product_variants')
-    .select('id, name, sku, price, attributes, products!inner ( id, name, image_url )')
+    .select('id, name, sku, price, attributes, products!inner ( id, name, product_images(image_url, is_primary, display_order) )')
     .ilike('name', `%${q}%`)
     .eq('is_active', true)
     .limit(limit);

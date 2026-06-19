@@ -36,6 +36,8 @@ export function getHierarchicalCategoryOptions(
         slug: cat.slug,
         is_active: cat.is_active ?? true,
         parent_id: cat.parent_id ?? null,
+        created_at: null,
+        updated_at: null,
       },
       level,
       hasChildren,

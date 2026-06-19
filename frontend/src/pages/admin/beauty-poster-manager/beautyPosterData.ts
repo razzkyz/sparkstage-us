@@ -33,7 +33,7 @@ export async function fetchBeautyPosterTags(poster: BeautyPosterRow): Promise<Ta
           sku,
           price,
           attributes,
-          products!inner ( id, name, image_url )
+          products!inner ( id, name, product_images(image_url, is_primary, display_order) )
         )
       `
     )

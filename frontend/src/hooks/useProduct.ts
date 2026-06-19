@@ -37,8 +37,7 @@ export async function fetchProductDetail(numericId: number, signal: AbortSignal)
           name,
           description,
           categories(name),
-          image_url,
-          product_images(image_url, display_order),
+          product_images(image_url, display_order, is_primary),
           product_variants(id, name, price, attributes, is_active, stock, reserved_stock)
         `
     )
@@ -53,16 +52,15 @@ export async function fetchProductDetail(numericId: number, signal: AbortSignal)
     throw err;
   }
 
-  const legacyProductImage = (data as { image_url?: string | null }).image_url ?? null;
   const productImages = ((data as { product_images?: unknown[] }).product_images || []) as ProductImageRow[];
   const sortedProductImages = productImages
     .slice()
-    .sort((a, b) => a.display_order - b.display_order); // Sort by display_order only
+    .sort((a, b) => a.display_order - b.display_order);
   const imageUrls = sortedProductImages.map((img) => img.image_url).filter(Boolean);
-  const primaryImageUrl = imageUrls[0] ?? legacyProductImage ?? undefined;
+  const primaryImageUrl = imageUrls[0] ?? undefined;
   const variants = ((data as { product_variants?: unknown[] }).product_variants || []) as {
     id: number;
-    variant_name: string;
+    name: string;
     price: string | number | null;
     attributes: Record<string, unknown> | null;
     is_active: boolean | null;
@@ -80,7 +78,7 @@ export async function fetchProductDetail(numericId: number, signal: AbortSignal)
       const size = typeof v.attributes?.size === 'string' ? v.attributes.size : undefined;
       return {
         id: Number(v.id),
-        name: String(v.variant_name),
+        name: String(v.name),
         price: Number.isFinite(price) ? price : 0,
         available,
         imageUrl: imageUrl ?? primaryImageUrl,

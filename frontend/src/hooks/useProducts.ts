@@ -31,7 +31,7 @@ export type Product = ProductSummary;
 
 type ProductVariantRow = {
   id?: unknown;
-  variant_name?: unknown;
+  name?: unknown;
   price?: unknown;
   is_active?: unknown;
   stock?: unknown;
@@ -123,7 +123,7 @@ function transformProductSummary(row: ProductRow): ProductSummary {
     if (available > 0 && price >= 0 && price < defaultVariantPrice) {
       defaultVariantPrice = price;
       defaultVariantId = toNumber(variant.id, 0);
-      defaultVariantName = typeof variant.variant_name === 'string' ? variant.variant_name : String(variant.variant_name ?? '');
+      defaultVariantName = typeof variant.name === 'string' ? variant.name : String(variant.name ?? '');
     }
   }
 

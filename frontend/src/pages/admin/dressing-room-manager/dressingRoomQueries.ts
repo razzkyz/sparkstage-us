@@ -12,7 +12,11 @@ type JoinedProduct = {
   id: number;
   name: string;
   slug: string;
-  image_url: string | null;
+  product_images: Array<{
+    image_url: string;
+    is_primary: boolean;
+    display_order: number;
+  }>;
 };
 
 type JoinedVariant = {
@@ -66,7 +70,7 @@ export async function fetchDressingRoomLooks(collectionId: number): Promise<Dres
     .from('dressing_room_look_items')
     .select(
       `id, look_id, product_variant_id, label, sort_order,
-        product_variants!inner ( id, name, sku, price, products!inner ( id, name, slug, image_url ) )`
+        product_variants!inner ( id, name, sku, price, products!inner ( id, name, slug, product_images(image_url, is_primary, display_order) ) )`
     )
     .in('look_id', lookIds)
     .order('sort_order', { ascending: true });
@@ -98,7 +102,9 @@ export async function fetchDressingRoomLooks(collectionId: number): Promise<Dres
                   id: product.id,
                   name: product.name,
                   slug: product.slug,
-                  image_url: product.image_url,
+                  image_url: product.product_images.find(img => img.is_primary)?.image_url 
+                    ?? product.product_images[0]?.image_url 
+                    ?? null,
                 }
               : null,
           }

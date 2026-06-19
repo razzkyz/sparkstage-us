@@ -24,9 +24,6 @@ const TicketsManagement = lazy(
 );
 const StoreInventory = lazy(() => import("../../pages/admin/StoreInventory"));
 const StageManager = lazy(() => import("../../pages/admin/StageManager"));
-const DivisionManager = lazy(
-  () => import("../../pages/admin/divisions/DivisionManager"),
-);
 const StageAnalytics = lazy(() => import("../../pages/admin/StageAnalytics"));
 const StageBulkQR = lazy(() => import("../../pages/admin/StageBulkQR"));
 const OrderTicket = lazy(() => import("../../pages/admin/OrderTicket"));
@@ -59,19 +56,12 @@ const BeautyPosterManager = lazy(
 );
 // EVENT BOOKINGS REMOVED - US version e-commerce only
 // const EventBookings = lazy(() => import("../../pages/admin/EventBookings"));
-const VenueReviewsAdmin = lazy(
-  () => import("../../pages/admin/VenueReviewsAdmin"),
-);
 const TabletQRScanner = lazy(() => import("../../pages/admin/TabletQRScanner"));
 const RentalScannerPage = lazy(() => import("../../pages/admin/RentalScannerPage"));
 const SalesReport = lazy(() => import("../../pages/admin/SalesReportSimple"));
 const AuditLogsPage = lazy(() => import("../../pages/admin/AuditLogsPage"));
 const AdminPointsManager = lazy(
   () => import("../../pages/admin/AdminPointsManager"),
-);
-
-const RetailProductManager = lazy(
-  () => import("../../pages/admin/RetailProductManager"),
 );
 
 const StarGuideSockReport = lazy(
@@ -123,12 +113,9 @@ export const adminRouteConfigs: AppRouteConfig[] = [
   // EVENT BOOKINGS REMOVED - US version e-commerce only
   { path: "/admin/tablet-qr-scanner", Page: TabletQRScanner },
   { path: "/admin/rental-scanner", Page: RentalScannerPage },
-  { path: "/admin/venue-reviews", Page: VenueReviewsAdmin },
   { path: "/admin/sales-report", Page: SalesReport },
   { path: "/admin/audit-logs", Page: AuditLogsPage },
   { path: "/admin/loyalty-points", Page: AdminPointsManager },
-  { path: "/admin/divisions", Page: DivisionManager },
-  { path: "/admin/retail-products", Page: RetailProductManager },
   { path: "/admin/sock-report", Page: StarGuideSockReport },
   { path: "/admin/stock-opening", Page: StockOpening },
   { path: "/admin/stock-opening/:openingId", Page: StockOpeningDetail },
