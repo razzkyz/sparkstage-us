@@ -36,6 +36,8 @@ export function InventoryToolbar(props: InventoryToolbarProps) {
         {isFetching && <span className="text-xs font-medium text-gray-500 font-sans">Updating...</span>}
       </div>
       <div className="flex flex-wrap items-center gap-3">
+        {/* Category filter temporarily hidden - requires categories join which causes RLS issues */}
+        {/*
         <select
           className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary font-sans cursor-pointer"
           value={categoryFilter}
@@ -48,6 +50,7 @@ export function InventoryToolbar(props: InventoryToolbarProps) {
             </option>
           ))}
         </select>
+        */}
         <select
           className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary font-sans cursor-pointer"
           value={stockFilter}

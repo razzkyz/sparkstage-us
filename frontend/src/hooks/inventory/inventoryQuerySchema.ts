@@ -1,7 +1,6 @@
 import type { InventoryListFilters, ProductRow } from './inventoryTypes';
 
 export const getInventorySelect = (categoryFilter: string) => {
-  const isFilteringByCategory = categoryFilter.trim() !== '' && categoryFilter.trim() !== 'uncategorized';
   return `
   id,
   name,
@@ -53,13 +52,14 @@ export const applyInventoryFilters = <T>(query: T, filters: InventoryListFilters
     next = next.or(`name.ilike.%${normalizedSearch}%,sku.ilike.%${normalizedSearch}%`) as typeof next;
   }
 
+  // Category filtering temporarily disabled since we removed categories from query
+  // to avoid RLS issues. This will be fixed in a future update.
   const normalizedCategory = filters.categoryFilter.trim();
   if (normalizedCategory) {
     if (normalizedCategory === 'uncategorized') {
       next = next.is('category_id', null) as typeof next;
-    } else {
-      next = next.eq('categories.slug', normalizedCategory) as typeof next;
     }
+    // Skip slug-based filtering since we don't join categories table anymore
   }
 
   return next as unknown as T;
