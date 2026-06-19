@@ -1,7 +1,7 @@
 export type ProductVariantRow = {
   id: number;
   product_id: number;
-  name: string;
+  variant_name: string;  // US version uses variant_name, not name
   sku: string;
   price: string | number | null;
   stock: number | null;
