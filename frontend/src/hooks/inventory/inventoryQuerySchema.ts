@@ -11,7 +11,6 @@ export const getInventorySelect = (categoryFilter: string) => {
   sku,
   is_active,
   deleted_at,
-  categories${isFilteringByCategory ? '!inner' : ''}(id, name, slug),
   product_variants(
     id,
     product_id,
