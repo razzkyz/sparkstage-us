@@ -1,6 +1,8 @@
 import type { InventoryListFilters, ProductRow } from './inventoryTypes';
 
-export const getInventorySelect = (categoryFilter: string) => {
+// Category filter parameter kept for API compatibility but not used in current implementation
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const getInventorySelect = (_categoryFilter: string) => {
   return `
   id,
   name,
@@ -20,6 +22,11 @@ export const getInventorySelect = (categoryFilter: string) => {
     reserved_stock,
     attributes,
     is_active
+  ),
+  product_images(
+    image_url,
+    is_primary,
+    display_order
   )
 `;
 };

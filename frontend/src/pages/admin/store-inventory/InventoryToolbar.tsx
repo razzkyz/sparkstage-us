@@ -17,11 +17,11 @@ export function InventoryToolbar(props: InventoryToolbarProps) {
   const {
     resolvedTotalProducts,
     isFetching,
-    categoryFilter,
+    categoryFilter: _categoryFilter, // eslint-disable-line @typescript-eslint/no-unused-vars
     stockFilter,
     activeFilter,
-    categoryOptions,
-    onCategoryFilterChange,
+    categoryOptions: _categoryOptions, // eslint-disable-line @typescript-eslint/no-unused-vars
+    onCategoryFilterChange: _onCategoryFilterChange, // eslint-disable-line @typescript-eslint/no-unused-vars
     onStockFilterChange,
     onActiveFilterChange,
   } = props;
