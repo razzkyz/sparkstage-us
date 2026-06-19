@@ -147,10 +147,14 @@ export function useAdminLoyaltyPoints() {
     queryKey: ['admin-loyalty-customers'],
     queryFn: async () => {
       try {
-        // Get all users
-        const { data: users, error: usersError } = await supabase.rpc('get_all_users_for_admin')
-        if (usersError) throw usersError
-        if (!users || users.length === 0) return []
+        // Get all users from profiles
+        const { data: profiles, error: profilesError } = await supabase
+          .from('profiles')
+          .select('user_id, email')
+          .order('created_at', { ascending: false })
+        
+        if (profilesError) throw profilesError
+        if (!profiles || profiles.length === 0) return []
 
         // Get loyalty points for all users
         const { data: points, error: pointsError } = await supabase
@@ -159,7 +163,7 @@ export function useAdminLoyaltyPoints() {
 
         if (pointsError) {
           console.error('Error fetching loyalty points:', pointsError)
-          return users.map((u: any) => ({
+          return profiles.map((u: any) => ({
             user_id: u.user_id,
             email: u.email || '',
             total_points: 0,
@@ -168,7 +172,7 @@ export function useAdminLoyaltyPoints() {
         }
 
         // Merge users with their loyalty points
-        return users.map((u: any) => {
+        return profiles.map((u: any) => {
           const pointsRecord = points?.find((p: any) => p.user_id === u.user_id)
           return {
             user_id: u.user_id,
@@ -269,28 +273,26 @@ export function useTotalCustomerCount() {
     queryKey: ['total-customer-count'],
     queryFn: async () => {
       try {
-        // Get total customer count from the accurate RPC function
-        const { data: countData, error: countError } = await supabase.rpc(
-          'get_customer_registration_stats'
-        )
+        // Get total customer count directly from profiles table
+        const { count: totalCustomers, error: totalError } = await supabase
+          .from('profiles')
+          .select('*', { count: 'exact', head: true })
 
-        if (countError) throw countError
+        if (totalError) throw totalError
 
-        if (!countData || countData.length === 0) {
-          return {
-            totalCustomers: 0,
-            emailRegistered: 0,
-            googleOAuth: 0,
-            withLoyaltyPoints: 0,
-          }
-        }
+        // Get count of users with loyalty points
+        const { count: withPoints, error: pointsError } = await supabase
+          .from('customer_loyalty_points')
+          .select('*', { count: 'exact', head: true })
+          .gt('total_points', 0)
 
-        const result = countData[0]
+        if (pointsError) throw pointsError
+
         return {
-          totalCustomers: Number(result.total_customers) || 0,
-          emailRegistered: Number(result.email_registered) || 0,
-          googleOAuth: Number(result.google_oauth) || 0,
-          withLoyaltyPoints: Number(result.with_loyalty_points) || 0,
+          totalCustomers: totalCustomers || 0,
+          emailRegistered: 0, // Not tracked in US version
+          googleOAuth: 0, // Not tracked in US version
+          withLoyaltyPoints: withPoints || 0,
         }
       } catch (error) {
         console.error('Error fetching customer statistics:', error)

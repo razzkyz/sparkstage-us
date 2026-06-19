@@ -89,44 +89,35 @@ const Dashboard = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           {isLoading
-            ? Array.from({ length: 4 }).map((_, index) => <DashboardStatSkeleton key={`ticket-${index}`} />)
+            ? Array.from({ length: 5 }).map((_, index) => <DashboardStatSkeleton key={`order-${index}`} />)
             : [
-              { label: 'Total tiket terpakai', value: stats?.totalPurchasedTickets ?? 0 },
-              { label: 'Total sudah masuk', value: stats?.totalEntered ?? 0 },
-              { label: 'Total tidak datang', value: stats?.totalNoShow ?? 0 },
-              { label: 'Total sudah tukar hadiah', value: stats?.totalGiftsExchanged ?? 0 },
+              { label: 'Total Pesanan', value: stats?.totalOrders ?? 0, icon: 'shopping_bag' },
+              { label: 'Menunggu Pembayaran', value: stats?.pendingOrders ?? 0, icon: 'pending' },
+              { label: 'Sudah Dibayar', value: stats?.paidOrders ?? 0, icon: 'paid' },
+              { label: 'Sudah Diambil', value: stats?.completedOrders ?? 0, icon: 'check_circle' },
+              { 
+                label: 'Total Pendapatan', 
+                value: `Rp ${(stats?.totalRevenue ?? 0).toLocaleString('id-ID')}`, 
+                icon: 'attach_money',
+                highlight: true 
+              },
             ].map((item, index) => (
               <m.div
                 key={item.label}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="rounded-xl border border-gray-200 bg-white p-5"
+                className={`rounded-xl border border-gray-200 p-5 ${item.highlight ? 'bg-gradient-to-br from-indigo-50 to-purple-50 border-indigo-200' : 'bg-white'}`}
               >
-                <p className="text-sm text-gray-500 mb-1">{item.label}</p>
-                <p className="text-3xl font-black text-gray-900">{item.value}</p>
-              </m.div>
-            ))}
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {isLoading
-            ? Array.from({ length: 4 }).map((_, index) => <DashboardStatSkeleton key={`order-${index}`} />)
-            : [
-              { label: 'Total Pesanan', value: stats?.totalOrders ?? 0 },
-              { label: 'Pesanan Pending', value: stats?.pendingOrders ?? 0 },
-              { label: 'Pesanan Lunas', value: stats?.paidOrders ?? 0 },
-              { label: 'Pesanan Diproses', value: stats?.processingOrders ?? 0 },
-            ].map((item, index) => (
-              <m.div
-                key={item.label}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="rounded-xl border border-gray-200 bg-white p-5"
-              >
-                <p className="text-sm text-gray-500 mb-1">{item.label}</p>
-                <p className="text-3xl font-black text-gray-900">{item.value}</p>
+                <div className="flex items-center gap-2 mb-2">
+                  {item.icon && (
+                    <span className={`material-symbols-outlined text-sm ${item.highlight ? 'text-indigo-600' : 'text-gray-500'}`}>
+                      {item.icon}
+                    </span>
+                  )}
+                  <p className={`text-sm font-semibold ${item.highlight ? 'text-indigo-700' : 'text-gray-500'}`}>{item.label}</p>
+                </div>
+                <p className={`text-3xl font-black ${item.highlight ? 'text-indigo-600' : 'text-gray-900'}`}>{item.value}</p>
               </m.div>
             ))}
         </div>

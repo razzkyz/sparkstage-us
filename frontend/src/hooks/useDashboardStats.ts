@@ -5,14 +5,11 @@ import { APIError } from '../lib/fetchers';
 import { queryKeys } from '../lib/queryKeys';
 
 export type DashboardStats = {
-  totalPurchasedTickets: number;
-  totalEntered: number;
-  totalNoShow: number;
-  totalGiftsExchanged: number;
   totalOrders: number;
   pendingOrders: number;
   paidOrders: number;
-  processingOrders: number;
+  completedOrders: number;
+  totalRevenue: number;
 };
 
 export function useDashboardStats() {
@@ -22,55 +19,49 @@ export function useDashboardStats() {
     queryKey: queryKeys.dashboardStats(),
     queryFn: async ({ signal }) => {
       const [
-        totalPurchased,
-        totalUsed,
-        totalRedeemed,
         totalOrders,
         pendingOrders,
         paidOrders,
-        processingOrders,
+        completedOrders,
       ] = await Promise.all([
-        supabase.from('purchased_tickets').select('*', { count: 'exact', head: true }).abortSignal(signal).eq('status', 'used'),
-        supabase.from('purchased_tickets').select('*', { count: 'exact', head: true }).abortSignal(signal).eq('status', 'used'),
-        supabase.from('purchased_tickets').select('*', { count: 'exact', head: true }).abortSignal(signal).not('redeemed_merchandise_at', 'is', null),
-        supabase.from('orders').select('*', { count: 'exact', head: true }).abortSignal(signal),
-        supabase.from('orders').select('*', { count: 'exact', head: true }).abortSignal(signal).eq('status', 'pending'),
-        supabase.from('orders').select('*', { count: 'exact', head: true }).abortSignal(signal).eq('status', 'paid'),
-        supabase.from('order_products').select('*', { count: 'exact', head: true }).abortSignal(signal).eq('status', 'processing'),
+        supabase.from('order_products').select('*', { count: 'exact', head: true }).abortSignal(signal),
+        supabase.from('order_products').select('*', { count: 'exact', head: true }).abortSignal(signal).eq('payment_status', 'pending'),
+        supabase.from('order_products').select('*', { count: 'exact', head: true }).abortSignal(signal).eq('payment_status', 'paid'),
+        supabase.from('order_products').select('*', { count: 'exact', head: true }).abortSignal(signal).eq('pickup_status', 'completed'),
       ]);
 
       if (
-        totalPurchased.error ||
-        totalUsed.error ||
-        totalRedeemed.error ||
         totalOrders.error ||
         pendingOrders.error ||
         paidOrders.error ||
-        processingOrders.error
+        completedOrders.error
       ) {
         const err = new Error('Failed to load dashboard stats') as APIError;
         err.status = 500;
         err.info = {
-          totalPurchased: totalPurchased.error,
-          totalUsed: totalUsed.error,
-          totalRedeemed: totalRedeemed.error,
           totalOrders: totalOrders.error,
           pendingOrders: pendingOrders.error,
           paidOrders: paidOrders.error,
-          processingOrders: processingOrders.error,
+          completedOrders: completedOrders.error,
         };
         throw err;
       }
 
+      // Calculate total revenue from paid orders
+      const { data: revenueData } = await supabase
+        .from('order_products')
+        .select('total_amount')
+        .abortSignal(signal)
+        .eq('payment_status', 'paid');
+
+      const totalRevenue = (revenueData || []).reduce((sum, order) => sum + (order.total_amount || 0), 0);
+
       return {
-        totalPurchasedTickets: totalPurchased.count || 0,
-        totalEntered: totalUsed.count || 0,
-        totalNoShow: (totalPurchased.count || 0) - (totalUsed.count || 0),
-        totalGiftsExchanged: totalRedeemed.count || 0,
         totalOrders: totalOrders.count || 0,
         pendingOrders: pendingOrders.count || 0,
         paidOrders: paidOrders.count || 0,
-        processingOrders: processingOrders.count || 0,
+        completedOrders: completedOrders.count || 0,
+        totalRevenue,
       };
     },
     refetchOnWindowFocus: true,
@@ -90,8 +81,6 @@ export function useDashboardStats() {
 
     const channel = supabase
       .channel('dashboard_stats_changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'purchased_tickets' }, scheduleInvalidate)
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, scheduleInvalidate)
       .on('postgres_changes', { event: '*', schema: 'public', table: 'order_products' }, scheduleInvalidate)
       .subscribe();
 
