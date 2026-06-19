@@ -191,11 +191,12 @@ const StoreInventory = () => {
         <>
           <button
             onClick={() => setShowCategoryManager(true)}
-            aria-label="Categories"
-            className="flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm font-bold text-neutral-900 shadow-sm transition-colors hover:bg-gray-50 sm:px-4"
+            aria-label="Manage Categories"
+            className="flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-green-300 bg-green-50 px-3 py-2.5 text-sm font-bold text-green-700 shadow-sm transition-colors hover:bg-green-100 sm:px-4"
           >
             <span className="material-symbols-outlined text-[20px]">category</span>
-            <span className="hidden sm:inline">Categories</span>
+            <span className="hidden sm:inline">Manage Categories</span>
+            <span className="sm:hidden">Category</span>
           </button>
           <button
             onClick={handleStockReport}

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import AdminLayout from '../../components/AdminLayout';
+import CategoryManager from '../../components/admin/CategoryManager';
 import { useToast } from '../../components/Toast';
 import { ADMIN_MENU_ITEMS } from '../../constants/adminMenu';
 import { useAuth } from '../../contexts/AuthContext';
@@ -23,6 +24,7 @@ const StockAdjustments = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [showFormModal, setShowFormModal] = useState(false);
   const [editingAdjustment, setEditingAdjustment] = useState<typeof adjustmentList[0] | null>(null);
+  const [showCategoryManager, setShowCategoryManager] = useState(false);
 
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   const { data, isLoading, error, refetch } = useStockAdjustmentList(ITEMS_PER_PAGE, offset);
@@ -57,16 +59,26 @@ const StockAdjustments = () => {
       title="Stock Adjustments"
       subtitle="Kelola adjustment manual untuk gift, KOL, loss, dan gain."
       headerActions={
-        !isOwner && (
+        <div className="flex gap-2">
           <button
-            onClick={() => setShowFormModal(true)}
-            className="flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-[#ff4b86] px-3 py-2.5 text-sm font-bold text-white shadow-md transition-colors hover:bg-[#ff6a9a] sm:px-4"
+            onClick={() => setShowCategoryManager(true)}
+            aria-label="Manage Categories"
+            className="flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm font-bold text-neutral-900 shadow-sm transition-colors hover:bg-gray-50 sm:px-4"
           >
-            <span className="material-symbols-outlined text-[20px]">add</span>
-            <span className="hidden sm:inline">Buat Adjustment</span>
-            <span className="sm:hidden">Buat</span>
+            <span className="material-symbols-outlined text-[20px]">category</span>
+            <span className="hidden sm:inline">Kategori</span>
           </button>
-        )
+          {!isOwner && (
+            <button
+              onClick={() => setShowFormModal(true)}
+              className="flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-[#ff4b86] px-3 py-2.5 text-sm font-bold text-white shadow-md transition-colors hover:bg-[#ff6a9a] sm:px-4"
+            >
+              <span className="material-symbols-outlined text-[20px]">add</span>
+              <span className="hidden sm:inline">Buat Adjustment</span>
+              <span className="sm:hidden">Buat</span>
+            </button>
+          )}
+        </div>
       }
       onLogout={signOut}
     >
@@ -152,6 +164,14 @@ const StockAdjustments = () => {
         onClose={handleCloseModal}
         onSuccess={handleCreateSuccess}
         editingAdjustment={editingAdjustment}
+      />
+
+      <CategoryManager
+        isOpen={showCategoryManager}
+        onClose={() => setShowCategoryManager(false)}
+        onUpdate={() => {
+          showToast('success', 'Kategori berhasil diupdate');
+        }}
       />
     </AdminLayout>
   );

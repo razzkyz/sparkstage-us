@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AdminLayout from '../../components/AdminLayout';
+import CategoryManager from '../../components/admin/CategoryManager';
 import { useToast } from '../../components/Toast';
 import { ADMIN_MENU_ITEMS } from '../../constants/adminMenu';
 import { useAuth } from '../../contexts/AuthContext';
@@ -25,6 +26,7 @@ const StockOpening = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [showFormModal, setShowFormModal] = useState(false);
   const [editingOpening, setEditingOpening] = useState<typeof stockOpeningList[0] | null>(null);
+  const [showCategoryManager, setShowCategoryManager] = useState(false);
 
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   const { data, isLoading, error, refetch } = useStockOpeningList(ITEMS_PER_PAGE, offset);
@@ -96,6 +98,14 @@ const StockOpening = () => {
       subtitle="Kelola stock awal harian untuk setiap produk variant."
       headerActions={
         <div className="flex gap-2">
+          <button
+            onClick={() => setShowCategoryManager(true)}
+            aria-label="Manage Categories"
+            className="flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm font-bold text-neutral-900 shadow-sm transition-colors hover:bg-gray-50 sm:px-4"
+          >
+            <span className="material-symbols-outlined text-[20px]">category</span>
+            <span className="hidden sm:inline">Kategori</span>
+          </button>
           <button
             onClick={exportToXLSX}
             aria-label="Export to XLSX"
@@ -207,6 +217,15 @@ const StockOpening = () => {
         onClose={handleCloseModal}
         onSuccess={handleCreateSuccess}
         editingOpening={editingOpening}
+      />
+
+      <CategoryManager
+        isOpen={showCategoryManager}
+        onClose={() => setShowCategoryManager(false)}
+        onUpdate={() => {
+          // Categories updated, no need to refetch stock opening
+          showToast('success', 'Kategori berhasil diupdate');
+        }}
       />
     </AdminLayout>
   );
