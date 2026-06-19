@@ -13,7 +13,7 @@ export const getInventorySelect = (categoryFilter: string) => {
   product_variants(
     id,
     product_id,
-    variant_name,
+    name,
     sku,
     price,
     stock,
