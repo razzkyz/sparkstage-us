@@ -28,7 +28,7 @@ const StatusPill = ({ active }: { active: boolean }) => (
 const CategoryRow = ({
   category,
   level,
-  parentName,
+  parentName: _parentName, // eslint-disable-line @typescript-eslint/no-unused-vars
   loading,
   childrenByParent,
   expandedParents,
@@ -51,41 +51,50 @@ const CategoryRow = ({
   const children = childrenByParent.get(category.id) ?? [];
   const showToggle = children.length > 0;
   const isExpanded = expandedParents.includes(category.id);
-  const paddingLeft = level === 0 ? '1rem' : `${1 + level * 1.5}rem`;
+  const paddingLeft = level === 0 ? '1rem' : `${1 + level * 2}rem`;
+
+  // Styling berbeda untuk parent dan child
+  const rowBgClass = level === 0 
+    ? 'bg-white hover:bg-blue-50' 
+    : 'bg-blue-50/40 hover:bg-blue-50';
+  
+  const nameFontClass = level === 0 
+    ? 'font-bold text-gray-900' 
+    : 'font-medium text-gray-700';
 
   return (
     <Fragment>
-      <tr className={`hover:bg-gray-50 ${level > 0 ? 'bg-gray-50/60' : ''}`}>
+      <tr className={rowBgClass}>
         <td className="py-3 pr-4" style={{ paddingLeft }}>
           <div className="flex items-center gap-2">
-            {level > 0 && <span className="text-gray-400">└─</span>}
+            {/* Icon indentasi untuk sub-category */}
+            {level > 0 && <span className="text-blue-400 text-sm">↳</span>}
+            
+            {/* Tombol expand/collapse untuk parent dengan children */}
             {showToggle ? (
               <button
                 type="button"
                 onClick={() => onToggleExpanded(category.id)}
-                className={`flex items-center justify-center rounded bg-gray-100 font-bold text-gray-600 hover:bg-gray-200 ${
-                  level === 0 ? 'h-6 w-6 text-xs' : 'h-5 w-5 text-[10px]'
-                }`}
+                className="flex items-center justify-center rounded-md bg-blue-100 font-bold text-blue-700 hover:bg-blue-200 transition-colors h-6 w-6 text-sm"
+                title={isExpanded ? 'Click to collapse' : 'Click to expand'}
               >
-                {isExpanded ? '▾' : '▸'}
+                {isExpanded ? '−' : '+'}
               </button>
             ) : (
-              <span className={level === 0 ? 'inline-block h-6 w-6' : 'inline-block h-5 w-5'} />
+              <span className="inline-block h-6 w-6" />
             )}
-            {showToggle ? (
-              <button
-                type="button"
-                onClick={() => onToggleExpanded(category.id)}
-                className={`text-left ${level === 0 ? 'font-medium' : ''} text-gray-900`}
-              >
-                {category.name}
-              </button>
-            ) : (
-              <span className={`${level === 0 ? 'font-medium' : ''} text-gray-900`}>{category.name}</span>
-            )}
+            
+            {/* Category name */}
+            <span className={nameFontClass}>
+              {category.name}
+              {showToggle && (
+                <span className="ml-2 text-xs text-gray-500">
+                  ({children.length} sub)
+                </span>
+              )}
+            </span>
           </div>
         </td>
-        <td className="px-4 py-3 text-xs text-gray-600">{parentName ?? '-'}</td>
         <td className="px-4 py-3 font-mono text-xs text-gray-600">{category.slug}</td>
         <td className="px-4 py-3">
           <StatusPill active={category.is_active} />
@@ -95,7 +104,7 @@ const CategoryRow = ({
             type="button"
             onClick={() => onEdit(category)}
             disabled={loading}
-            className="mr-2 rounded bg-gray-100 px-2 py-1 text-xs font-bold hover:bg-white/15 disabled:opacity-50"
+            className="mr-2 rounded bg-blue-100 px-3 py-1 text-xs font-bold text-blue-700 hover:bg-blue-200 disabled:opacity-50 transition-colors"
           >
             Edit
           </button>
@@ -103,19 +112,19 @@ const CategoryRow = ({
             type="button"
             onClick={() => onToggleActive(category.id, !category.is_active)}
             disabled={loading}
-            className={`mr-2 rounded px-2 py-1 text-xs font-bold disabled:opacity-50 ${
+            className={`mr-2 rounded px-3 py-1 text-xs font-bold disabled:opacity-50 transition-colors ${
               category.is_active
-                ? 'bg-yellow-500/10 text-yellow-600 hover:bg-yellow-500/20'
-                : 'bg-green-500/10 text-green-600 hover:bg-green-500/20'
+                ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'
+                : 'bg-green-100 text-green-700 hover:bg-green-200'
             }`}
           >
-            {category.is_active ? 'Nonaktifkan' : 'Aktifkan'}
+            {category.is_active ? 'Hide' : 'Show'}
           </button>
           <button
             type="button"
             onClick={() => onDelete(category.id)}
             disabled={loading}
-            className="rounded bg-[#ff4b86]/10 px-2 py-1 text-xs font-bold text-[#ff4b86] hover:bg-[#ff4b86]/20 disabled:opacity-50"
+            className="rounded bg-red-100 px-3 py-1 text-xs font-bold text-red-700 hover:bg-red-200 disabled:opacity-50 transition-colors"
           >
             Delete
           </button>
@@ -147,7 +156,7 @@ export function CategoryTreeTable({
   parents,
   childrenByParent,
   orphanChildren,
-  parentNameMap,
+  parentNameMap: _parentNameMap, // eslint-disable-line @typescript-eslint/no-unused-vars
   expandedParents,
   onToggleExpanded,
   onEdit,
@@ -158,25 +167,24 @@ export function CategoryTreeTable({
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-gray-50">
       <div className="overflow-x-auto">
         <table className="w-full text-left text-sm min-w-[600px]">
-        <thead className="border-b border-gray-200 bg-gray-50 text-xs uppercase text-gray-600">
+        <thead className="border-b-2 border-gray-200 bg-gray-100 text-xs uppercase text-gray-700">
           <tr>
-            <th className="px-4 py-3">Name</th>
-            <th className="px-4 py-3">Parent</th>
-            <th className="px-4 py-3">Slug</th>
-            <th className="px-4 py-3">Status</th>
-            <th className="px-4 py-3 text-right">Actions</th>
+            <th className="px-4 py-3 font-bold">Category Name</th>
+            <th className="px-4 py-3 font-bold">Slug</th>
+            <th className="px-4 py-3 font-bold">Status</th>
+            <th className="px-4 py-3 text-right font-bold">Actions</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-white/10">
+        <tbody className="divide-y divide-gray-200">
           {loading && categories.length === 0 ? (
             <tr>
-              <td colSpan={5} className="px-4 py-8 text-center text-gray-600">
+              <td colSpan={4} className="px-4 py-8 text-center text-gray-600">
                 Loading categories...
               </td>
             </tr>
           ) : categories.length === 0 ? (
             <tr>
-              <td colSpan={5} className="px-4 py-8 text-center text-gray-600">
+              <td colSpan={4} className="px-4 py-8 text-center text-gray-600">
                 No categories found. Create your first one above.
               </td>
             </tr>
@@ -199,9 +207,16 @@ export function CategoryTreeTable({
               ))}
 
               {orphanChildren.map((child) => (
-                <tr key={child.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium">— {child.name}</td>
-                  <td className="px-4 py-3 text-xs text-gray-600">{parentNameMap.get(child.parent_id ?? 0) ?? '-'}</td>
+                <tr key={child.id} className="bg-amber-50 hover:bg-amber-100">
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-amber-500 text-sm">⚠</span>
+                      <span className="font-medium text-amber-900">
+                        {child.name}
+                        <span className="ml-2 text-xs text-amber-600">(orphaned - missing parent)</span>
+                      </span>
+                    </div>
+                  </td>
                   <td className="px-4 py-3 font-mono text-xs text-gray-600">{child.slug}</td>
                   <td className="px-4 py-3">
                     <StatusPill active={child.is_active} />
@@ -211,7 +226,7 @@ export function CategoryTreeTable({
                       type="button"
                       onClick={() => onEdit(child)}
                       disabled={loading}
-                      className="mr-2 rounded bg-gray-100 px-2 py-1 text-xs font-bold hover:bg-white/15 disabled:opacity-50"
+                      className="mr-2 rounded bg-blue-100 px-3 py-1 text-xs font-bold text-blue-700 hover:bg-blue-200 disabled:opacity-50 transition-colors"
                     >
                       Edit
                     </button>
@@ -219,19 +234,19 @@ export function CategoryTreeTable({
                       type="button"
                       onClick={() => onToggleActive(child.id, !child.is_active)}
                       disabled={loading}
-                      className={`mr-2 rounded px-2 py-1 text-xs font-bold disabled:opacity-50 ${
+                      className={`mr-2 rounded px-3 py-1 text-xs font-bold disabled:opacity-50 transition-colors ${
                         child.is_active
-                          ? 'bg-yellow-500/10 text-yellow-600 hover:bg-yellow-500/20'
-                          : 'bg-green-500/10 text-green-600 hover:bg-green-500/20'
+                          ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200'
+                          : 'bg-green-100 text-green-700 hover:bg-green-200'
                       }`}
                     >
-                      {child.is_active ? 'Nonaktifkan' : 'Aktifkan'}
+                      {child.is_active ? 'Hide' : 'Show'}
                     </button>
                     <button
                       type="button"
                       onClick={() => onDelete(child.id)}
                       disabled={loading}
-                      className="rounded bg-[#ff4b86]/10 px-2 py-1 text-xs font-bold text-[#ff4b86] hover:bg-[#ff4b86]/20 disabled:opacity-50"
+                      className="rounded bg-red-100 px-3 py-1 text-xs font-bold text-red-700 hover:bg-red-200 disabled:opacity-50 transition-colors"
                     >
                       Delete
                     </button>

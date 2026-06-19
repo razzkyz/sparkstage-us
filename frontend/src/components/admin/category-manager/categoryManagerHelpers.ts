@@ -37,6 +37,65 @@ export const getParentOptions = (categories: Category[], editingId: number | nul
     .slice()
     .sort((left, right) => left.name.localeCompare(right.name));
 
+/**
+ * Get hierarchical parent options with proper indentation for dropdown display
+ * Returns an array of { category, level, hasChildren } objects
+ */
+export type HierarchicalCategoryOption = {
+  category: Category;
+  level: number;
+  hasChildren: boolean;
+};
+
+export const getHierarchicalParentOptions = (
+  categories: Category[],
+  editingId: number | null
+): HierarchicalCategoryOption[] => {
+  // Filter out invalid options (self and descendants if editing)
+  const validCategories = categories.filter((category) => {
+    if (editingId === null) return true;
+    if (category.id === editingId) return false;
+    return !isDescendant(category.id, editingId, categories);
+  });
+
+  // Build children map
+  const childrenMap = new Map<number, Category[]>();
+  validCategories.forEach((cat) => {
+    if (cat.parent_id !== null) {
+      const children = childrenMap.get(cat.parent_id) || [];
+      children.push(cat);
+      childrenMap.set(cat.parent_id, children);
+    }
+  });
+
+  // Get parent categories (no parent_id)
+  const parents = validCategories
+    .filter((cat) => cat.parent_id === null)
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  // Build hierarchical list recursively
+  const result: HierarchicalCategoryOption[] = [];
+
+  const addCategoryWithChildren = (cat: Category, level: number) => {
+    const children = childrenMap.get(cat.id) || [];
+    const hasChildren = children.length > 0;
+
+    result.push({ category: cat, level, hasChildren });
+
+    // Add children recursively, sorted by name
+    children.sort((a, b) => a.name.localeCompare(b.name)).forEach((child) => {
+      addCategoryWithChildren(child, level + 1);
+    });
+  };
+
+  // Add all parent categories and their children
+  parents.forEach((parent) => {
+    addCategoryWithChildren(parent, 0);
+  });
+
+  return result;
+};
+
 export const getParents = (categories: Category[]): Category[] =>
   categories
     .filter((category) => category.parent_id === null)

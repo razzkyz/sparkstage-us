@@ -4,6 +4,7 @@ import {
   emptyCategoryDraft,
   getAllDescendants,
   getChildrenByParent,
+  getHierarchicalParentOptions,
   getOrphanChildren,
   getParentNameMap,
   getParentOptions,
@@ -191,6 +192,7 @@ export function useCategoryManagerController({ isOpen, onUpdate }: Pick<Category
   );
 
   const parentOptions = useMemo(() => getParentOptions(categories, editingId), [categories, editingId]);
+  const hierarchicalParentOptions = useMemo(() => getHierarchicalParentOptions(categories, editingId), [categories, editingId]);
   const parents = useMemo(() => getParents(categories), [categories]);
   const childrenByParent = useMemo(() => getChildrenByParent(categories), [categories]);
   const orphanChildren = useMemo(() => getOrphanChildren(categories), [categories]);
@@ -225,6 +227,7 @@ export function useCategoryManagerController({ isOpen, onUpdate }: Pick<Category
     handleToggleActive,
     toggleExpanded,
     parentOptions,
+    hierarchicalParentOptions,
     parents,
     childrenByParent,
     orphanChildren,

@@ -184,7 +184,7 @@ async function fetchProductSummaries(signal?: AbortSignal) {
             description,
             categories(slug, is_active),
             product_images(image_url, display_order),
-            product_variants(id, variant_name, price, is_active, stock, reserved_stock)
+            product_variants(id, name, price, is_active, stock, reserved_stock)
           `
           )
           .abortSignal(timeoutSignal)

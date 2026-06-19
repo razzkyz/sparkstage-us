@@ -1,5 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { slugify } from '../../../utils/merchant';
+import type { HierarchicalCategoryOption } from './categoryManagerHelpers';
+import { HierarchicalCategorySelect } from './HierarchicalCategorySelect';
 import type { Category, CategoryDraft } from './categoryManagerTypes';
 
 type CategoryEditorPanelProps = {
@@ -8,6 +10,7 @@ type CategoryEditorPanelProps = {
   slugTouched: boolean;
   loading: boolean;
   parentOptions: Category[];
+  hierarchicalParentOptions: HierarchicalCategoryOption[];
   setDraft: Dispatch<SetStateAction<CategoryDraft>>;
   setSlugTouched: Dispatch<SetStateAction<boolean>>;
   onNew: () => void;
@@ -19,7 +22,8 @@ export function CategoryEditorPanel({
   draft,
   slugTouched,
   loading,
-  parentOptions,
+  parentOptions: _parentOptions, // eslint-disable-line @typescript-eslint/no-unused-vars
+  hierarchicalParentOptions,
   setDraft,
   setSlugTouched,
   onNew,
@@ -61,20 +65,12 @@ export function CategoryEditorPanel({
 
         <label className="flex flex-col gap-1">
           <span className="text-xs font-bold text-gray-600">Parent Category</span>
-          <select
-            value={draft.parent_id ?? ''}
-            onChange={(event) =>
-              setDraft((current) => ({ ...current, parent_id: event.target.value ? Number(event.target.value) : null }))
-            }
-            className="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none focus:border-[#ff4b86] focus:ring-1 focus:ring-[#ff4b86]"
-          >
-            <option value="">No parent</option>
-            {parentOptions.map((parent) => (
-              <option key={parent.id} value={parent.id}>
-                {parent.name}
-              </option>
-            ))}
-          </select>
+          <HierarchicalCategorySelect
+            value={draft.parent_id}
+            onChange={(value) => setDraft((current) => ({ ...current, parent_id: value }))}
+            options={hierarchicalParentOptions}
+            disabled={loading}
+          />
         </label>
       </div>
 

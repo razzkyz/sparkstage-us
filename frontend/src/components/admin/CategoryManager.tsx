@@ -33,6 +33,7 @@ export default function CategoryManager({ isOpen, onClose, onUpdate }: CategoryM
             slugTouched={controller.slugTouched}
             loading={controller.loading}
             parentOptions={controller.parentOptions}
+            hierarchicalParentOptions={controller.hierarchicalParentOptions}
             setDraft={controller.setDraft}
             setSlugTouched={controller.setSlugTouched}
             onNew={controller.handleNew}

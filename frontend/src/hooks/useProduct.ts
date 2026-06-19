@@ -39,7 +39,7 @@ export async function fetchProductDetail(numericId: number, signal: AbortSignal)
           categories(name),
           image_url,
           product_images(image_url, display_order),
-          product_variants(id, variant_name, price, attributes, is_active, stock, reserved_stock)
+          product_variants(id, name, price, attributes, is_active, stock, reserved_stock)
         `
     )
     .abortSignal(signal)
