@@ -10,198 +10,39 @@ import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../components/Toast";
 import { PageTransition } from "../components/PageTransition";
 import ProductCardSkeleton from "../components/skeletons/ProductCardSkeleton";
-import { buildShopCategoryIndex } from "./shop/buildShopCategoryIndex";
-import { filterShopProducts } from "./shop/filterShopProducts";
 import { useShopFilters } from "./shop/useShopFilters";
 import { queryKeys } from "../lib/queryKeys";
 import { fetchProductDetail } from "../hooks/useProduct";
 import { AppLoadingScreen } from "../app/AppLoadingScreen";
-import { useCharmBarSettings } from "../hooks/useCharmBarSettings";
 import { buildImageKitThumbUrl } from "../lib/imagekit";
 import useSeo from "../hooks/useSeo";
 
 const PRODUCTS_PER_PAGE = 20;
 
-const CHARM_BAR_ASSET_BASE = "/images/Charm%20Bar%20assets";
-
-// Charm Bar specific categories (all top-level) with images
+// Charm Bar specific categories (all top-level)
 const CHARM_BAR_CATEGORIES = [
-  {
-    slug: "charm",
-    name: "Charm",
-    image: `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%201.png`,
-    images: [
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%201.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%202.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-    ],
-    isActive: false,
-  },
-  {
-    slug: "holiday",
-    name: "Holiday",
-    image: `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%202.png`,
-    images: [
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%202.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%201.png`,
-    ],
-    isActive: true,
-  },
-  {
-    slug: "hobby",
-    name: "Hobby",
-    image: `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-    images: [
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%201.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%202.png`,
-    ],
-    isActive: true,
-  },
-  {
-    slug: "italian-bracket",
-    name: "Italian Bracket",
-    image: `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-    images: [
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%201.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%202.png`,
-    ],
-    isActive: false,
-  },
-  {
-    slug: "pendant-charm",
-    name: "Pendant Charm",
-    image: `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%201.png`,
-    images: [
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%201.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%202.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-    ],
-    isActive: false,
-  },
-  {
-    slug: "welded-charm",
-    name: "Welded Charm",
-    image: `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%202.png`,
-    images: [
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%202.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%201.png`,
-    ],
-    isActive: false,
-  },
-  {
-    slug: "edgy-soul",
-    name: "Edgy Soul",
-    image: `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-    images: [
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%201.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%202.png`,
-    ],
-    isActive: true,
-  },
-  {
-    slug: "foodie",
-    name: "Foodie",
-    image: `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%201.png`,
-    images: [
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%201.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%202.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-    ],
-    isActive: true,
-  },
-  {
-    slug: "island-vibes",
-    name: "Island Vibes",
-    image: `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%202.png`,
-    images: [
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%202.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%201.png`,
-    ],
-    isActive: true,
-  },
-  {
-    slug: "love",
-    name: "Love",
-    image: `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-    images: [
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%201.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%202.png`,
-    ],
-    isActive: true,
-  },
-  {
-    slug: "pets",
-    name: "Pets",
-    image: `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%201.png`,
-    images: [
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%201.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%202.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-    ],
-    isActive: true,
-  },
-  {
-    slug: "pop-icon",
-    name: "Pop Icon",
-    image: `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%202.png`,
-    images: [
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%202.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%201.png`,
-    ],
-    isActive: true,
-  },
-  {
-    slug: "sky-dream",
-    name: "Sky Dream",
-    image: `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-    images: [
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%201.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%202.png`,
-    ],
-    isActive: true,
-  },
-  {
-    slug: "soft-muse",
-    name: "Soft Muse",
-    image: `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%201.png`,
-    images: [
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%201.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%202.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-    ],
-    isActive: true,
-  },
-  {
-    slug: "the-icon",
-    name: "The Icon",
-    image: `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%202.png`,
-    images: [
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%202.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%201.png`,
-    ],
-    isActive: true,
-  },
-  {
-    slug: "zodiac",
-    name: "Zodiac",
-    image: `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-    images: [
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%203.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%201.png`,
-      `${CHARM_BAR_ASSET_BASE}/CHARM%20VISUAL%202.png`,
-    ],
-    isActive: true,
-  },
+  { slug: "charm",           name: "Charm" },
+  { slug: "holiday",         name: "Holiday" },
+  { slug: "hobby",           name: "Hobby" },
+  { slug: "italian-bracket", name: "Italian Bracket" },
+  { slug: "pendant-charm",   name: "Pendant Charm" },
+  { slug: "welded-charm",    name: "Welded Charm" },
+  { slug: "edgy-soul",       name: "Edgy Soul" },
+  { slug: "foodie",          name: "Foodie" },
+  { slug: "island-vibes",    name: "Island Vibes" },
+  { slug: "love",            name: "Love" },
+  { slug: "pets",            name: "Pets" },
+  { slug: "pop-icon",        name: "Pop Icon" },
+  { slug: "sky-dream",       name: "Sky Dream" },
+  { slug: "soft-muse",       name: "Soft Muse" },
+  { slug: "the-icon",        name: "The Icon" },
+  { slug: "zodiac",          name: "Zodiac" },
+  { slug: "lucky",           name: "Lucky" },
+  { slug: "lucky-charm",     name: "Lucky Charm" },
+  { slug: "golden-charm-pendant",  name: "Golden Charm Pendant" },
+  { slug: "golden-charm-welded",   name: "Golden Charm Welded" },
+  { slug: "silver-charm-pendant",  name: "Silver Charm Pendant" },
+  { slug: "silver-charm-welded",   name: "Silver Charm Welded" },
 ];
 
 type ShopResultsProps = {
@@ -357,87 +198,41 @@ export default function CharmBar() {
   const { addItem } = useCart();
   const { user } = useAuth();
   const { showToast } = useToast();
-  const { settings: charmBarSettings } = useCharmBarSettings();
   const productsRef = useRef<HTMLDivElement>(null);
-  const categoryContainerRef = useRef<HTMLDivElement>(null);
-  const heroRef = useRef<HTMLImageElement>(null);
 
   const loading =
     (productsLoading || categoriesLoading) && products.length === 0;
 
   const {
     activeCategory,
-    activeSubcategory,
-    activeSubSubcategory,
     searchQuery,
     updateFilters,
   } = useShopFilters();
-
-  // GSAP hero fade-in animation
-  useEffect(() => {
-    if (heroRef.current) {
-      gsap.fromTo(
-        heroRef.current,
-        { opacity: 0, scale: 1.05 },
-        { opacity: 1, scale: 1, duration: 0.8, ease: "power2.out" },
-      );
-    }
-  }, []);
-
-  // GSAP category tabs stagger animation
-  useEffect(() => {
-    if (categoryContainerRef.current) {
-      const buttons = categoryContainerRef.current.querySelectorAll("button");
-      gsap.fromTo(
-        Array.from(buttons),
-        { opacity: 0, x: -20 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 0.4,
-          stagger: 0.05,
-          ease: "power2.out",
-          delay: 0.2,
-        },
-      );
-    }
-  }, []);
-
-  const categoryIndex = useMemo(
-    () => (categories ? buildShopCategoryIndex(categories) : null),
-    [categories],
-  );
-
   const filteredProducts = useMemo(() => {
     if (!products || !categories) return [];
 
-    // Filter to only show active Charm Bar specific categories
-    const charmBarSlugs = CHARM_BAR_CATEGORIES.filter(
-      (cat) => cat.isActive,
-    ).map((cat) => cat.slug);
+    // All Charm Bar category slugs (no isActive filter — show everything)
+    const charmBarSlugSet = new Set(CHARM_BAR_CATEGORIES.map((cat) => cat.slug));
     const charmBarProducts = products.filter((product) => {
       if (!product.categorySlug) return false;
-
-      // Check if category is in Charm Bar categories
-      return charmBarSlugs.includes(product.categorySlug);
+      return charmBarSlugSet.has(product.categorySlug);
     });
 
-    return filterShopProducts({
-      products: charmBarProducts,
-      activeCategory: activeCategory || "all",
-      activeSubcategory: activeSubcategory || "all",
-      activeSubSubcategory: activeSubSubcategory || "all",
-      searchQuery: searchQuery || "",
-      allowedSlugMap: categoryIndex?.allowedSlugMap || new Map(),
-      bestSellerIds: [],
-    });
+    // Apply category select filter
+    const categoryFiltered =
+      activeCategory && activeCategory !== "all"
+        ? charmBarProducts.filter((p) => p.categorySlug === activeCategory)
+        : charmBarProducts;
+
+    // Apply search filter
+    const q = (searchQuery || "").toLowerCase().trim();
+    return q
+      ? categoryFiltered.filter((p) => p.name.toLowerCase().includes(q))
+      : categoryFiltered;
   }, [
     products,
     categories,
-    categoryIndex,
     activeCategory,
-    activeSubcategory,
-    activeSubSubcategory,
     searchQuery,
   ]);
 
@@ -616,95 +411,35 @@ export default function CharmBar() {
             </div>
           </div>
 
-          {/* Category Image Grid */}
-          <div className="mb-5">
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => {
-                  const container = document.getElementById(
-                    "category-grid-container",
-                  );
-                  if (container) {
-                    container.scrollBy({ left: -300, behavior: "smooth" });
-                  }
+          {/* Category Select Dropdown */}
+          <div className="mb-5 flex justify-center">
+            <div className="relative w-full max-w-xs">
+              <select
+                id="charm-bar-category-select"
+                value={activeCategory || "all"}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  updateFilters({
+                    category: val === "all" ? null : val,
+                    subcategory: null,
+                    subsubcategory: null,
+                  });
                 }}
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-all duration-200 border border-gray-200 hover:shadow-xl hover:scale-105"
+                className="w-full appearance-none pl-4 pr-10 py-2.5 bg-white border-2 border-gray-200 rounded-full text-sm font-semibold text-gray-700 cursor-pointer focus:outline-none focus:border-[#ff4b86] focus:ring-1 focus:ring-[#ff4b86] transition-colors duration-200 hover:border-[#ff4b86]"
               >
-                <ChevronLeft className="w-5 h-5 text-gray-700" />
-              </button>
-
-              <div
-                ref={categoryContainerRef}
-                id="category-grid-container"
-                className="flex gap-4 overflow-x-auto hide-scrollbar px-4 md:px-12 py-4 scroll-smooth"
-              >
-                {CHARM_BAR_CATEGORIES.filter((cat) => cat.isActive).map(
-                  (category, index) => {
-                    const isActive = activeCategory === category.slug;
-                    const categoryImage =
-                      charmBarSettings?.category_images[index] ||
-                      category.image;
-                    return (
-                      <button
-                        key={category.slug}
-                        type="button"
-                        onClick={() => {
-                          updateFilters({
-                            category: isActive ? null : category.slug,
-                            subcategory: null,
-                            subsubcategory: null,
-                          });
-                        }}
-                        className="group flex-shrink-0 text-center w-24 sm:w-28 md:w-32 lg:w-36"
-                      >
-                        <div
-                          className={`relative aspect-square overflow-hidden rounded-[20%] border-2 transition-all duration-300 ${
-                            isActive
-                              ? "border-[#ff4b86] shadow-lg scale-105"
-                              : "border-gray-200 hover:border-[#ff4b86] hover:scale-105"
-                          }`}
-                        >
-                          <img
-                            src={buildImageKitThumbUrl(categoryImage, {
-                              width: 320,
-                              quality: 60,
-                            })}
-                            alt={category.name}
-                            className="absolute inset-0 w-full h-full object-cover transition-all duration-300 group-hover:scale-110"
-                            loading="lazy"
-                          />
-                          {isActive && (
-                            <div className="absolute inset-0 bg-[#ff4b86]/20 flex items-center justify-center">
-                              <div className="bg-[#ff4b86] text-white px-3 py-1 rounded-full text-xs font-semibold">
-                                Selected
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                        <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-gray-700 group-hover:text-[#ff4b86] transition-colors">
-                          {category.name}
-                        </p>
-                      </button>
-                    );
-                  },
-                )}
+                <option value="all">✨ All Categories</option>
+                {CHARM_BAR_CATEGORIES.map((cat) => (
+                  <option key={cat.slug} value={cat.slug}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
+              {/* chevron icon */}
+              <div className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
               </div>
-
-              <button
-                type="button"
-                onClick={() => {
-                  const container = document.getElementById(
-                    "category-grid-container",
-                  );
-                  if (container) {
-                    container.scrollBy({ left: 300, behavior: "smooth" });
-                  }
-                }}
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-lg rounded-full p-3 hover:bg-gray-50 transition-all duration-200 border border-gray-200 hover:shadow-xl hover:scale-105"
-              >
-                <ChevronRight className="w-5 h-5 text-gray-700" />
-              </button>
             </div>
           </div>
 

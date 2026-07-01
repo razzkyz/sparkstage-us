@@ -65,8 +65,10 @@ export const applyInventoryFilters = <T>(query: T, filters: InventoryListFilters
   if (normalizedCategory) {
     if (normalizedCategory === 'uncategorized') {
       next = next.is('category_id', null) as typeof next;
+    } else if (filters.categoryId) {
+      // Use resolved categoryId from frontend mapping
+      next = next.eq('category_id', filters.categoryId.toString()) as typeof next;
     }
-    // Skip slug-based filtering since we don't join categories table anymore
   }
 
   return next as unknown as T;

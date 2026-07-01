@@ -50,7 +50,7 @@ async function fetchInventoryPageByRpc(
   signal: AbortSignal,
   page: number,
   pageSize: number,
-  filters: { searchQuery: string; categoryFilter: string },
+  filters: { searchQuery: string; categoryFilter: string; categoryId?: number | null },
   stockFilter: UseInventoryParams['stockFilter']
 ): Promise<InventoryProductFetchResult> {
   const safePage = Math.max(1, page);
@@ -92,7 +92,7 @@ async function fetchInventoryPageDirect(
   signal: AbortSignal,
   page: number,
   pageSize: number,
-  filters: { searchQuery: string; categoryFilter: string; activeFilter: string }
+  filters: { searchQuery: string; categoryFilter: string; categoryId?: number | null; activeFilter: string }
 ): Promise<InventoryProductFetchResult> {
   const safePage = Math.max(1, page);
   const safePageSize = Math.max(1, pageSize);
@@ -136,7 +136,7 @@ async function fetchInventoryPage(
   signal: AbortSignal,
   page: number,
   pageSize: number,
-  filters: { searchQuery: string; categoryFilter: string; activeFilter: string }
+  filters: { searchQuery: string; categoryFilter: string; categoryId?: number | null; activeFilter: string }
 ): Promise<InventoryProductFetchResult> {
   const normalizedSearch = normalizeSearchTerm(filters.searchQuery);
   if (!normalizedSearch) {
@@ -164,7 +164,7 @@ async function fetchInventoryStockFilteredPage(
   signal: AbortSignal,
   page: number,
   pageSize: number,
-  filters: { searchQuery: string; categoryFilter: string; activeFilter: string },
+  filters: { searchQuery: string; categoryFilter: string; categoryId?: number | null; activeFilter: string },
   stockFilter: UseInventoryParams['stockFilter']
 ): Promise<InventoryProductFetchResult> {
   try {
@@ -193,23 +193,34 @@ export async function fetchInventoryQueryData(
   const { signal: timeoutSignal, cleanup, didTimeout } = createQuerySignal(signal, timeoutMs);
 
   try {
-    const filters = {
-      searchQuery: params.searchQuery,
-      categoryFilter: params.categoryFilter,
-      activeFilter: params.activeFilter,
-    };
-
-    const categoriesPromise = supabase
+    const categoriesResult = await supabase
       .from('categories')
       .select('id, name, slug, is_active, parent_id')
       .abortSignal(timeoutSignal)
       .order('name', { ascending: true });
 
+    const categories = (categoriesResult.data || []) as CategoryRow[];
+    
+    let resolvedCategoryId: number | null = null;
+    if (params.categoryFilter && params.categoryFilter !== 'uncategorized') {
+      const found = categories.find(c => c.slug === params.categoryFilter);
+      if (found) {
+        resolvedCategoryId = found.id;
+      }
+    }
+
+    const filters = {
+      searchQuery: params.searchQuery,
+      categoryFilter: params.categoryFilter,
+      categoryId: resolvedCategoryId,
+      activeFilter: params.activeFilter,
+    };
+
     const productsPromise = params.stockFilter
       ? fetchInventoryStockFilteredPage(timeoutSignal, params.page, params.pageSize, filters, params.stockFilter)
       : fetchInventoryPage(timeoutSignal, params.page, params.pageSize, filters);
 
-    const [productsResult, categoriesResult] = await Promise.all([productsPromise, categoriesPromise]);
+    const productsResult = await productsPromise;
 
     if (productsResult.error || categoriesResult.error) {
       const err = new Error('Failed to load inventory') as APIError;
@@ -228,7 +239,7 @@ export async function fetchInventoryQueryData(
 
     return {
       products,
-      categories: (categoriesResult.data || []) as CategoryRow[],
+      categories,
       totalCount,
       diagnostics: {
         fetchMs: Math.max(0, endedAt - startedAt),

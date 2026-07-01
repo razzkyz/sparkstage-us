@@ -17,11 +17,11 @@ export function InventoryToolbar(props: InventoryToolbarProps) {
   const {
     resolvedTotalProducts,
     isFetching,
-    categoryFilter: _categoryFilter, // eslint-disable-line @typescript-eslint/no-unused-vars
+    categoryFilter,
     stockFilter,
     activeFilter,
-    categoryOptions: _categoryOptions, // eslint-disable-line @typescript-eslint/no-unused-vars
-    onCategoryFilterChange: _onCategoryFilterChange, // eslint-disable-line @typescript-eslint/no-unused-vars
+    categoryOptions,
+    onCategoryFilterChange,
     onStockFilterChange,
     onActiveFilterChange,
   } = props;
@@ -36,21 +36,19 @@ export function InventoryToolbar(props: InventoryToolbarProps) {
         {isFetching && <span className="text-xs font-medium text-gray-500 font-sans">Updating...</span>}
       </div>
       <div className="flex flex-wrap items-center gap-3">
-        {/* Category filter temporarily hidden - requires categories join which causes RLS issues */}
-        {/*
         <select
           className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary font-sans cursor-pointer"
           value={categoryFilter}
           onChange={(event) => onCategoryFilterChange(event.target.value)}
         >
           <option value="">All Categories</option>
+          <option value="uncategorized">Uncategorized</option>
           {categoryOptions.map((category) => (
             <option key={category.id} value={category.slug}>
               {category.name}
             </option>
           ))}
         </select>
-        */}
         <select
           className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary font-sans cursor-pointer"
           value={stockFilter}

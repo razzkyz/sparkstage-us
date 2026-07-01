@@ -66,6 +66,7 @@ export type InventoryQueryData = {
 export type InventoryListFilters = {
   searchQuery: string;
   categoryFilter: string;
+  categoryId?: number | null;
 };
 
 export type InventoryProductFetchResult = {
