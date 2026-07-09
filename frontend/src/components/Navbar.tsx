@@ -4,14 +4,11 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 // import Logo from "./Logo";
 import {
-  Camera,
-  CalendarDays,
-  Newspaper,
   LogOut,
   Menu,
   ReceiptText,
   ShoppingCart,
-  ShoppingBag,
+  // ShoppingBag,
   Ticket,
   UserRound,
   X,
@@ -71,26 +68,19 @@ const Navbar = () => {
 
   const activeNavKey = (() => {
     const path = location.pathname;
-    if (path === "/") return "on-stage";
-    if (path.startsWith("/on-stage")) return "on-stage";
-    if (path.startsWith("/shop") ||
+    if (
+      path === "/" ||
+      path.startsWith("/shop") ||
       path.startsWith("/glam") ||
       path.startsWith("/beauty") ||
       path.startsWith("/charm-bar") ||
       path.startsWith("/chamr-bar")
     )
       return "shop";
-    if (path.startsWith("/events")) return "event";
-    if (path.startsWith("/news")) return "news";
-    return "";
+    return "shop";
   })();
 
-  const navItems: NavItem[] = [
-    { key: "on-stage", label: "ON STAGE", to: "/on-stage", icon: Camera },
-    { key: "shop", label: "SHOP", to: "/shop", icon: ShoppingBag },
-    { key: "event", label: "EVENTS", to: "/events", icon: CalendarDays },
-    { key: "news", label: "NEWS", to: "/news", icon: Newspaper },
-  ];
+  const navItems: NavItem[] = [];
 
   const activeIndex = Math.max(
     0,
@@ -546,7 +536,9 @@ const Navbar = () => {
                           : "text-gray-700 hover:text-pink-600 hover:bg-pink-50/80"
                       }`}
                     >
-                      <span className={`transition-transform duration-300 ${isActive ? "" : "group-hover:scale-110"}`}>
+                      <span
+                        className={`transition-transform duration-300 ${isActive ? "" : "group-hover:scale-110"}`}
+                      >
                         {item.label}
                       </span>
                       {isActive && (
@@ -603,9 +595,7 @@ const Navbar = () => {
               {/* User info row */}
               <div className="flex items-center gap-3">
                 {/* Avatar initial */}
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-white text-base font-black bg-gradient-to-br from-pink-500 to-rose-500 shadow-md"
-                >
+                <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 text-white text-base font-black bg-gradient-to-br from-pink-500 to-rose-500 shadow-md">
                   {getUserDisplayName(user).charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">

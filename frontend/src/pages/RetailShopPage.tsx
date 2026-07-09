@@ -106,7 +106,7 @@ function RetailProductGrid({
 
   if (loading) {
     return (
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {Array.from({ length: 10 }, (_, i) => (
           <ProductCardSkeleton key={`skeleton-${i}`} />
         ))}
@@ -125,7 +125,7 @@ function RetailProductGrid({
 
   return (
     <>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {paginated.map((product) => (
           <Link
             to={`/shop/retail/product/${product.id}`}
@@ -166,11 +166,11 @@ function RetailProductGrid({
             </div>
 
             {/* Info */}
-            <div className="p-3 flex flex-col flex-grow">
-              <h3 className="font-semibold text-sm text-gray-900 mb-1 line-clamp-1 group-hover:text-[#ff4b86] duration-200">
+            <div className="flex flex-col flex-grow p-4 md:p-5">
+              <h3 className="font-semibold text-sm text-gray-900 mb-1.5 line-clamp-2 group-hover:text-[#ff4b86] duration-200">
                 {product.name}
               </h3>
-              <p className="text-[11px] text-gray-400 mb-2 line-clamp-1 font-light min-h-[16px]">
+              <p className="text-[11px] text-gray-400 mb-4 line-clamp-2 font-light min-h-[32px]">
                 {product.description || '\u00A0'}
               </p>
               <div className="flex items-center gap-2 mt-auto">

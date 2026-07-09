@@ -10,15 +10,6 @@ const CashierDashboard = lazy(
   () => import("../../pages/admin/CashierDashboard"),
 );
 const CashierOrders = lazy(() => import("../../pages/admin/CashierOrders"));
-const DressingRoomDashboard = lazy(
-  () => import("../../pages/admin/DressingRoomDashboard"),
-);
-const DressingRoomInventory = lazy(
-  () => import("../../pages/admin/DressingRoomInventory"),
-);
-const DressingRoomProductList = lazy(
-  () => import("../../pages/admin/DressingRoomProductList"),
-);
 const TicketsManagement = lazy(
   () => import("../../pages/admin/TicketsManagement"),
 );
@@ -38,22 +29,7 @@ const EventPageManager = lazy(
   () => import("../../pages/admin/EventPageManager"),
 );
 const NewsPageManager = lazy(() => import("../../pages/admin/NewsPageManager"));
-const CharmBarPageManager = lazy(
-  () => import("../../pages/admin/CharmBarPageManager"),
-);
-// BOOKING REMOVED - US version e-commerce only
-// const BookingPageManager = lazy(() => import("../../pages/admin/BookingPageManager"));
-// const EntranceBookingManager = lazy(() => import("../../pages/admin/EntranceBookingManager"));
-const DressingRoomManager = lazy(
-  () => import("../../pages/admin/DressingRoomManager"),
-);
 const RentalOrders = lazy(() => import("../../pages/admin/RentalOrders"));
-const DressingRoomScan = lazy(
-  () => import("../../pages/admin/DressingRoomScanPage"),
-);
-const BeautyPosterManager = lazy(
-  () => import("../../pages/admin/BeautyPosterManager"),
-);
 // EVENT BOOKINGS REMOVED - US version e-commerce only
 // const EventBookings = lazy(() => import("../../pages/admin/EventBookings"));
 const TabletQRScanner = lazy(() => import("../../pages/admin/TabletQRScanner"));
@@ -88,9 +64,6 @@ export const adminRouteConfigs: AppRouteConfig[] = [
   { path: "/admin/retail-dashboard", Page: RetailDashboard },
   { path: "/admin/cashier-dashboard", Page: CashierDashboard },
   { path: "/admin/cashier-orders", Page: CashierOrders },
-  { path: "/admin/dressing-room-dashboard", Page: DressingRoomDashboard },
-  { path: "/admin/dressing-room-inventory", Page: DressingRoomInventory },
-  { path: "/admin/dressing-room-products", Page: DressingRoomProductList },
   { path: "/admin/tickets", Page: TicketsManagement },
   { path: "/admin/store", Page: StoreInventory },
   { path: "/admin/stages", Page: StageManager },
@@ -105,11 +78,7 @@ export const adminRouteConfigs: AppRouteConfig[] = [
   { path: "/admin/events-schedule", Page: EventsScheduleManager },
   { path: "/admin/event-page", Page: EventPageManager },
   { path: "/admin/news-page", Page: NewsPageManager },
-  { path: "/admin/charm-bar-page", Page: CharmBarPageManager },
-  { path: "/admin/dressing-room", Page: DressingRoomManager },
   { path: "/admin/rental-orders", Page: RentalOrders },
-  { path: "/admin/dressing-room-scan", Page: DressingRoomScan },
-  { path: "/admin/glam-page", Page: BeautyPosterManager },
   // EVENT BOOKINGS REMOVED - US version e-commerce only
   { path: "/admin/tablet-qr-scanner", Page: TabletQRScanner },
   { path: "/admin/rental-scanner", Page: RentalScannerPage },
