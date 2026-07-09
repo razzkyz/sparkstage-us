@@ -1,5 +1,5 @@
 import * as XLSX from 'xlsx';
-import type { InventoryProduct } from '../pages/admin/store-inventory/storeInventoryTypes';
+
 import type { ProductDraft, ProductVariantDraft } from '../components/admin/product-form-modal/productFormModalTypes';
 
 // ─── EXPORT: Stock Report ─────────────────────────────────────────────────────
