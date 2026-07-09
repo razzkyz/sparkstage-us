@@ -2,7 +2,7 @@ import type { TFunction } from 'i18next';
 import { formatCurrency } from '../../utils/formatters';
 import { formatDateTimeWIB } from '../../utils/timezone';
 import type { TicketOrderListItem } from '../../hooks/useMyTicketOrders';
-import { getSessionRange } from '../booking-success/bookingSuccessFormatters';
+import { getSessionRange } from '../../utils/formatters';
 import { MyTicketExpandedDetail } from './MyTicketExpandedDetail';
 
 type MyTicketCardProps = {

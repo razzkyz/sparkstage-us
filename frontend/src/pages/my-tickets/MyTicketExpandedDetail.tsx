@@ -1,6 +1,6 @@
 import type { TFunction } from 'i18next';
 import type { TicketOrderListItem } from '../../hooks/useMyTicketOrders';
-import { getSessionRange } from '../booking-success/bookingSuccessFormatters';
+import { getSessionRange } from '../../utils/formatters';
 
 type MyTicketExpandedDetailProps = {
   order: TicketOrderListItem;

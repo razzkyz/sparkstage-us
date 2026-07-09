@@ -58,3 +58,13 @@ export const formatRelativeTime = (dateString: string | Date) => {
   const diffInYears = Math.floor(diffInMonths / 12);
   return `${diffInYears} tahun yang lalu`;
 };
+
+export const getSessionRange = (slotId: string): string => {
+  const SESSIONS: Record<string, string> = {
+    session_1: '09:00 - 11:30',
+    session_2: '13:00 - 15:30',
+    session_3: '16:00 - 18:30'
+  };
+  return SESSIONS[slotId] || slotId;
+};
+
