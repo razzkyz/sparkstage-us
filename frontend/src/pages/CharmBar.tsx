@@ -143,7 +143,7 @@ function ShopResults({
                     {product.name}
                   </h3>
                   <p className="text-sm font-semibold text-[#ff4b86]">
-                    IDR {(product.price || 0).toLocaleString("id-ID")}
+                    ${(product.price || 0).toLocaleString("en-US", { minimumFractionDigits: 2 })}
                   </p>
                 </div>
               </div>

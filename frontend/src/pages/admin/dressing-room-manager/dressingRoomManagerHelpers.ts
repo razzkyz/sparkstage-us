@@ -4,10 +4,10 @@ export function toSlug(value: string) {
 
 export function formatPrice(price: number | null): string {
   if (price === null) return '';
-  return new Intl.NumberFormat('id-ID', {
+  return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0,
+    currency: 'USD',
+    minimumFractionDigits: 2,
   }).format(price);
 }
 

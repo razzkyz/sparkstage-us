@@ -13,8 +13,10 @@ import {
   ChevronUp,
   Star,
   Upload,
+  Download,
   Images,
 } from "lucide-react";
+import * as XLSX from "xlsx";
 import AdminLayout from "../../components/AdminLayout";
 import {
   ADMIN_MENU_ITEMS,
@@ -70,6 +72,10 @@ export default function RetailProductManager() {
   const galleryFileRef = useRef<HTMLInputElement>(null);
   const [galleryUrlInput, setGalleryUrlInput] = useState("");
   const [galleryUploading, setGalleryUploading] = useState(false);
+
+  // Excel State
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isImporting, setIsImporting] = useState(false);
 
   // Gallery hooks (only active when editing)
   const { data: galleryImages = [], isLoading: galleryLoading } =
@@ -412,6 +418,119 @@ export default function RetailProductManager() {
     return map;
   }, [categories, catActiveDept]);
 
+  const handleExportExcel = () => {
+    try {
+      if (!filteredProducts || filteredProducts.length === 0) {
+        showToast("error", "No products to export");
+        return;
+      }
+
+      const exportData = filteredProducts.map((p) => ({
+        ID: p.id,
+        Name: p.name,
+        Slug: p.slug,
+        Description: p.description || "",
+        Price: p.price,
+        Stock: p.stock,
+        Weight: p.weight,
+        Length: p.length || 0,
+        Width: p.width || 0,
+        Height: p.height || 0,
+        Image_URL: p.image || "",
+        Is_Active: p.is_active ? "Yes" : "No",
+        Category_ID: p.retail_category_id,
+        Subcategory_ID: p.retail_subcategory_id,
+        Variant: p.variant || "",
+        Department: p.retail_category || "",
+      }));
+
+      const worksheet = XLSX.utils.json_to_sheet(exportData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Products");
+      XLSX.writeFile(workbook, "sparkstage_products.xlsx");
+      showToast("success", `${filteredProducts.length} products exported to Excel!`);
+    } catch (error: any) {
+      showToast("error", "Failed to export: " + error.message);
+    }
+  };
+
+
+  const handleImportExcel = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!window.confirm("Are you sure you want to import and update product data?")) {
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
+
+    setIsImporting(true);
+    try {
+      const reader = new FileReader();
+      reader.onload = async (evt) => {
+        const bstr = evt.target?.result;
+        const workbook = XLSX.read(bstr, { type: "binary" });
+        const worksheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[worksheetName];
+        const rawData = XLSX.utils.sheet_to_json(worksheet);
+
+        if (rawData.length === 0) {
+          showToast("error", "Excel file is empty.");
+          setIsImporting(false);
+          return;
+        }
+
+        let successCount = 0;
+        for (const row of rawData as any[]) {
+          if (!row.Name || !row.Slug) continue;
+
+          const payload: any = {
+            name: row.Name,
+            slug: row.Slug,
+            description: row.Description || null,
+            // Auto-convert IDR to USD: if price > 1000 assume it's IDR
+            price: row.Price > 1000 ? parseFloat((row.Price / 15500).toFixed(2)) : parseFloat(row.Price) || 0,
+            stock: parseInt(row.Stock) || 0,
+            weight: parseInt(row.Weight) || 0,
+            length: row.Length || null,
+            width: row.Width || null,
+            height: row.Height || null,
+            image: row.Image_URL || null,
+            is_active: row.Is_Active === "Yes",
+            retail_category_id: row.Category_ID || null,
+            retail_subcategory_id: row.Subcategory_ID || null,
+            variant: row.Variant || null,
+            retail_category: row.Department || null,
+          };
+
+          if (row.ID) {
+            payload.id = row.ID;
+          }
+
+          const { error } = await supabase
+            .from("product_retail")
+            .upsert(payload, { onConflict: "slug" });
+
+          if (error) {
+            console.error("Error upserting product:", error);
+            throw error;
+          }
+          successCount++;
+        }
+
+        showToast("success", `${successCount} products imported/updated successfully!`);
+        queryClient.invalidateQueries({ queryKey: ["admin-retail-products"] });
+      };
+      reader.readAsBinaryString(file);
+    } catch (err: any) {
+      showToast("error", err.message || "Failed to import");
+    } finally {
+      setIsImporting(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
+
   return (
     <AdminLayout
       menuItems={ADMIN_MENU_ITEMS}
@@ -751,6 +870,28 @@ export default function RetailProductManager() {
                   className="w-full pl-9 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-[#ff4b86]"
                 />
               </div>
+              <button
+                onClick={handleExportExcel}
+                className="flex items-center justify-center gap-2 bg-gray-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-bold hover:bg-gray-200 shadow-sm"
+                title="Export Excel"
+              >
+                <Download className="w-4 h-4" /> Export
+              </button>
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                disabled={isImporting}
+                className="flex items-center justify-center gap-2 bg-gray-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-bold hover:bg-gray-200 shadow-sm disabled:opacity-50"
+                title="Import Excel"
+              >
+                <Upload className="w-4 h-4" /> {isImporting ? "Importing..." : "Import"}
+              </button>
+              <input
+                type="file"
+                accept=".xlsx"
+                className="hidden"
+                ref={fileInputRef}
+                onChange={handleImportExcel}
+              />
               <button
                 onClick={openAddModal}
                 className="flex items-center justify-center gap-2 bg-[#ff4b86] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#e63d75] shadow-sm"
