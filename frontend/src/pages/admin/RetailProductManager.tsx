@@ -489,7 +489,7 @@ export default function RetailProductManager() {
             slug: row.Slug,
             description: row.Description || null,
             // Auto-convert IDR to USD: if price > 1000 assume it's IDR
-            price: row.Price > 1000 ? parseFloat((row.Price / 15500).toFixed(2)) : parseFloat(row.Price) || 0,
+            price: row.Price > 1000 ? parseFloat((row.Price / 18000).toFixed(2)) : parseFloat(row.Price) || 0,
             stock: parseInt(row.Stock) || 0,
             weight: parseInt(row.Weight) || 0,
             length: row.Length || null,

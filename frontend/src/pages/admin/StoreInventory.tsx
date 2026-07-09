@@ -13,7 +13,7 @@ import { useAdminMenuSections } from '../../hooks/useAdminMenuSections';
 import { useInventory } from '../../hooks/useInventory';
 import { supabase } from '../../lib/supabase';
 import { getInventorySelect } from '../../hooks/inventory/inventoryQuerySchema';
-import { exportStoreStockReportToExcel } from '../../utils/storeExcelUtils';
+import { exportStoreProductsToExcel } from '../../utils/storeExcelUtils';
 import { DeleteProductDialog } from './store-inventory/DeleteProductDialog';
 import { InventoryEmptyState } from './store-inventory/InventoryEmptyState';
 import { InventoryGrid } from './store-inventory/InventoryGrid';
@@ -150,7 +150,7 @@ const StoreInventory = () => {
     );
   };
 
-  const handleStockReport = async () => {
+  const handleExportExcel = async () => {
     if (isExportingCSV) return;
     setIsExportingCSV(true);
 
@@ -165,14 +165,13 @@ const StoreInventory = () => {
         throw error;
       }
 
-      const rows = mapInventoryProducts((allProducts as any) ?? []);
-      if (rows.length === 0) {
+      if (allProducts.length === 0) {
         showToast('error', 'Tidak ada data produk untuk di-export.');
         return;
       }
 
-      exportStoreStockReportToExcel(rows);
-      showToast('success', 'Laporan stok berhasil diunduh.');
+      exportStoreProductsToExcel(allProducts);
+      showToast('success', 'Data produk berhasil diunduh ke Excel.');
     } catch (err) {
       showToast('error', err instanceof Error ? err.message : 'Gagal mengunduh laporan stok');
     } finally {
@@ -199,13 +198,13 @@ const StoreInventory = () => {
             <span className="sm:hidden">Category</span>
           </button>
           <button
-            onClick={handleStockReport}
-            aria-label="Stock Report"
+            onClick={handleExportExcel}
+            aria-label="Export Excel"
             disabled={isExportingCSV}
             className="flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm font-bold text-neutral-900 shadow-sm transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50 sm:px-4"
           >
-            <span className="material-symbols-outlined text-[20px]">inventory_2</span>
-            <span className="hidden sm:inline">Stock Report</span>
+            <span className="material-symbols-outlined text-[20px]">download</span>
+            <span className="hidden sm:inline">Export Excel</span>
           </button>
           <button
             onClick={() => setShowImportModal(true)}

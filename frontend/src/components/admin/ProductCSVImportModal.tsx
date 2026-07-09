@@ -154,7 +154,7 @@ export function ProductCSVImportModal({
                     <tr key={idx} className="hover:bg-gray-50">
                       <td className="px-4 py-2 text-gray-900">{p.name}</td>
                       <td className="px-4 py-2 text-gray-600 text-xs font-mono">{p.sku}</td>
-                      <td className="px-4 py-2 text-gray-600">Rp {p.variants[0].price}</td>
+                      <td className="px-4 py-2 text-gray-600">${p.variants[0].price}</td>
                       <td className="px-4 py-2 text-gray-600">{p.variants[0].stock}</td>
                     </tr>
                   ))}

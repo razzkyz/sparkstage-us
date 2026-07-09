@@ -4,26 +4,52 @@ import type { ProductDraft, ProductVariantDraft } from '../components/admin/prod
 
 // ─── EXPORT: Stock Report ─────────────────────────────────────────────────────
 
-export function exportStoreStockReportToExcel(products: InventoryProduct[]) {
-  const rows: Record<string, unknown>[] = products.map((product) => ({
-    product_name: product.name,
-    sku: product.sku,
-    category: product.category,
-    is_active: product.is_active ? 'ya' : 'tidak',
-    price_min: product.price_min,
-    price_max: product.price_max,
-    stock_available: product.stock_available,
-    variant_count: product.variant_count,
-  }));
+export function exportStoreProductsToExcel(products: any[]) {
+  const rows: Record<string, unknown>[] = [];
+  products.forEach((p) => {
+    if (!p.product_variants || p.product_variants.length === 0) {
+      rows.push({
+        product_name: p.name,
+        slug: p.slug,
+        sku: p.sku,
+        description: p.description || '',
+        category_id: p.category_id || '',
+        is_active: p.is_active ? 'ya' : 'tidak',
+        variant_name: 'Default',
+        variant_sku: p.sku || `${p.slug}-default`,
+        price: 0,
+        stock: 0,
+        size: '',
+        color: '',
+      });
+    } else {
+      p.product_variants.forEach((v: any) => {
+        rows.push({
+          product_name: p.name,
+          slug: p.slug,
+          sku: p.sku,
+          description: p.description || '',
+          category_id: p.category_id || '',
+          is_active: p.is_active ? 'ya' : 'tidak',
+          variant_name: v.name,
+          variant_sku: v.sku,
+          price: v.price,
+          stock: v.stock,
+          size: v.size || '',
+          color: v.color || '',
+        });
+      });
+    }
+  });
 
   if (rows.length === 0) return;
 
   const ws = XLSX.utils.json_to_sheet(rows);
   ws['!cols'] = Object.keys(rows[0]).map((k) => ({ wch: Math.max(k.length + 2, 14) }));
   const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, 'Stok Produk');
+  XLSX.utils.book_append_sheet(wb, ws, 'Products');
   const date = new Date().toISOString().slice(0, 10);
-  XLSX.writeFile(wb, `stock-report-${date}.xlsx`);
+  XLSX.writeFile(wb, `sparkstage_store_products_${date}.xlsx`);
 }
 
 // ─── TEMPLATE ─────────────────────────────────────────────────────────────────
@@ -75,14 +101,9 @@ export function downloadStoreProductTemplateExcel() {
   ];
 
   const ws = XLSX.utils.json_to_sheet(sample);
-  const csv = XLSX.utils.sheet_to_csv(ws);
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = 'template-import-produk-store.csv';
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Template Produk');
+  XLSX.writeFile(wb, 'template-import-produk-store.xlsx');
 }
 
 // ─── PARSE IMPORT ─────────────────────────────────────────────────────────────
@@ -129,10 +150,13 @@ export function parseStoreProductsFromFile(file: File): Promise<ProductDraft[]> 
           }
 
           if (variantSku && currentProduct) {
+            const rawPrice = Number(row['price']) || 0;
+            const finalPrice = rawPrice > 1000 ? parseFloat((rawPrice / 18000).toFixed(2)) : rawPrice;
+            
             const variant: ProductVariantDraft = {
               name: variantName || 'Default',
               sku: variantSku,
-              price: String(Number(row['price']) || 0),
+              price: String(finalPrice),
               stock: Number(row['stock']) || 0,
               size: String(row['size'] ?? '').trim() || undefined,
               color: String(row['color'] ?? '').trim() || undefined,
