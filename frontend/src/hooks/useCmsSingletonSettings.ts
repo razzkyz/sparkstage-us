@@ -55,7 +55,7 @@ export function useCmsSingletonSettings<T extends { id: string }>(params: {
         if (!currentSettings?.id || currentSettings.id === defaultId) {
           const { data, error: insertError } = await supabase
             .from(table as never)
-            .insert([updates])
+            .insert([updates as any])
             .select()
             .single();
 
@@ -66,7 +66,7 @@ export function useCmsSingletonSettings<T extends { id: string }>(params: {
 
         const { data, error: updateError } = await supabase
           .from(table as never)
-          .update(updates)
+          .update(updates as any)
           .eq('id', currentSettings.id)
           .select()
           .single();
