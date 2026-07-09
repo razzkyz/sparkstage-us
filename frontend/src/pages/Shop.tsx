@@ -74,7 +74,7 @@ function ShopResults({
       "product-skeleton-10",
     ];
     return (
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {skeletonKeys.map((skeletonKey) => (
           <ProductCardSkeleton key={skeletonKey} />
         ))}
@@ -92,7 +92,7 @@ function ShopResults({
         </div>
       ) : (
         <div
-          className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 transition-opacity duration-300 ${isAnimating ? "opacity-0" : "opacity-100"}`}
+          className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 transition-opacity duration-300 ${isAnimating ? "opacity-0" : "opacity-100"}`}
         >
           {paginatedProducts.map((product, index) => (
             <Link
@@ -106,7 +106,7 @@ function ShopResults({
                   : "none",
               }}
             >
-              <div className="flex flex-col h-full bg-white rounded-2xl shadow-sm hover:shadow-md border border-pink-100 hover:border-pink-300 overflow-hidden duration-200 ux-transition-all p-4">
+              <div className="flex flex-col h-full bg-white rounded-2xl shadow-sm hover:shadow-md border border-gray-100 hover:border-gray-300 overflow-hidden duration-200 ux-transition-all">
                 <div className="relative overflow-hidden aspect-square bg-gray-50 shrink-0">
                   {product.image ? (
                     <img
@@ -151,11 +151,11 @@ function ShopResults({
                     </span>
                   )}
                 </div>
-                <div className="flex flex-col flex-grow">
-                  <h3 className="font-semibold text-sm text-gray-800 mb-1 line-clamp-1 ux-transition-color group-hover:text-pink-500">
+                <div className="flex flex-col flex-grow p-4 md:p-5">
+                  <h3 className="font-semibold text-sm text-gray-800 mb-1.5 line-clamp-2 ux-transition-color group-hover:text-pink-500">
                     {product.name}
                   </h3>
-                  <p className="text-[11px] text-gray-400 mb-2 line-clamp-1 font-light min-h-[16px]">
+                  <p className="text-[11px] text-gray-400 mb-4 line-clamp-2 font-light min-h-[32px]">
                     {product.description || "\u00A0"}
                   </p>
                   <div className="flex items-center gap-2 mt-auto">

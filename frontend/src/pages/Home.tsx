@@ -1,7 +1,7 @@
-import OnStage from './OnStage';
+import { Navigate } from 'react-router-dom';
 
 const Home = () => {
-  return <OnStage />;
+  return <Navigate to="/shop" replace />;
 };
 
 export default Home;
