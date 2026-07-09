@@ -34,7 +34,7 @@ export function PaymentCustomerForm({
   
   // Build helpful error message for missing fields
   const getMissingFieldsMessage = (): string => {
-    if (isNameMissing) return 'Harap isi nama Anda untuk melanjutkan pembayaran';
+    if (isNameMissing) return 'Please enter your name to continue';
     return '';
   };
 
@@ -74,7 +74,7 @@ export function PaymentCustomerForm({
             disabled={loading}
           />
           <p className="text-xs text-amber-600">
-            Opsional. Jika diisi (+628xxxx), kami akan mengirimkan invoice tiket dan reminder ke WhatsApp ini.
+            Optional. Enter your WhatsApp to receive ticket invoice and reminders.
           </p>
         </div>
 
@@ -95,9 +95,9 @@ export function PaymentCustomerForm({
         <div className="flex items-start gap-3">
           <span className="material-symbols-outlined text-blue-500">info</span>
           <div>
-            <p className="text-sm font-medium text-blue-800">Secure Payment via DOKU Checkout</p>
+            <p className="text-sm font-medium text-blue-800">Secure Checkout</p>
             <p className="text-xs text-blue-600 mt-1">
-              The DOKU payment popup will open after you continue. Complete payment there, then return here to view your order status.
+              You'll be redirected to complete your payment securely. Return here after payment to view your booking status.
             </p>
           </div>
         </div>
@@ -112,10 +112,10 @@ export function PaymentCustomerForm({
           <span className="text-2xl flex-shrink-0">⭐</span>
           <div className="min-w-0">
             <p className="text-sm font-bold" style={{ color: '#e63d75' }}>
-              Kamu akan dapat {(bookingDetails.quantity * 20).toLocaleString()} SPARK CLUB Points!
+              You'll earn {(bookingDetails.quantity * 20).toLocaleString()} SPARK CLUB Points!
             </p>
             <p className="text-xs text-gray-500 mt-0.5">
-              {bookingDetails.quantity} tiket × 20 poin — bisa ditukar jadi diskon belanja di SPARK CLUB 🎁
+              {bookingDetails.quantity} ticket× 20 pts — redeem for discounts at SPARK CLUB 🎁
             </p>
           </div>
         </div>
@@ -160,13 +160,14 @@ export function PaymentCustomerForm({
       <div className="mt-6 pt-6 border-t border-rose-100">
         <p className="text-xs text-center text-rose-700 mb-3">Supported Payment Methods</p>
         <div className="flex justify-center items-center gap-4 flex-wrap opacity-60">
-          <div className="px-3 py-1 bg-slate-900 rounded text-white text-[10px] font-bold">Cards</div>
-          <div className="px-3 py-1 bg-blue-700 rounded text-white text-[10px] font-bold">VA</div>
-          <div className="px-3 py-1 bg-emerald-600 rounded text-white text-[10px] font-bold">E-Wallet</div>
-          <div className="px-3 py-1 bg-orange-500 rounded text-white text-[10px] font-bold">OTO</div>
-          <div className="px-3 py-1 bg-gray-800 rounded text-white text-[10px] font-bold">QRIS</div>
+          <div className="px-3 py-1 bg-slate-900 rounded text-white text-[10px] font-bold">Visa</div>
+          <div className="px-3 py-1 bg-blue-700 rounded text-white text-[10px] font-bold">Mastercard</div>
+          <div className="px-3 py-1 bg-emerald-600 rounded text-white text-[10px] font-bold">Apple Pay</div>
+          <div className="px-3 py-1 bg-orange-500 rounded text-white text-[10px] font-bold">Google Pay</div>
+          <div className="px-3 py-1 bg-indigo-600 rounded text-white text-[10px] font-bold">PayPal</div>
         </div>
       </div>
     </div>
   );
 }
+

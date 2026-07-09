@@ -50,7 +50,7 @@ export function CheckoutCustomerForm({
           disabled={loading}
           required
         />
-        <p className="text-xs text-gray-500">Masukan +628xxxx (WhatsApp akan dikirim otomatis setelah pembayaran berhasil)</p>
+        <p className="text-xs text-gray-500">Optional. Enter your WhatsApp number to receive order notifications.</p>
       </div>
 
       <div className="space-y-1.5">
@@ -67,3 +67,4 @@ export function CheckoutCustomerForm({
     </div>
   );
 }
+

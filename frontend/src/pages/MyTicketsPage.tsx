@@ -88,7 +88,7 @@ export default function MyTicketsPage() {
       // Refresh page to reflect changes
       window.location.reload();
     } catch (err) {
-      showToast('error', err instanceof Error ? err.message : 'Gagal menyembunyikan tiket');
+      showToast('error', err instanceof Error ? err.message : 'Failed to hide ticket');
     } finally {
       setIsHidingOrder(false);
     }
@@ -196,7 +196,7 @@ export default function MyTicketsPage() {
         <ConfirmDialog
           isOpen={showHideConfirm}
           title="Hapus Tiket?"
-          message="Tiket hanya akan disembunyikan dari daftar. Kamu masih bisa melihatnya nanti di riwayat jika diperlukan."
+          message="The ticket will only be hidden from the list. You can still view it in history if needed."
           confirmText="Ya, Hapus"
           cancelText="Batal"
           isDangerous={true}
@@ -212,3 +212,4 @@ export default function MyTicketsPage() {
     </PageTransition>
   );
 }
+

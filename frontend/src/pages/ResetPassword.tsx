@@ -158,7 +158,7 @@ const ResetPassword = () => {
               Ubah Password
             </h1>
             <p className="text-subtext-light">
-              Masukkan password baru Anda
+              Enter your new password
             </p>
           </div>
 
@@ -166,7 +166,7 @@ const ResetPassword = () => {
           {success && (
             <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-sm text-sm mb-6">
               <p className="font-semibold mb-1">✓ Password berhasil diubah!</p>
-              <p>Anda akan diarahkan ke halaman login dalam beberapa detik...</p>
+              <p>You will be redirected to the login page in a few seconds...</p>
             </div>
           )}
 
@@ -284,7 +284,7 @@ const ResetPassword = () => {
               Keamanan Akun
             </h2>
             <p className="text-xl text-subtext-light max-w-md mx-auto">
-              Buat password yang kuat dan mudah diingat untuk menjaga keamanan akun Anda di Spark Stage.
+              Create a strong password to keep your Spark Stage account secure.
             </p>
             <div className="pt-8">
               <div className="inline-block p-8 bg-white rounded-2xl shadow-lg border border-gray-200">
@@ -302,3 +302,4 @@ const ResetPassword = () => {
 };
 
 export default ResetPassword;
+

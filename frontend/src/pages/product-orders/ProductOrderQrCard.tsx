@@ -52,10 +52,11 @@ export function ProductOrderQrCard({
         </div>
         <p className="mt-3 text-lg font-bold text-gray-800">
           {String(channel || '').toLowerCase() === 'cashier'
-            ? 'Tunjukkan QR ini ke kasir untuk pembayaran. Reservasi akan kadaluarsa jika belum dibayar.'
+            ? 'Show this QR to the cashier for payment. Reservation will expire if not paid.'
             : 'Pastikan pick up code sudah di-capture ya. Kode ini wajib ditunjukkan saat mengambil pesanan.'}
         </p>
       </div>
     </div>
   );
 }
+

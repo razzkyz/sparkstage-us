@@ -50,9 +50,9 @@ export function CheckoutPointsSection({
             <div>
               <p className="text-xs font-bold" style={{ color: '#000' }}>SPARK CLUB Points</p>
               <p className="text-[10px]" style={{ color: '#666' }}>
-                {userPoints.toLocaleString()} poin tersedia
+                {userPoints.toLocaleString()} pts available
                 {appliedPoints && (
-                  <span style={{ color: '#22c55e' }}> · Dipakai: {appliedPoints.pointsUsed.toLocaleString()}</span>
+                  <span style={{ color: '#22c55e' }}> · Used: {appliedPoints.pointsUsed.toLocaleString()}</span>
                 )}
               </p>
             </div>
@@ -77,7 +77,7 @@ export function CheckoutPointsSection({
             <div className="flex items-center gap-2">
               <span className="text-sm">✅</span>
               <p className="text-xs font-semibold" style={{ color: '#22c55e' }}>
-                {appliedPoints.pointsUsed.toLocaleString()} poin digunakan
+                {appliedPoints.pointsUsed.toLocaleString()} pts applied
               </p>
             </div>
             <span className="text-sm font-black" style={{ color: '#22c55e' }}>
@@ -87,8 +87,8 @@ export function CheckoutPointsSection({
         ) : hasEnoughPoints ? (
           <div className="space-y-2">
             <p className="text-xs" style={{ color: '#666' }}>
-              Maksimal bisa pakai <span className="font-bold" style={{ color: '#000' }}>{maxRedeemable.toLocaleString()} poin</span> = diskon <span className="font-bold" style={{ color: '#ff4b86' }}>{formatCurrency(maxRedeemable)}</span>
-              <span style={{ color: '#999' }}> (maks. 50% dari subtotal)</span>
+              Max redeemable: <span className="font-bold" style={{ color: '#000' }}>{maxRedeemable.toLocaleString()} pts</span> = discount <span className="font-bold" style={{ color: '#ff4b86' }}>{formatCurrency(maxRedeemable)}</span>
+              <span style={{ color: '#999' }}> (max. 50% of subtotal)</span>
             </p>
             <div className="flex gap-2">
               <button
@@ -111,3 +111,4 @@ export function CheckoutPointsSection({
     </div>
   );
 }
+

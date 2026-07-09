@@ -122,23 +122,23 @@ export default function RentalSuccessPage() {
               <div className="flex flex-col items-center justify-center mb-8 p-6 bg-main-50 border border-main-100 rounded-2xl">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-main-500 mb-4" />
                 <p className="text-main-800 font-semibold text-center">
-                  Menunggu konfirmasi dari DOKU...
+                  Waiting for payment confirmation...
                 </p>
                 <p className="text-main-600 text-sm text-center mt-1">
-                  Selesaikan pembayaran Anda di layar DOKU. Halaman ini akan otomatis diperbarui.
+                  Please complete your payment. This page will update automatically.
                 </p>
               </div>
             )}
 
             {isPaid && !isActive && (
               <p className="text-center text-[#9c4949] mb-6 font-medium">
-                Hai <strong className="text-[#1c0d0d]">{order.customer_name}</strong>, pembayaran Anda telah diterima. Tunjukkan QR Code di bawah kepada Admin Studio saat mengambil pakaian.
+                Hi <strong className="text-[#1c0d0d]">{order.customer_name}</strong>, your payment has been received. Show the QR Code below to the Studio Admin when picking up your outfit.
               </p>
             )}
 
             {isActive && (
               <p className="text-center text-[#9c4949] mb-6 font-medium">
-                Hai <strong className="text-[#1c0d0d]">{order.customer_name}</strong>, pakaian sudah berhasil diambil. Jangan lupa kembalikan sesuai durasi sewa ya!
+                Hi <strong className="text-[#1c0d0d]">{order.customer_name}</strong>, your outfit has been picked up. Don't forget to return it on time!
               </p>
             )}
 
@@ -149,7 +149,7 @@ export default function RentalSuccessPage() {
                   <QRCode value={qrValue} size={200} fgColor="#1c0d0d" />
                 </div>
                 <div className="bg-main-50 rounded-full px-4 py-1.5 text-main-700 text-xs font-bold tracking-widest uppercase border border-main-100">
-                  Siap Diambil
+                  Ready to Pick Up
                 </div>
               </div>
             )}
@@ -159,8 +159,8 @@ export default function RentalSuccessPage() {
               <div className="flex flex-col items-center mb-10">
                 <div className="bg-main-50 border border-main-200 rounded-2xl p-6 text-center w-full">
                   <span className="material-symbols-outlined text-4xl text-main-600 mb-2">inventory_2</span>
-                  <p className="text-lg font-black text-main-900">Pakaian ada pada Anda</p>
-                  <p className="text-sm text-main-700 mt-1">Status: <strong>Sedang Disewa</strong></p>
+                  <p className="text-lg font-black text-main-900">Outfit is with you</p>
+                  <p className="text-sm text-main-700 mt-1">Status: <strong>Currently Rented</strong></p>
                 </div>
               </div>
             )}

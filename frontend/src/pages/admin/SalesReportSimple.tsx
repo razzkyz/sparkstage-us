@@ -31,7 +31,7 @@ interface ProductOrderRow {
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
-function formatRupiah(n: number) {
+function formatUSD(n: number) {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(n);
 }
 
@@ -175,7 +175,7 @@ export default function SalesReportSimple() {
           </div>
           <div className="bg-green-50 rounded-lg p-4 border border-green-100">
             <div className="text-xs font-semibold text-green-600 uppercase mb-1">Total Revenue</div>
-            <div className="text-2xl font-bold text-green-900">{formatRupiah(productStats.revenue)}</div>
+            <div className="text-2xl font-bold text-green-900">{formatUSD(productStats.revenue)}</div>
           </div>
           <div className="bg-purple-50 rounded-lg p-4 border border-purple-100">
             <div className="text-xs font-semibold text-purple-600 uppercase mb-1">Items Sold</div>
@@ -225,7 +225,7 @@ export default function SalesReportSimple() {
                         <p className="font-medium text-gray-900 text-xs">{o.profiles?.name ?? '-'}</p>
                       </td>
                       <td className="px-4 py-3 text-gray-600 text-xs">{o.profiles?.email ?? '-'}</td>
-                      <td className="px-4 py-3 font-bold text-gray-900 whitespace-nowrap">{formatRupiah(o.total)}</td>
+                      <td className="px-4 py-3 font-bold text-gray-900 whitespace-nowrap">{formatUSD(o.total)}</td>
                       <td className="px-4 py-3">
                         <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-green-100 text-green-700">
                           {o.pickup_status}
@@ -248,7 +248,7 @@ export default function SalesReportSimple() {
                   Showing <strong>{productPagination.start + 1}–{Math.min(productPagination.start + ITEMS_PER_PAGE, productPagination.total)}</strong> of <strong>{productPagination.total}</strong> orders
                 </span>
                 <span>·</span>
-                <span className="font-bold text-gray-900">{formatRupiah(productStats.revenue)}</span>
+                <span className="font-bold text-gray-900">{formatUSD(productStats.revenue)}</span>
               </div>
               
               {productPagination.totalPages > 1 && (
@@ -281,3 +281,4 @@ export default function SalesReportSimple() {
     </AdminLayout>
   );
 }
+

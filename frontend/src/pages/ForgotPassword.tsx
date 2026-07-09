@@ -54,7 +54,7 @@ const ForgotPassword = () => {
               Lupa Password?
             </h1>
             <p className="text-subtext-light">
-              Kami akan mengirimkan link reset password ke email Anda
+              We will send a reset password link to your email
             </p>
           </div>
 
@@ -62,7 +62,7 @@ const ForgotPassword = () => {
           {success && (
             <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-sm text-sm mb-6">
               <p className="font-semibold mb-1">✓ Email terkirim!</p>
-              <p>Silakan cek email Anda untuk link reset password. Jangan lupa cek folder spam/junk.</p>
+              <p>Please check your email for the reset link. Don't forget to check your spam/junk folder.</p>
             </div>
           )}
 
@@ -133,7 +133,7 @@ const ForgotPassword = () => {
               Tidak Perlu Khawatir
             </h2>
             <p className="text-xl text-subtext-light max-w-md mx-auto">
-              Password baru akan dikirimkan ke email Anda. Ikuti langkah-langkah di email untuk reset password.
+              A new password will be sent to your email. Follow the steps in the email to reset your password.
             </p>
             <div className="pt-8">
               <div className="inline-block p-8 bg-white rounded-2xl shadow-lg border border-gray-200">
@@ -151,3 +151,4 @@ const ForgotPassword = () => {
 };
 
 export default ForgotPassword;
+

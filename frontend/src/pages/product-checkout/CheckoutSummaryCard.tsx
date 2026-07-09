@@ -77,7 +77,7 @@ export function CheckoutSummaryCard({
           )}
           {appliedPoints && appliedPoints.discountAmount > 0 && (
             <div className="flex justify-between text-sm" style={{ color: '#a855f7' }}>
-              <span>⭐ SPARK CLUB ({appliedPoints.pointsUsed.toLocaleString()} poin)</span>
+              <span>⭐ SPARK CLUB ({appliedPoints.pointsUsed.toLocaleString()} pts)</span>
               <span>-{formatCurrency(appliedPoints.discountAmount)}</span>
             </div>
           )}
@@ -93,3 +93,4 @@ export function CheckoutSummaryCard({
     </div>
   );
 }
+

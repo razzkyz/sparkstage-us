@@ -149,7 +149,7 @@ export default function ProductCheckoutPage() {
             <div className="flex items-center gap-4 p-4 bg-primary/5 rounded-lg border border-primary/10">
               <span className="material-symbols-outlined text-primary">verified_user</span>
               <p className="text-xs leading-relaxed text-rose-700">
-                Your payment is secured by DOKU with 256-bit SSL encryption.
+                Your payment is secured with 256-bit SSL encryption.
               </p>
             </div>
           </div>
@@ -241,10 +241,9 @@ export default function ProductCheckoutPage() {
                     className="h-5"
                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/200px-Mastercard-logo.svg.png"
                   />
-                  <div className="px-2 py-1 bg-cyan-500 rounded text-white text-[10px] font-bold">GoPay</div>
-                  <div className="px-2 py-1 bg-purple-700 rounded text-white text-[10px] font-bold">OVO</div>
-                  <div className="px-2 py-1 bg-orange-500 rounded text-white text-[10px] font-bold">ShopeePay</div>
-                  <div className="px-2 py-1 bg-gray-800 rounded text-white text-[10px] font-bold">QRIS</div>
+                  <div className="px-2 py-1 bg-blue-500 rounded text-white text-[10px] font-bold">Apple Pay</div>
+                  <div className="px-2 py-1 bg-gray-800 rounded text-white text-[10px] font-bold">Google Pay</div>
+                  <div className="px-2 py-1 bg-indigo-600 rounded text-white text-[10px] font-bold">PayPal</div>
                 </div>
               </div>
             </div>

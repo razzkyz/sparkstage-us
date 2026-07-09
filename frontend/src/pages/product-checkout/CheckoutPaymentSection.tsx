@@ -29,9 +29,9 @@ export function CheckoutPaymentSection({
         <div className="flex items-start gap-3">
           <span className="material-symbols-outlined text-blue-500">info</span>
           <div>
-            <p className="text-sm font-medium text-blue-800">Secure Payment via DOKU Checkout</p>
+            <p className="text-sm font-medium text-blue-800">Secure Checkout</p>
             <p className="text-xs text-blue-600 mt-1">
-              You can pay using Credit Card, Bank Transfer, E-Wallet (GoPay, OVO, ShopeePay), QRIS, and more.
+              You can pay using Credit Card, Debit Card, Apple Pay, Google Pay, and more.
             </p>
           </div>
         </div>
@@ -46,10 +46,10 @@ export function CheckoutPaymentSection({
           <span className="text-2xl flex-shrink-0">⭐</span>
           <div className="min-w-0">
             <p className="text-sm font-bold" style={{ color: '#e63d75' }}>
-              Kamu akan dapat {pointsToEarn.toLocaleString()} SPARK CLUB Points!
+              You'll earn {pointsToEarn.toLocaleString()} SPARK CLUB Points!
             </p>
             <p className="text-xs text-gray-500 mt-0.5">
-              {totalItems} item × 20 poin — bisa ditukar jadi diskon di pembelian berikutnya 🎁
+              {totalItems} item × 20 pts — redeem for discounts on your next purchase 🎁
             </p>
           </div>
         </div>
@@ -79,7 +79,7 @@ export function CheckoutPaymentSection({
           disabled={loading || cashierDisabled}
           className="w-full mt-3 bg-[#ff4b86] hover:bg-[#e63d75] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl transition-all flex flex-col items-center justify-center"
         >
-          <span>Bayar di Kasir</span>
+          <span>Pay at Cashier</span>
           <span className="text-xs font-semibold text-white/80 mt-1">Checkout at cashier</span>
         </button>
       )}
