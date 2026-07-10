@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from 'react';
-import { RupiahPriceInput } from '../../RupiahPriceInput';
+
 import { createEmptyVariant } from './productFormModalHelpers';
 import type { ProductDraft } from './productFormModalTypes';
 
@@ -16,8 +16,7 @@ export function ProductVariantsSection({ draft, saving, setDraft }: ProductVaria
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm font-bold">Variants</p>
-          <p className="text-xs text-gray-600">Each variant must have a unique SKU.</p>
-          <p className="text-xs text-gray-600">Price must be whole rupiah (e.g. 30000 or 30.000).</p>
+          <p className="text-xs text-gray-600">Price is in USD (e.g. 19.99).</p>
         </div>
         <button
           type="button"
@@ -71,17 +70,23 @@ export function ProductVariantsSection({ draft, saving, setDraft }: ProductVaria
                   />
                 </td>
                 <td className="py-2 pr-3">
-                  <RupiahPriceInput
-                    value={variant.price}
-                    className="w-28 rounded border border-gray-200 bg-gray-50 px-2 py-1 outline-none focus:border-primary"
-                    onChange={(raw) => {
-                      setDraft((current) => {
-                        const next = current.variants.slice();
-                        next[index] = { ...next[index], price: raw };
-                        return { ...current, variants: next };
-                      });
-                    }}
-                  />
+                  <div className="relative">
+                    <span className="absolute left-2 top-1.5 text-gray-500">$</span>
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      value={variant.price}
+                      onChange={(event) =>
+                        setDraft((current) => {
+                          const next = current.variants.slice();
+                          next[index] = { ...next[index], price: event.target.value };
+                          return { ...current, variants: next };
+                        })
+                      }
+                      className="w-28 rounded border border-gray-200 bg-gray-50 pl-6 pr-2 py-1 outline-none focus:border-primary"
+                    />
+                  </div>
                 </td>
                 <td className="py-2 pr-3">
                   <input

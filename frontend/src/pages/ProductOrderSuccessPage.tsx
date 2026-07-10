@@ -15,10 +15,18 @@ export default function ProductOrderSuccessPage() {
   const [searchParams] = useSearchParams();
   const orderNumber = params.orderNumber || '';
   const { initialized, session } = useAuth();
+  const stripeSessionId = searchParams.get('session_id');
+  const isPendingDoku = searchParams.get('pending') === '1';
+
+  // If coming back from Stripe (has session_id), payment was successful
+  // If coming from DOKU popup (legacy), check pending flag
   const locationState =
-    searchParams.get('pending') === '1'
+    isPendingDoku
       ? { ...((location.state as Record<string, unknown> | null) ?? {}), isPending: true }
-      : location.state;
+      : stripeSessionId
+        ? { ...((location.state as Record<string, unknown> | null) ?? {}), isPending: false, stripeSessionId }
+        : location.state;
+
   const {
     order,
     items,

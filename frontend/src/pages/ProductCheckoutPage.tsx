@@ -229,21 +229,31 @@ export default function ProductCheckoutPage() {
 
               {/* Payment Method Logos */}
               <div className="mt-6 pt-6 border-t border-rose-100">
-                <p className="text-xs text-center text-rose-700 mb-3">Supported Payment Methods</p>
-                <div className="flex justify-center items-center gap-4 flex-wrap opacity-60">
+                <p className="text-xs text-center text-gray-500 mb-3">Accepted via Stripe</p>
+                <div className="flex justify-center items-center gap-3 flex-wrap">
                   <img
                     alt="Visa"
-                    className="h-5"
+                    className="h-6 rounded shadow-sm"
                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/200px-Visa_Inc._logo.svg.png"
                   />
                   <img
                     alt="Mastercard"
-                    className="h-5"
+                    className="h-6 rounded shadow-sm"
                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/200px-Mastercard-logo.svg.png"
                   />
-                  <div className="px-2 py-1 bg-blue-500 rounded text-white text-[10px] font-bold">Apple Pay</div>
-                  <div className="px-2 py-1 bg-gray-800 rounded text-white text-[10px] font-bold">Google Pay</div>
-                  <div className="px-2 py-1 bg-indigo-600 rounded text-white text-[10px] font-bold">PayPal</div>
+                  <img
+                    alt="American Express"
+                    className="h-6 rounded shadow-sm"
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/American_Express_logo_%282018%29.svg/200px-American_Express_logo_%282018%29.svg.png"
+                  />
+                  <div className="px-2 py-1 bg-black rounded text-white text-[10px] font-bold flex items-center gap-1">
+                    <svg className="w-3 h-3" viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 22C7.78 22.05 6.8 20.68 5.96 19.47C4.25 17 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5M13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/></svg>
+                    Apple Pay
+                  </div>
+                  <div className="px-2 py-1 bg-white border border-gray-200 rounded text-gray-700 text-[10px] font-bold flex items-center gap-1 shadow-sm">
+                    <svg className="w-3 h-3 text-blue-500" viewBox="0 0 24 24" fill="currentColor"><path d="M22.56 12.25C22.56 11.47 22.49 10.72 22.36 10H12V14.26H17.92C17.66 15.63 16.88 16.79 15.71 17.57V20.34H19.28C21.36 18.42 22.56 15.6 22.56 12.25Z" fill="#4285F4"/><path d="M12 23C14.97 23 17.46 22.02 19.28 20.34L15.71 17.57C14.73 18.23 13.48 18.63 12 18.63C9.13 18.63 6.71 16.7 5.84 14.1H2.18V16.94C3.99 20.53 7.7 23 12 23Z" fill="#34A853"/><path d="M5.84 14.09C5.62 13.43 5.49 12.73 5.49 12C5.49 11.27 5.62 10.57 5.84 9.91V7.07H2.18C1.43 8.55 1 10.22 1 12C1 13.78 1.43 15.45 2.18 16.93L5.84 14.09Z" fill="#FBBC05"/><path d="M12 5.38C13.62 5.38 15.06 5.94 16.21 7.02L19.36 3.87C17.45 2.09 14.97 1 12 1C7.7 1 3.99 3.47 2.18 7.07L5.84 9.91C6.71 7.31 9.13 5.38 12 5.38Z" fill="#EA4335"/></svg>
+                    Google Pay
+                  </div>
                 </div>
               </div>
             </div>

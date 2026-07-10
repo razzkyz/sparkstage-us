@@ -8,14 +8,14 @@ import { invokeSupabaseFunction } from '../../lib/supabaseFunctionInvoke';
 import { supabase } from '../../lib/supabase';
 import { queryKeys } from '../../lib/queryKeys';
 import { withTimeout } from '../../utils/queryHelpers';
-import { loadDokuCheckoutScript, openDokuCheckout, resetDokuCheckoutState, clearAllPaymentSessions, storePaymentContext, validatePaymentTypeMatch } from '../../utils/dokuCheckout';
+// Stripe: no SDK needed for hosted checkout — we just redirect to session.url
 import { calculateFinalTotalWithPoints, calculateSubtotal, mapCheckoutOrderItems, selectCheckoutItems } from './checkoutPricing';
 import type {
   AppliedPoints,
   AppliedVoucher,
   CheckoutOrderItem,
   CreateCashierOrderResponse,
-  CreateProductTokenResponse,
+  CreateStripeCheckoutResponse,
   ValidateVoucherResult,
 } from './checkoutTypes';
 
@@ -91,20 +91,8 @@ export function useProductCheckoutController({
   const skipEmptyCartRedirectRef = useRef(false);
 
   useEffect(() => {
-    loadDokuCheckoutScript()
-      .then(() => setCheckoutReady(true))
-      .catch((loadError) => setError(loadError instanceof Error ? loadError.message : 'Failed to load payment system'));
-
-    // CRITICAL: Clear all old payment sessions when entering product checkout
-    // Prevents ticket payment SPK- invoice from being reused in product payment
-    // Must happen BEFORE page setup to ensure clean payment context
-    clearAllPaymentSessions();
-
-    // Cleanup: Reset DOKU state when component unmounts to prevent session reuse
-    // Fixes: "saat user cancel payment popup: payment session lama harus dihapus"
-    return () => {
-      resetDokuCheckoutState();
-    };
+    // Stripe hosted checkout: no SDK to load, mark ready immediately
+    setCheckoutReady(true);
   }, []);
 
   useEffect(() => {
@@ -303,7 +291,7 @@ export function useProductCheckoutController({
     setAppliedPoints(null);
   };
 
-  const createOrder = async (functionName: 'create-doku-product-checkout' | 'create-cashier-product-order') => {
+  const createOrder = async (functionName: 'create-stripe-checkout-session' | 'create-doku-product-checkout' | 'create-cashier-product-order') => {
     if (!user) {
       navigate('/login');
       return null;
@@ -346,7 +334,7 @@ export function useProductCheckoutController({
       console.log('[useProductCheckoutController] Rental items:', orderItems.filter(i => i.is_rental));
 
       return withTimeout(
-        invokeSupabaseFunction<CreateProductTokenResponse | CreateCashierOrderResponse>({
+        invokeSupabaseFunction<CreateStripeCheckoutResponse | CreateCashierOrderResponse>({
           functionName,
           body: {
             items: itemsPayload,
@@ -430,51 +418,31 @@ export function useProductCheckoutController({
     setError(null);
 
     try {
-      const payload = (await createOrder('create-doku-product-checkout')) as CreateProductTokenResponse | null;
+      const payload = (await createOrder('create-stripe-checkout-session')) as CreateStripeCheckoutResponse | null;
       if (!payload) {
         setError('No response from payment server. Please try again.');
         return;
       }
 
-      if (!payload?.payment_url) {
-        console.error('[handlePay] Missing payment_url in response:', payload);
-        setError(payload && 'error' in payload ? (payload as unknown as { error?: string }).error || 'Payment creation failed' : 'Failed to generate payment link. Please try again.');
+      if (!payload.payment_url) {
+        const errPayload = payload as unknown as { error?: string };
+        setError(errPayload.error || 'Failed to generate payment link. Please try again.');
         return;
       }
 
       if (!payload.order_number) {
-        console.error('[handlePay] Missing order_number in response:', payload);
         setError('Failed to create order number. Please try again.');
         return;
       }
 
-      // CRITICAL: Validate payment type isolation - PRD invoice for products ONLY
-      if (!validatePaymentTypeMatch('product', payload.order_number)) {
-        throw new Error('Invalid product payment session. Please refresh and try again.');
-      }
-
-      // Reset DOKU state TWICE to ensure old payment session completely gone
-      // First reset closes the old popup, second reset clears SDK state
-      resetDokuCheckoutState();
-      
-      // Store new payment context for isolation validation
-      storePaymentContext('product', payload.order_number, payload.payment_url);
-      
-      console.log('[handlePay] About to open DOKU checkout:', {
-        orderNumber: payload.order_number,
-        paymentUrl: payload.payment_url,
-        invoicePrefix: payload.order_number.substring(0, 4),
-      });
-      
-      // Open fresh payment popup with correct PRD invoice
-      openDokuCheckout(payload.payment_url, payload.order_number);
-      showToast('info', 'Payment popup opened. We will keep checking your order status.');
-      navigate(`/order/product/success/${payload.order_number}?pending=1`, { state: { isPending: true } });
+      // Stripe hosted checkout: redirect the browser to the Stripe payment page
+      console.log('[handlePay] Redirecting to Stripe checkout:', payload.payment_url);
+      window.location.href = payload.payment_url;
     } catch (payError) {
       setError(payError instanceof Error ? payError.message : 'Failed to process payment');
-    } finally {
       setLoading(false);
     }
+    // Note: do NOT setLoading(false) in finally — browser is navigating away
   };
 
   const handleCashierCheckout = async () => {

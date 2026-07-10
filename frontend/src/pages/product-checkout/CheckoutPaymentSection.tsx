@@ -25,13 +25,15 @@ export function CheckoutPaymentSection({
 
   return (
     <>
-      <div className="mb-4 p-4 bg-blue-50 rounded-lg border border-blue-100">
+      <div className="mb-4 p-4 bg-indigo-50 rounded-lg border border-indigo-100">
         <div className="flex items-start gap-3">
-          <span className="material-symbols-outlined text-blue-500">info</span>
+          <svg className="w-5 h-5 mt-0.5 text-indigo-600 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M4 4C2.89 4 2 4.89 2 6V18C2 19.11 2.89 20 4 20H20C21.11 20 22 19.11 22 18V6C22 4.89 21.11 4 20 4H4M4 6H20V8H4V6M4 10H20V18H4V10M6 12V14H16V12H6Z"/>
+          </svg>
           <div>
-            <p className="text-sm font-medium text-blue-800">Secure Checkout</p>
-            <p className="text-xs text-blue-600 mt-1">
-              You can pay using Credit Card, Debit Card, Apple Pay, Google Pay, and more.
+            <p className="text-sm font-semibold text-indigo-800">Secure payment via Stripe</p>
+            <p className="text-xs text-indigo-600 mt-1">
+              Pay with Credit Card, Debit Card, Apple Pay, or Google Pay. You'll be redirected to Stripe's secure checkout page.
             </p>
           </div>
         </div>
@@ -58,20 +60,28 @@ export function CheckoutPaymentSection({
       <button
         onClick={onPay}
         disabled={loading || !canCheckout}
-        className="w-full bg-[#ff4b86] hover:bg-[#e63d75] disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2"
+        className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-bold py-4 rounded-xl shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-2"
       >
         {loading ? (
           <>
             <span className="material-symbols-outlined animate-spin">progress_activity</span>
-            Processing...
+            Redirecting to Stripe...
           </>
         ) : (
           <>
             <span className="material-symbols-outlined text-[20px]">lock</span>
-            Pay {formatCurrency(finalTotal)} Now
+            Pay {formatCurrency(finalTotal)} with Stripe
           </>
         )}
       </button>
+
+      {/* Stripe trust badge */}
+      <div className="mt-3 flex items-center justify-center gap-2 text-xs text-gray-400">
+        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M11.5 1L2 6V12C2 17.55 6.08 22.74 11.5 23.93C16.92 22.74 21 17.55 21 12V6L11.5 1Z"/>
+        </svg>
+        <span>Powered by <strong className="text-indigo-600">Stripe</strong> — 256-bit SSL encrypted</span>
+      </div>
 
       {cashierCheckoutEnabled && (
         <button
@@ -86,3 +96,4 @@ export function CheckoutPaymentSection({
     </>
   );
 }
+

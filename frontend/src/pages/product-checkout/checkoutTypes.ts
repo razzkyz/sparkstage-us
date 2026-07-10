@@ -7,6 +7,12 @@ export type CreateProductTokenResponse = {
   discount_amount?: number;
 };
 
+export type CreateStripeCheckoutResponse = {
+  payment_url: string;
+  order_number: string;
+  stripe_session_id: string;
+};
+
 export type CreateCashierOrderResponse = {
   order_number: string;
 };
